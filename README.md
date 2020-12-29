@@ -10,7 +10,7 @@ generate the documentation
 Here are some shorts example of what can be done with LibErty:
 
 ```c
-include <eprintf.h>
+#include <eprintf.h>
 
 int main(void)
 {
