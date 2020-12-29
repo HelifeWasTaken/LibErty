@@ -152,8 +152,16 @@
         void (*fptr_local)(va_list *, eprintf_mod_t *);
     };
 
-    #define CHECK_EPRINTF_FORMAT(variadic, format_str) \
-        __attribute__((format(printf, variadic, format_str)))
+    #ifdef __GNUC__
+        #define CHECK_EPRINTF_FORMAT(variadic, format_str) \
+            __attribute__((format(printf, variadic, format_str)))
+        #define CHECK_FORMAT_WITH_GNU_C
+    #endif
+
+    #ifdef __DOXY
+        #undef CHECK_FORMAT_WITH_GNU_C
+        #undef CHECK_EPRINTF_FORMAT
+    #endif
 
     #define EPRINTF_SUCCESS         (signed int)0
     #define EPRINTF_FAILURE         (signed int)-1
@@ -180,8 +188,12 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    int eprintf(char const *format, ...)
-        CHECK_EPRINTF_FORMAT(1, 2);
+    #ifdef CHECK_FORMAT_WITH_GNU_C
+        int eprintf(char const *format, ...)
+            CHECK_EPRINTF_FORMAT(1, 2);
+    #else
+        int eprintf(char const *format, ...);
+    #endif
 
     ////////////////////////////////////////////////////////////
     ///
@@ -200,8 +212,12 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    int edprintf(int fd, char const *format, ...)
-        CHECK_EPRINTF_FORMAT(2, 3);
+    #ifdef CHECK_FORMAT_WITH_GNU_C
+        int edprintf(int fd, char const *format, ...)
+            CHECK_EPRINTF_FORMAT(2, 3);
+    #else
+        int edprintf(int fd, char const *format, ...);
+    #endif
 
     ////////////////////////////////////////////////////////////
     ///
@@ -219,8 +235,12 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    int easprintf(char **buff, char const *format, ...)
-        CHECK_EPRINTF_FORMAT(2, 3);
+    #ifdef CHECK_FORMAT_WITH_GNU_C
+        int easprintf(char **buff, char const *format, ...)
+            CHECK_EPRINTF_FORMAT(2, 3);
+    #else
+        int easprintf(char **buff, char const *format, ...);
+    #endif
 
     ////////////////////////////////////////////////////////////
     ///
@@ -236,8 +256,12 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    int efprintf(FILE *stream, char const *format, ...)
-        CHECK_EPRINTF_FORMAT(2, 3);
+    #ifdef CHECK_FORMAT_WITH_GNU_C
+        int efprintf(FILE *stream, char const *format, ...)
+            CHECK_EPRINTF_FORMAT(2, 3);
+    #else
+        int efprintf(FILE *stream, char const *format, ...);
+    #endif
 
     //   _   _            _           _ _
     //  | | | |          (_)         | (_)
@@ -260,8 +284,12 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    int evprintf(char const *format, va_list *ap)
-        CHECK_EPRINTF_FORMAT(1, 0);
+    #ifdef CHECK_FORMAT_WITH_GNU_C
+        int evprintf(char const *format, va_list *ap)
+            CHECK_EPRINTF_FORMAT(1, 0);
+    #else
+        int evprintf(char const *format, va_list *ap);
+    #endif
 
     ////////////////////////////////////////////////////////////
     ///
@@ -280,8 +308,12 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    int evdprintf(int fd, char const *format, va_list *ap)
-        CHECK_EPRINTF_FORMAT(2, 0);
+    #ifdef CHECK_FORMAT_WITH_GNU_C
+        int evdprintf(int fd, char const *format, va_list *ap)
+            CHECK_EPRINTF_FORMAT(2, 0);
+    #else
+        int evdprintf(int fd, char const *format, va_list *ap);
+    #endif
 
     ////////////////////////////////////////////////////////////
     ///
@@ -299,8 +331,12 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    int evasprintf(char **buff, char const *format, va_list *ap)
-        CHECK_EPRINTF_FORMAT(2, 0);
+    #ifdef CHECK_FORMAT_WITH_GNU_C
+        int evasprintf(char **buff, char const *format, va_list *ap)
+            CHECK_EPRINTF_FORMAT(2, 0);
+    #else
+        int evasprintf(char **buff, char const *format, va_list *ap);
+    #endif
 
     ////////////////////////////////////////////////////////////
     ///
@@ -316,8 +352,12 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    int evfprintf(FILE *stream, char const *format, va_list *ap)
-        CHECK_EPRINTF_FORMAT(2, 0);
+    #ifdef CHECK_FORMAT_WITH_GNU_C
+        int evfprintf(FILE *stream, char const *format, va_list *ap)
+            CHECK_EPRINTF_FORMAT(2, 0);
+    #else
+        int evfprintf(FILE *stream, char const *format, va_list *ap);
+    #endif
 
     //  ______
     //  | ___ |
