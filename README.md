@@ -20,6 +20,7 @@ int main(void)
      efree_buff();
      return (0);
 }
+```
 
 ```c
 #include <ebuffer.h>
