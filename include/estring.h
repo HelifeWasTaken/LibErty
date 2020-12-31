@@ -14,9 +14,6 @@
 
     #include <ectypes.h>
     #include <ealloc.h>
-    #include <estring.h>
-
-
 
     //   _____
     //  /  __ |
@@ -26,7 +23,6 @@
     //   \____/\___/|_| |_| |_| .__/ \__,_|_|  \___|
     //                        | |
     //                        |_|
-
 
     ////////////////////////////////////////////////////////////
     ///
@@ -313,6 +309,18 @@
 
     ////////////////////////////////////////////////////////////
     ///
+    /// \brief Get the len of a double array
+    ///
+    /// \param ptr pointer to the array
+    ///
+    /// \return Returns the size of an array
+    ///
+    ////////////////////////////////////////////////////////////
+
+    size_t earray_len(void *ptr);
+
+    ////////////////////////////////////////////////////////////
+    ///
     ///  Concatenates a variadic number of string
     ///
     ////////////////////////////////////////////////////////////
@@ -506,7 +514,21 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    uint64_t enblen(int64_t nb, uint8_t base_size);
+    uint64_t enb_baselen(int64_t nb, uint8_t base_size);
+
+    ////////////////////////////////////////////////////////////
+    ///
+    /// \brief Get the size of a signed number in base 10
+    ///
+    /// \param nb value
+    ///
+    /// \param base_size base
+    ///
+    /// \return Returns the size of the signed number in base 10
+    ///
+    ////////////////////////////////////////////////////////////
+
+    uint64_t enblen(int64_t nb);
 
     ////////////////////////////////////////////////////////////
     ///
@@ -520,7 +542,21 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    uint64_t eunblen(uint64_t nb, uint8_t base_size);
+    uint64_t eunb_baselen(uint64_t nb, uint8_t base_size);
+
+    ////////////////////////////////////////////////////////////
+    ///
+    /// \brief Get the size of an unsigned number in base 10
+    ///
+    /// \param nb value
+    ///
+    /// \param base_size base
+    ///
+    /// \return Returns the size of the unsigned number in base 10
+    ///
+    ////////////////////////////////////////////////////////////
+
+    uint64_t eunblen(uint64_t nb);
 
     //  ___  ____
     //  |  \/  (_)

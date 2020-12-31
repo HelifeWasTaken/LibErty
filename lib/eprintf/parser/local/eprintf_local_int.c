@@ -36,7 +36,7 @@ static void eprintf_local_int_padding_right(char *nb_s, eprintf_mod_t *mod)
 void eprintf_local_int(va_list *ap, eprintf_mod_t *mod)
 {
     int64_t value = get_signed_arg(ap, mod->len);
-    int nb_len = enblen(value, 10);
+    int nb_len = enblen(value);
     char nb_s[nb_len + 1];
 
     eitoa(value, nb_s, "0123456789");

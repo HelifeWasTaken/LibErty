@@ -14,7 +14,7 @@ char *eaftoa(double nb, uint8_t precision, char const *base)
     int64_t decimals = eget_float_decimals(nb, precision);
     size_t basesize = estrlen(base);
     char *new = emalloc(sizeof(char) *
-        (enblen(rounded, basesize) + enblen(decimals, basesize) + 2));
+        (enb_baselen(rounded, basesize) + enb_baselen(decimals, basesize) + 2));
     size_t tmpsize = 0;
 
     eitoa(rounded, new, base);

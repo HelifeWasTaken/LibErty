@@ -5,20 +5,9 @@
 ** enblen
 */
 
-#include <ectypes.h>
+#include <estring.h>
 
-uint64_t enblen(int64_t nb, uint8_t base_size)
+uint64_t enblen(int64_t nb)
 {
-    int base = 1;
-    int64_t tmp = base_size;
-
-    if (nb < 0) {
-        nb = -nb;
-        base++;
-    }
-    while (tmp <= nb) {
-        tmp = tmp * tmp;
-        base++;
-    }
-    return (base);
+    return (enb_baselen(nb, 10));
 }

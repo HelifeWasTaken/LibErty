@@ -34,7 +34,6 @@
 
     size_t ewcslen(wchar_t const *wcs);
 
-
     ////////////////////////////////////////////////////////////
     ///
     /// \brief Compute the size of a wide string and returns it in bytes

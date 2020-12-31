@@ -36,7 +36,7 @@ static void eprintf_local_hex_padding_right(char *nb_s, eprintf_mod_t *mod)
 static void eprintf_local_hex(va_list *ap, eprintf_mod_t *mod, bool uppercase)
 {
     uint64_t value = get_signed_arg(ap, mod->len);
-    int nb_len = eunblen(value, 10);
+    int nb_len = eunblen(value);
     char nb_s[nb_len + 1];
 
     SET_PRECISION(mod->modflag.precision, 0);

@@ -10,7 +10,7 @@
 
 char *eauitoa(uint64_t nb, char const *base)
 {
-    char *nbstr = emalloc(sizeof(char) * (enblen(nb, estrlen(base)) + 1));
+    char *nbstr = emalloc(sizeof(char) * (enb_baselen(nb, estrlen(base)) + 1));
 
     if (nbstr)
         euitoa(nb, nbstr, base);

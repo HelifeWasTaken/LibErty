@@ -36,7 +36,7 @@ static void eprintf_local_uint_padding_right(char *nb_s, eprintf_mod_t *mod)
 void eprintf_local_uint(va_list *ap, eprintf_mod_t *mod)
 {
     uint64_t value = get_signed_arg(ap, mod->len);
-    int nb_len = eunblen(value, 10);
+    int nb_len = eunblen(value);
     char nb_s[nb_len + 1];
 
     euitoa(value, nb_s, "0123456789");

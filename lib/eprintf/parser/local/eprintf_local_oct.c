@@ -38,7 +38,7 @@ static void eprintf_local_oct_padding_right(char *nb_s, eprintf_mod_t *mod)
 void eprintf_local_oct(va_list *ap, eprintf_mod_t *mod)
 {
     uint64_t value = get_signed_arg(ap, mod->len);
-    int nb_len = eunblen(value, 10);
+    int nb_len = eunb_baselen(value, 8);
     char nb_s[nb_len + 1];
 
     euitoa(value, nb_s, "01234567");

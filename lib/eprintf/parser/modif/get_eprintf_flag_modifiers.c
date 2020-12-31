@@ -37,10 +37,10 @@ static void get_eprintf_precision(char const **format,
     mod->offset++;
     if (get_char_format_at_index(format, mod->offset) == '*') {
         mod->modflag.precision = va_arg(*ap, unsigned int);
-        mod->offset += enblen(mod->modflag.pad.size, 10);
+        mod->offset += enblen(mod->modflag.pad.size);
     } else if (eis_num(get_char_format_at_index(format, mod->offset))) {
         mod->modflag.precision = (unsigned int)eatoi(*format);
-        mod->offset += enblen(mod->modflag.pad.size, 10);
+        mod->offset += enblen(mod->modflag.pad.size);
     }
 }
 
@@ -49,10 +49,10 @@ static void get_eprintf_padding(char const **format,
 {
     if (get_char_format_at_index(format, mod->offset) == '*') {
         mod->modflag.pad.size = va_arg(*ap, unsigned int);
-        mod->offset += enblen(mod->modflag.pad.size, 10);
+        mod->offset += enblen(mod->modflag.pad.size);
     } else if (eis_num(get_char_format_at_index(format, mod->offset))) {
         mod->modflag.pad.size = eatoi(*format);
-        mod->offset += enblen(mod->modflag.pad.size, 10);
+        mod->offset += enblen(mod->modflag.pad.size);
     }
 }
 

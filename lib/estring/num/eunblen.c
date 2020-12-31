@@ -5,16 +5,9 @@
 ** eunblen
 */
 
-#include <ectypes.h>
+#include <estring.h>
 
-uint64_t eunblen(uint64_t nb, uint8_t base_size)
+uint64_t eunblen(uint64_t nb)
 {
-    int base = 1;
-    uint64_t tmp = base_size;
-
-    while (tmp <= nb) {
-        tmp = tmp * tmp;
-        base++;
-    }
-    return (base);
+    return (eunb_baselen(nb, 10));
 }

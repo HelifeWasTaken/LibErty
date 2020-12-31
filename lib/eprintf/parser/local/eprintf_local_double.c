@@ -33,8 +33,8 @@ static void eprintf_local_double_padding_right(char *nb_s, eprintf_mod_t *mod)
 void eprintf_local_double(va_list *ap, eprintf_mod_t *mod)
 {
     double value = va_arg(*ap, double);
-    int nb_len = enblen((int64_t)value, 10) +
-        enblen((mod->modflag.precision != -1) ? mod->modflag.precision : 6, 10);
+    int nb_len = enblen((int64_t)value) +
+        ((mod->modflag.precision != -1) ? mod->modflag.precision : 6);
     char nb_s[nb_len + 2];
 
     SET_PRECISION(mod->modflag.precision, 6);

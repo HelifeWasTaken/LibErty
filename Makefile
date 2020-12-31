@@ -13,7 +13,7 @@ IFLAGS 			=	-I./include
 
 DEBUG_FLAGS 	= 	-O1 -g3 -ggdb
 
-CFLAGS 			=	-W -Wall -Wextra -Werror $(IFLAGS)
+CFLAGS 			=	-W -Wall -Wextra -Werror $(IFLAGS) $(DEBUG_FLAGS)
 
 SRC_CTYPE_IS	=	./lib/ectypes/is/eis_alpha.c 			\
 					./lib/ectypes/is/eis_lower.c 			\
@@ -84,7 +84,8 @@ SRC_STRING_CMP	=	./lib/estring/cmp/estrlen.c 			\
 					./lib/estring/cmp/estrstr.c 			\
 					./lib/estring/cmp/ecount_occurences.c 	\
 					./lib/estring/cmp/estartswith.c 		\
-					./lib/estring/cmp/eendswith.c
+					./lib/estring/cmp/eendswith.c 			\
+					./lib/estring/cmp/earray_len.c
 
 SRC_STRING_CPY	=	./lib/estring/cpy/estrcpy.c 			\
 					./lib/estring/cpy/estrncpy.c 			\
@@ -109,7 +110,9 @@ SRC_STRING_MEM	=	./lib/estring/mem/ememcpy.c 			\
 					./lib/estring/mem/ebzero.c 				\
 
 SRC_STRING_NUM	=	./lib/estring/num/enblen.c 				\
-					./lib/estring/num/eunblen.c
+					./lib/estring/num/enb_baselen.c 		\
+					./lib/estring/num/eunblen.c 			\
+					./lib/estring/num/eunb_baselen.c
 
 SRC_STRING_MISC	=	./lib/estring/misc/erevstr.c 			\
 					./lib/estring/misc/estr_capitalize.c
@@ -228,10 +231,10 @@ all:		$(NAME)	## Put whatever you want here (default : Call build_lib)
 
 $(NAME): build_lib	## Call build_lib
 
-build_lib: 	$(OBJ) ## Build LibErty
+build_lib: $(OBJ) ## Build LibErty
 	$(AR) $(NAME) $(OBJ)
 
-main:	## Build main file for testing purposes
+main: ## Build main file for testing purposes
 	$(CC) main.c -L. -lErty $(CFLAGS) -o erty
 
 copy: 	## Copy includes

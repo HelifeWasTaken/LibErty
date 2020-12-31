@@ -7,7 +7,7 @@
 
 #include <ewrite.h>
 
-ssize_t edputchar(FILE *stream, int c)
+ssize_t efputchar(FILE *stream, int c)
 {
     return (efwrite(stream, &c, 1));
 }

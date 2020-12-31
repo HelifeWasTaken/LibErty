@@ -383,4 +383,25 @@
 
     #define MIN(x, y)       (x < y) ? x : y
 
+    ////////////////////////////////////////////////////////////
+    ///
+    ///  Get the lenght of a variable
+    ///
+    ////////////////////////////////////////////////////////////
+
+    #define len(x) _Generic((x), \
+        char *: estrlen, \
+        char const *: estrlen, \
+        char **: array_len, \
+        char const **: array_len, \
+        int **: array_len, \
+        int const **: array_len, \
+        int: enblen, \
+        unsigned int: enblen, \
+        long: enblen, \
+        unsigned long: enblen, \
+        long long: enblen, \
+        unsigned long long: enblen) \
+        (x)
+
 #endif /* !__LIBERTY__ESTDLIB__H__ */

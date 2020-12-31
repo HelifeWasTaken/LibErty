@@ -22,7 +22,6 @@
     //  | | | \__ \__ \  __/ |  | |_
     //  \_| |_/___/___/\___|_|   \__|
     //
-    //
 
     ////////////////////////////////////////////////////////////
     ///
@@ -48,10 +47,10 @@
     ////////////////////////////////////////////////////////////
 
     typedef struct eassert_expr {
-        char *prg;
-        char *expr;
-        char *file;
-        char *func;
+        char const *prg;
+        char const *expr;
+        char const *file;
+        char const *func;
         int line;
     } eassert_t;
 
@@ -59,15 +58,17 @@
     ///
     /// \brief Facilitate assertions
     ///
-    /// \param assert structure that has assertion info
+    /// \param assertinf structure that has assertion info
     ///
     ////////////////////////////////////////////////////////////
 
-    static inline void edebugassert(eassert_t assert)
+    static inline void edebugassert(eassert_t assertinf)
     {
         efprintf(stderr,
-            "\033[31m%s: \033[0;33%s [file: %s | func: %s | line: %d]\033[0;m",
-            assert.prg, assert.expr, assert.file, assert.func, assert.line);
+            "\033[31m%s: \033[0;33m%s [file: %s | func: %s |"
+            " line: %d]\033[0;m\n",
+            assertinf.prg, assertinf.expr, assertinf.file, assertinf.func,
+            assertinf.line);
     }
 
     ////////////////////////////////////////////////////////////
@@ -78,16 +79,16 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    static inline void eassert(eassert_t assert)
+    static inline void eassert(eassert_t assertinf)
     {
-        efprintf(stderr, "%s: %s", assert.prg, assert.expr);
+        efprintf(stderr, "%s: %s\n", assertinf.prg, assertinf.expr);
     }
 
     #define DEBUG_ASSERT(prg, expr) \
-        edebugassert((assert_t){prg, expr, __FILE__, __func__, __LINE__})
+        edebugassert((eassert_t){prg, expr, __FILE__, __func__, __LINE__})
 
     #define ASSERT(prg, expr) \
-        eassert((assert_t){prg, expr, NULL, NULL, 0})
+        eassert((eassert_t){prg, expr, NULL, NULL, 0})
 
     #define DEBUG_PRINTF(format, ...) \
         efprintf(stderr, GREEN"%s:%d -> "BLUE"["format"]\n"DEFAULT, \
