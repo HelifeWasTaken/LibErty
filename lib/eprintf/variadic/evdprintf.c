@@ -10,18 +10,20 @@
 
 int evdprintf(int fd, char const *format, va_list *ap)
 {
-    FILE *stream[3] = {stdin, stdout, stderr};
+    ebuff_t **buff = NULL;
+    ssize_t result = 0;
 
-    if (fd < 0)
+    if (!format)
         return (EPRINTF_FAILURE);
-    if (fd <= 2)
-        return (evfprintf(stream[fd], format, ap));
-    if (!eget_buffusable())
-        ecreate_buff(NULL, true);
-    else
-        ereset_buff();
-    if (!check_eprintf_format(format) ||
-        eprintf_parser(format, ap) == EPRINTF_FAILURE)
+    if (fd == -1)
         return (EPRINTF_FAILURE);
-    return (eflush_buff(fd));
+    if (!check_eprintf_format(format))
+        return (ewrite(fd, format, estrlen(format)));
+    buff = eprintf_parser(format, ap);
+    if (!*buff)
+        return (-1);
+    result = eflush_buff(buff, fd);
+    if ((*buff)->buff_size >= BUFF_CHUNK * 2)
+        efree_buff(buff);
+    return (result);
 }

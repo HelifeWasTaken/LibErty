@@ -9,14 +9,7 @@
 
 int evfprintf(FILE *stream, char const *format, va_list *ap)
 {
-    if (!stream || stream->_fileno < 0)
+    if (!stream)
         return (EPRINTF_FAILURE);
-    if (!eget_buffusable())
-        ecreate_buff(NULL, true);
-    else
-        ereset_buff();
-    if (!check_eprintf_format(format) ||
-        eprintf_parser(format, ap) == EPRINTF_FAILURE)
-        return (EPRINTF_FAILURE);
-    return (efflush_buff(stream));
+    return (evdprintf(stream->_fileno, format, ap));
 }

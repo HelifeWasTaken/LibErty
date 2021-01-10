@@ -9,28 +9,30 @@
 #include <estring.h>
 #include <estdlib.h>
 
-static void eprintf_local_double_padding_left(char *nb_s, eprintf_mod_t *mod)
+static void eprintf_local_double_padding_left(ebuff_t **buff,
+    char *nb_s, eprintf_mod_t *mod)
 {
-    (mod->modflag.space) ? eappend_buff_str(" ") : 0;
+    (mod->modflag.space) ? eappend_buff_str(buff, " ") : 0;
     if (mod->modflag.zero) {
-        (mod->modflag.plus) ? eappend_buff_str("+") : 0;
-        eprintf_append_padding(mod->modflag.pad.size, true);
+        (mod->modflag.plus) ? eappend_buff_str(buff, "+") : 0;
+        eprintf_append_padding(buff, mod->modflag.pad.size, true);
     } else {
-        eprintf_append_padding(mod->modflag.pad.size, false);
-        (mod->modflag.plus) ? eappend_buff_str("+") : 0;
+        eprintf_append_padding(buff, mod->modflag.pad.size, false);
+        (mod->modflag.plus) ? eappend_buff_str(buff, "+") : 0;
     }
-    eappend_buff_str(nb_s);
+    eappend_buff_str(buff, nb_s);
 }
 
-static void eprintf_local_double_padding_right(char *nb_s, eprintf_mod_t *mod)
+static void eprintf_local_double_padding_right(ebuff_t **buff,
+    char *nb_s, eprintf_mod_t *mod)
 {
-    (mod->modflag.plus) ? eappend_buff_str("+") : 0;
-    eappend_buff_str(nb_s);
-    (mod->modflag.space) ? eappend_buff_str(" ") : 0;
-    eprintf_append_padding(mod->modflag.pad.size, false);
+    (mod->modflag.plus) ? eappend_buff_str(buff, "+") : 0;
+    eappend_buff_str(buff, nb_s);
+    (mod->modflag.space) ? eappend_buff_str(buff, " ") : 0;
+    eprintf_append_padding(buff, mod->modflag.pad.size, false);
 }
 
-void eprintf_local_double(va_list *ap, eprintf_mod_t *mod)
+void eprintf_local_double(ebuff_t **buff, va_list *ap, eprintf_mod_t *mod)
 {
     double value = va_arg(*ap, double);
     int nb_len = enblen((int64_t)value) +
@@ -41,7 +43,7 @@ void eprintf_local_double(va_list *ap, eprintf_mod_t *mod)
     eftoa(value, mod->modflag.precision, nb_s, "0123456789");
     get_signed_conversion_padding(value, nb_len + 1, mod);
     if (mod->modflag.pad.right)
-        eprintf_local_double_padding_right(nb_s, mod);
+        eprintf_local_double_padding_right(buff, nb_s, mod);
     else
-        eprintf_local_double_padding_left(nb_s, mod);
+        eprintf_local_double_padding_left(buff, nb_s, mod);
 }

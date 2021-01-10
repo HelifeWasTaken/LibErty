@@ -7,9 +7,9 @@
 
 #include <eprintf.h>
 
-void eprintf_local_getsize(va_list *ap)
+void eprintf_local_getsize(ebuff_t **buff, va_list *ap)
 {
     int *size = va_arg(*ap, int *);
 
-    *size = eget_buffused();
+    *size = eget_buffused(*buff);
 }

@@ -8,7 +8,7 @@
 #include <eprintf.h>
 #include <estring.h>
 
-void eprintf_append_padding(int size, bool iszero)
+void eprintf_append_padding(ebuff_t **buff, int size, bool iszero)
 {
     char str[size + 1];
 
@@ -16,5 +16,5 @@ void eprintf_append_padding(int size, bool iszero)
         return;
     str[size] = 0;
     ememset(str, (iszero) ? '0' : ' ', sizeof(char) * size);
-    eappend_buff_str(str);
+    eappend_buff_str(buff, str);
 }

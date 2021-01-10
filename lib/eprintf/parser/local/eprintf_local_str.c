@@ -8,7 +8,7 @@
 #include <eprintf.h>
 #include <estring.h>
 
-void eprintf_local_str(va_list *ap, eprintf_mod_t *mod)
+void eprintf_local_str(ebuff_t **buff, va_list *ap, eprintf_mod_t *mod)
 {
     char *s = get_ptr_arg(ap, mod->len);
     size_t size_s = estrlen(s);
@@ -16,10 +16,10 @@ void eprintf_local_str(va_list *ap, eprintf_mod_t *mod)
     mod->modflag.pad.size = (mod->modflag.pad.right - size_s > 0) ?
         mod->modflag.pad.size - size_s : 0;
     if (mod->modflag.pad.left) {
-        eprintf_append_padding(mod->modflag.pad.size, false);
-        eappend_buff_str(s);
+        eprintf_append_padding(buff, mod->modflag.pad.size, false);
+        eappend_buff_str(buff, s);
     } else {
-        eappend_buff_str(s);
-        eprintf_append_padding(mod->modflag.pad.size, false);
+        eappend_buff_str(buff, s);
+        eprintf_append_padding(buff, mod->modflag.pad.size, false);
     }
 }

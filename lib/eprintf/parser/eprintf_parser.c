@@ -19,7 +19,9 @@ static const struct eprintf_flag_st flags_st[NB_EPRINTF_FLAGS] = {
     {'f',   'F',    &eprintf_local_double},
 };
 
-static ssize_t eprintf_parse_flag(char const **format, va_list *ap)
+
+static ssize_t eprintf_parse_flag(ebuff_t **buffer,
+    char const **format, va_list *ap)
 {
     eprintf_mod_t mod = get_eprintf_modifications(format, ap);
 
@@ -28,36 +30,37 @@ static ssize_t eprintf_parse_flag(char const **format, va_list *ap)
     for (int i = 0; i < NB_EPRINTF_FLAGS; i++) {
         if (IS_SAME_FLAG(format, mod.offset, flags_st, i)) {
             consume_format_char(format, mod.offset + 1);
-            (*flags_st[i].fptr_local)(ap, &mod);
+            (*flags_st[i].fptr_local)(buffer, ap, &mod);
             return (EPRINTF_SUCCESS);
         }
     }
     if (mod.offset == 0 && **format == 'n') {
-        eprintf_local_getsize(ap);
+        eprintf_local_getsize(buffer, ap);
         consume_format_char(format, 1);
         return (EPRINTF_SUCCESS);
     }
     return (EPRINTF_ERROR_FORMAT);
 }
 
-ssize_t eprintf_parser(char const *format, va_list *ap)
+ebuff_t **eprintf_parser(char const *format, va_list *ap)
 {
+    ebuff_t **buffer = eprintf_global_buff();
     int error = EPRINTF_SUCCESS;
 
+    eprintf_buffer_reset(buffer);
     while (*format) {
         if (*format == '%' && *(format + 1) != '%') {
             consume_format_char(&format, 1);
-            error = eprintf_parse_flag(&format, ap);
-        }
-        else if (*format == '%' && *(format + 1) != '%') {
-            eappend_buff_str("%");
+            error = eprintf_parse_flag(buffer, &format, ap);
+        } else if (*format == '%' && *(format + 1) != '%') {
+            eappend_buff_str(buffer, "%");
             consume_format_char(&format, 2);
         } else {
-            eappend_buff_char(*format);
+            eappend_buff_char(buffer, *format);
             consume_format_char(&format, 1);
         }
         if (error != EPRINTF_SUCCESS)
-            return (EPRINTF_FAILURE);
+            return (NULL);
     }
-    return ((error == EPRINTF_SUCCESS) ? EPRINTF_SUCCESS : EPRINTF_FAILURE);
+    return ((error == EPRINTF_SUCCESS) ? buffer : NULL);
 }
