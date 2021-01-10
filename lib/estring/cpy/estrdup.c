@@ -7,7 +7,7 @@
 
 #include <estring.h>
 
-char *estrdup(char *src)
+char *estrdup(char const *src)
 {
     size_t size = estrlen(src) + 1;
     char *new = emalloc(sizeof(char) * size);
