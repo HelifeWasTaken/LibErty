@@ -18,5 +18,5 @@ size_t edputnbr(int fd, int64_t nb)
 {
     return ((nb > 0) ?
         edputnbr_print(fd, nb) :
-        edputchar(fd, '-') + edputnbr_print(fd, nb));
+        edputchar(fd, '-') + edputnbr_print(fd, -nb));
 }
