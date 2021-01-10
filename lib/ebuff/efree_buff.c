@@ -8,14 +8,16 @@
 
 #include <ebuffer.h>
 
-void efree_buff(void)
+void efree_buff(ebuff_t **buff_info)
 {
-    ebuff_t *buff_info = eget_buff();
-
-    if (buff_info->buff_size) {
-        efree(buff_info->buff);
-        buff_info->buff = NULL;
-        buff_info->buff_size = 0;
+    if (*buff_info) {
+        if ((*buff_info)->buff_size) {
+            ereset_buff(buff_info);
+            efree((*buff_info)->buff);
+            (*buff_info)->buff = NULL;
+            (*buff_info)->buff_size = 0;
+        }
+        efree(*buff_info);
+        *buff_info = NULL;
     }
-    ereset_buff();
 }

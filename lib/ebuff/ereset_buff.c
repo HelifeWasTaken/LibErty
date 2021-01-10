@@ -7,12 +7,11 @@
 
 #include <ebuffer.h>
 
-void ereset_buff(void)
+void ereset_buff(ebuff_t **buff_info)
 {
-    ebuff_t *buff_info = eget_buff();
-
-    if (buff_info->buff)
-        ebzero(buff_info->buff, sizeof(char) * buff_info->used);
-    buff_info->used = 0;
-    buff_info->can_realloc = false;
+    if (*buff_info) {
+        if ((*buff_info)->buff)
+            ebzero((*buff_info)->buff, sizeof(char) * (*buff_info)->used);
+        (*buff_info)->used = 0;
+    }
 }

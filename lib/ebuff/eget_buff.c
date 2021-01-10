@@ -7,38 +7,23 @@
 
 #include <ebuffer.h>
 
-ebuff_t *eget_buff(void)
+char *eget_buffstr(ebuff_t *buff_info)
 {
-    static ebuff_t buff_info = (ebuff_t){0, 0, NULL, false};
-
-    return (&buff_info);
-}
-
-char *eget_buffstr(void)
-{
-    ebuff_t *buff_info = eget_buff();
-
     return (buff_info->buff);
 }
 
-size_t eget_buffused(void)
+size_t eget_buffused(ebuff_t *buff_info)
 {
-    ebuff_t *buff_info = eget_buff();
-
     return (buff_info->used);
 }
 
-size_t eget_buffusable(void)
+size_t eget_buffusable(ebuff_t *buff_info)
 {
-    ebuff_t *buff_info = eget_buff();
-
     return (buff_info->buff_size);
 }
 
-char *edup_buff(void)
+char *edup_buff(ebuff_t *buff_info)
 {
-    ebuff_t *buff_info = eget_buff();
-
     if (buff_info->buff)
         return (estrdup(buff_info->buff));
     return (NULL);
