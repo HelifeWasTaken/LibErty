@@ -28,50 +28,50 @@ important aspects are:
 Here are some shorts example of what can be done with LibErty:
 
 ```c
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
 int main(void)
 {
      efprintf(stdout, "This a an accurate printf"
                      " and it can write to a file stream !"
                      "And Look at this precision : %10.3f!", 987.2f);
-     efree_buff();
+     eprintf_free_buff();
      return (0);
 }
 ```
 
 ```c
-#include <ebuffer.h>
+#include <erty/ebuffer.h>
 
 int main(void)
 {
-    ecreate_buff(NULL, true);
+    ebuff_t *buffer = ecreate_buff(NULL, true);
 
-    eappend_buff_str("hello");
-    efflush_buff(stdout);
-    efree_buff();
+    eappend_buff_str(&buffer, "hello");
+    efflush_buff(&buffer, stdout);
+    efree_buff(&buffer);
     return (0);
 }
 ```
 
 ```c
-#include <estring.h>
+#include <erty/ecstring.h>
 
 int main(void)
 {
-    char *buffer = ECONCAT("hello", "world", "wow");
-    char *buffer2 = EJOIN(" -> ", "hello", "wow");
+    cstr_t buffer = ECONCAT("hello", "world", "wow");
+    cstr_t buffer2 = EJOIN(" -> ", "hello", "wow");
 
     eprintf("%s | %s\n", buffer, buffer2);
     efree(buffer);
     efree(buffer2);
-    efree_buff();
+    eprintf_free_buff();
     return (0);
 }
 ```
 
 ```c
-#include <linked_split.h>
+#include <erty/linked_split.h>
 
 int main(void)
 {
@@ -81,31 +81,31 @@ int main(void)
     for (; ptr; ptr = ptr->next)
         eprintf("%s\n", ptr->str);
     free_linked_esplit(list);
-    efree_buff();
+    eprintf_free_buff();
     return (0);
 }
 ```
 
 ```c
-#include <eassert.h>
+#include <erty/eassert.h>
 
 int main(void)
 {
     ASSERT("ls", "wrong argument");
     DEBUG_ASSERT("ls", "wrong argument");
     DEBUG_PRINTF("ls: wrong argument");
-    efree_buff();
+    eprintf_free_buff();
     return (0);
 }
 ```
 
 ```c
-#include <estdio.h>
+#include <erty/estdio.h>
 
 int main(void)
 {
-   int a = INT_MAX;
-   int b = 4;
+   i32_t a = INT_MAX;
+   i32_t b = 4;
 
    if (ADD_OVERFLOW_CHECK(a, b)) {
         ASSERT("overflow checker", "a and b overflowed");

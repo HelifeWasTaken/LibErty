@@ -5,7 +5,7 @@
 ** erealloc_buff
 */
 
-#include <ebuffer.h>
+#include <erty/ebuffer.h>
 
 ssize_t erealloc_buff(ebuff_t **buff_info, size_t toadd)
 {

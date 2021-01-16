@@ -5,7 +5,7 @@
 ** fewrite
 */
 
-#include <ewrite.h>
+#include <erty/ewrite.h>
 
 ssize_t efwrite(FILE *stream, void const *buf, size_t n)
 {

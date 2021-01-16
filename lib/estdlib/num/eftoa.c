@@ -5,13 +5,13 @@
 ** eftoa
 */
 
-#include <estring.h>
-#include <estdlib.h>
+#include <erty/ecstring.h>
+#include <erty/estdlib.h>
 
-char *eftoa(double nb, uint8_t precision, char *tofill, char const *base)
+cstr_t eftoa(f64_t nb, u8_t precision, cstr_t tofill, const_cstr_t base)
 {
-    int64_t rounded = (int64_t)nb;
-    int64_t decimals = eget_float_decimals(nb, precision);
+    i64_t rounded = (i64_t)nb;
+    i64_t decimals = eget_float_decimals(nb, precision);
     size_t tmpsize = 0;
 
     eitoa(rounded, tofill, base);

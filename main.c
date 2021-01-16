@@ -1,35 +1,23 @@
 /*
-** efpITECH PROJECT, 2020
+** EPITECH PROJECT, 2021
 ** main.c
 ** File description:
 ** aled
 */
 
-#include <estdio.h>
+#include <erty/estdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <estdlib.h>
-#include <estring.h>
-#include <efd.h>
+#include <erty/estdlib.h>
+#include <erty/ecstring.h>
+#include <erty/efd.h>
 #include <stdio.h>
-#include <ebuffer.h>
-#include <linked_split.h>
-#include <eprintf.h>
-#include <SFML/Graphics.h>
-#include <etemplates.h>
+#include <erty/ebuffer.h>
+#include <erty/linked_split.h>
+#include <erty/eprintf.h>
+#include <erty/esstring.h>
 
 int main(void)
 {
-    /*
-    char *lol = "lol";
-    char *tmp = "tmp";
-    char *str = ECONCAT("hello", "world", "stuff", lol, tmp);
-    char *str2 = EJOIN(" -> ", "hello", "world", "stuff", lol, tmp);
-    char *str3 = EJOIN(" ", "hello", "world", "stuff", lol, tmp);
-
-
-    printf("%s\n", str);
-    free(str2);
-    free(str3);
-    */
+    return (0);
 }

@@ -5,16 +5,16 @@
 ** edputnbr
 */
 
-#include <efd.h>
+#include <erty/efd.h>
 
-static size_t edputnbr_print(int fd, int64_t nb)
+static size_t edputnbr_print(fd_t fd, i64_t nb)
 {
     return ((nb >= 10) ?
         edputnbr_print(fd, nb / 10) + edputchar(fd, nb % 10 + '0') :
         (size_t)edputchar(fd, nb + '0'));
 }
 
-size_t edputnbr(int fd, int64_t nb)
+size_t edputnbr(fd_t fd, i64_t nb)
 {
     return ((nb > 0) ?
         edputnbr_print(fd, nb) :

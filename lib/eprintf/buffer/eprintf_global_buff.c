@@ -5,7 +5,7 @@
 ** eprintf_global_buff
 */
 
-#include <ebuffer.h>
+#include <erty/ebuffer.h>
 
 ebuff_t **eprintf_global_buff(void)
 {

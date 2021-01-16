@@ -5,9 +5,9 @@
 ** eis_punct
 */
 
-#include <stdbool.h>
+#include <erty/ectypes.h>
 
-bool eis_punct(int c)
+bool eis_punct(const i32_t c)
 {
     return ((c >= 33 && c <= 64) ||
         (c >= 91 && c <= 96) ||

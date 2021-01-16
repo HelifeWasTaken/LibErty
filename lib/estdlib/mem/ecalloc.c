@@ -5,7 +5,7 @@
 ** ecalloc
 */
 
-#include <estring.h>
+#include <erty/ecstring.h>
 
 void *ecalloc(size_t nmemb, size_t size)
 {

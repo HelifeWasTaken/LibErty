@@ -5,9 +5,9 @@
 ** eget_buff
 */
 
-#include <ebuffer.h>
+#include <erty/ebuffer.h>
 
-char *eget_buffstr(ebuff_t *buff_info)
+cstr_t eget_buffstr(ebuff_t *buff_info)
 {
     return (buff_info->buff);
 }
@@ -22,7 +22,7 @@ size_t eget_buffusable(ebuff_t *buff_info)
     return (buff_info->buff_size);
 }
 
-char *edup_buff(ebuff_t *buff_info)
+cstr_t edup_buff(ebuff_t *buff_info)
 {
     if (buff_info->buff)
         return (estrdup(buff_info->buff));

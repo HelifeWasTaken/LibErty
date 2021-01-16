@@ -5,12 +5,13 @@
 ** eatoi
 */
 
-#include <ectypes.h>
-#include <estdlib.h>
+#include <erty/ectypes.h>
+#include <erty/estdlib.h>
 
-int eatoi(char const *str)
+OPT(i32) eatoi(const_cstr_t str)
 {
-    long long result = eatoll(str);
+    OPT(i64) res = eatol(str);
 
-    return ((result > INT_MAX || result < INT_MIN) ? 0 : result);
+    return ((res.value > INT_MAX || res.value < INT_MIN) ?
+        ERR(i32) : OK(i32, res.value));
 }

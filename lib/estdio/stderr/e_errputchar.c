@@ -5,9 +5,9 @@
 ** e_errputchar
 */
 
-#include <efile.h>
+#include <erty/efile.h>
 
-ssize_t e_errputchar(int c)
+ssize_t e_errputchar(i32_t c)
 {
     return (efputchar(stderr, c));
 }

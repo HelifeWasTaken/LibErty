@@ -5,9 +5,9 @@
 ** eduputnbr
 */
 
-#include <efd.h>
+#include <erty/efd.h>
 
-size_t eduputnbr(int fd, uint64_t nb)
+size_t eduputnbr(fd_t fd, u64_t nb)
 {
     return ((nb >= 10) ?
         eduputnbr(fd, nb / 10) + edputchar(fd, nb % 10 + '0') :

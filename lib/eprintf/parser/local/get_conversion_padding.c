@@ -5,12 +5,12 @@
 ** get_conversion_padding
 */
 
-#include <eprintf.h>
-#include <estdlib.h>
+#include <erty/eprintf.h>
+#include <erty/estdlib.h>
 
-void get_signed_conversion_padding(int64_t v, int len, eprintf_mod_t *mod)
+void get_signed_conversion_padding(i64_t v, i32_t len, eprintf_mod_t *mod)
 {
-    int max_len_precision = 0;
+    i32_t max_len_precision = 0;
 
     if (mod->modflag.plus && v >= 0)
         GET_NEW_SIGNED_PADDING(mod->modflag.pad.size, 1);
@@ -22,7 +22,7 @@ void get_signed_conversion_padding(int64_t v, int len, eprintf_mod_t *mod)
     GET_NEW_SIGNED_PADDING(mod->modflag.pad.size, max_len_precision);
 }
 
-void get_unsigned_conversion_padding(int len, eprintf_mod_t *mod)
+void get_unsigned_conversion_padding(i32_t len, eprintf_mod_t *mod)
 {
     int max_len_precision = 0;
 

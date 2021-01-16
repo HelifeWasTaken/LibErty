@@ -5,9 +5,9 @@
 ** eis_printable
 */
 
-#include <stdbool.h>
+#include <erty/ectypes.h>
 
-bool eis_printable(int c)
+bool eis_printable(const i32_t c)
 {
     return (c >= 32 && c <= 126);
 }

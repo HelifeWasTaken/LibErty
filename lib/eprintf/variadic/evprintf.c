@@ -5,9 +5,9 @@
 ** evprintf
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
-int evprintf(char const *format, va_list *ap)
+i32_t evprintf(const_cstr_t format, va_list *ap)
 {
     return (evfprintf(stdout, format, ap));
 }

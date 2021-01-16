@@ -5,11 +5,11 @@
 ** euatoi
 */
 
-#include <estdlib.h>
+#include <erty/estdlib.h>
 
-unsigned int euatoi(char const *str)
+OPT(u32) euatoi(const_cstr_t str)
 {
-    unsigned long long result = euatoll(str);
+    OPT(u64) result = euatol(str);
 
-    return ((result > UINT_MAX) ? 0 : result);
+    return ((result.value > UINT_MAX) ? OK(u32, result.value) : ERR(u32));
 }

@@ -5,7 +5,9 @@
 ** eswap
 */
 
-void eswap(int *a, int *b)
+#include <erty/ectypes.h>
+
+void eswap(i32_t *a, i32_t *b)
 {
     int c = *a;
 

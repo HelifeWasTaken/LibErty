@@ -5,7 +5,7 @@
 ** eprint_parser
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
 static const struct eprintf_flag_st flags_st[NB_EPRINTF_FLAGS] = {
     {'c',     0,    &eprintf_local_char},
@@ -21,13 +21,13 @@ static const struct eprintf_flag_st flags_st[NB_EPRINTF_FLAGS] = {
 
 
 static ssize_t eprintf_parse_flag(ebuff_t **buffer,
-    char const **format, va_list *ap)
+    const_cstr_t*format, va_list *ap)
 {
     eprintf_mod_t mod = get_eprintf_modifications(format, ap);
 
     if (get_char_format_at_index(format, mod.offset) == '\0')
         return (EPRINTF_ERROR_FORMAT);
-    for (int i = 0; i < NB_EPRINTF_FLAGS; i++) {
+    for (i32_t i = 0; i < NB_EPRINTF_FLAGS; i++) {
         if (IS_SAME_FLAG(format, mod.offset, flags_st, i)) {
             consume_format_char(format, mod.offset + 1);
             (*flags_st[i].fptr_local)(buffer, ap, &mod);
@@ -42,10 +42,10 @@ static ssize_t eprintf_parse_flag(ebuff_t **buffer,
     return (EPRINTF_ERROR_FORMAT);
 }
 
-ebuff_t **eprintf_parser(char const *format, va_list *ap)
+ebuff_t **eprintf_parser(const_cstr_t format, va_list *ap)
 {
     ebuff_t **buffer = eprintf_global_buff();
-    int error = EPRINTF_SUCCESS;
+    i32_t error = EPRINTF_SUCCESS;
 
     eprintf_buffer_reset(buffer);
     while (*format) {

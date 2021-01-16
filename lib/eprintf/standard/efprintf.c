@@ -5,11 +5,11 @@
 ** efprintf
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
-int efprintf(FILE *stream, char const *format, ...)
+i32_t efprintf(FILE *stream, const_cstr_t format, ...)
 {
-    int result = EPRINTF_FAILURE;
+    i32_t result = EPRINTF_FAILURE;
     va_list ap;
 
     if (!stream || stream->_fileno < 0)

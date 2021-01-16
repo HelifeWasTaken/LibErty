@@ -5,10 +5,10 @@
 ** edputstr
 */
 
-#include <efd.h>
-#include <estring.h>
+#include <erty/efd.h>
+#include <erty/ecstring.h>
 
-ssize_t edputs(int fd, char const *buf)
+ssize_t edputs(fd_t fd, const_cstr_t buf)
 {
     return (ewrite(fd, buf, estrlen(buf)) + edputchar(fd, '\n'));
 }

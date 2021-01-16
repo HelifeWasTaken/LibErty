@@ -5,8 +5,8 @@
 ** ewcswrite
 */
 
-#include <ewchar.h>
-#include <ewrite.h>
+#include <erty/ewchar.h>
+#include <erty/ewrite.h>
 
 size_t ewcsputs(int fd, void const *buf)
 {

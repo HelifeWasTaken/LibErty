@@ -6,7 +6,7 @@
 */
 
 
-#include <ebuffer.h>
+#include <erty/ebuffer.h>
 
 void efree_buff(ebuff_t **buff_info)
 {

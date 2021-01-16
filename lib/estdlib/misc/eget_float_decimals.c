@@ -5,9 +5,9 @@
 ** eget_float_decimals
 */
 
-#include <ectypes.h>
+#include <erty/ectypes.h>
 
-uint64_t eget_float_decimals(double nb, uint8_t precision)
+uint64_t eget_float_decimals(f64_t nb, u8_t precision)
 {
     double rounded = (int64_t)nb;
 

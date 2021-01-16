@@ -5,11 +5,11 @@
 ** eis_valid_strtoll
 */
 
-#include <ectypes.h>
+#include <erty/ectypes.h>
 
-bool eis_valid_strtoll(int c, int basesize, uint8_t *indexbase)
+bool eis_valid_strtoll(i32_t c, i32_t basesize, u8_t *indexbase)
 {
-    char *base = "0123456789abcdefghijklmnopqrstuvwxyz";
+    cstr_t base = "0123456789abcdefghijklmnopqrstuvwxyz";
 
     for (*indexbase = 0; *indexbase < basesize; (*indexbase)++)
         if (c == base[*indexbase])

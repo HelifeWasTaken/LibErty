@@ -5,9 +5,9 @@
 ** efputfloat
 */
 
-#include <efd.h>
+#include <erty/efd.h>
 
-size_t efputfloat(FILE *stream, double nb, uint8_t precision)
+size_t efputfloat(FILE *stream, f64_t nb, u8_t precision)
 {
     return (edputfloat(stream->_fileno, nb, precision));
 }

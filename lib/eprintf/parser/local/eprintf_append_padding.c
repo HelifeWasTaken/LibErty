@@ -5,10 +5,10 @@
 ** eprintf_append_padding
 */
 
-#include <eprintf.h>
-#include <estring.h>
+#include <erty/eprintf.h>
+#include <erty/ecstring.h>
 
-void eprintf_append_padding(ebuff_t **buff, int size, bool iszero)
+void eprintf_append_padding(ebuff_t **buff, i32_t size, bool iszero)
 {
     char str[size + 1];
 

@@ -5,10 +5,10 @@
 ** efputstr
 */
 
-#include <estring.h>
-#include <efile.h>
+#include <erty/ecstring.h>
+#include <erty/efile.h>
 
-ssize_t efputs(FILE *stream, char const *buf)
+ssize_t efputs(FILE *stream, const_cstr_t buf)
 {
     return (efwrite(stream, buf, estrlen(buf)) + efputchar(stream, '\n'));
 }

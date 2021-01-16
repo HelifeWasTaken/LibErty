@@ -5,9 +5,9 @@
 ** e_errputs
 */
 
-#include <efile.h>
+#include <erty/efile.h>
 
-ssize_t e_errputs(char const *str)
+ssize_t e_errputs(const_cstr_t str)
 {
     return (efputs(stderr, str));
 }

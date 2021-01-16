@@ -5,12 +5,12 @@
 ** eprintf_local_str
 */
 
-#include <eprintf.h>
-#include <estring.h>
+#include <erty/eprintf.h>
+#include <erty/ecstring.h>
 
 void eprintf_local_str(ebuff_t **buff, va_list *ap, eprintf_mod_t *mod)
 {
-    char *s = get_ptr_arg(ap, mod->len);
+    cstr_t s = get_ptr_arg(ap, mod->len);
     size_t size_s = estrlen(s);
 
     mod->modflag.pad.size = (mod->modflag.pad.right - size_s > 0) ?

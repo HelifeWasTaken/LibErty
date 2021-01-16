@@ -5,12 +5,12 @@
 ** eprintf_local_hex
 */
 
-#include <eprintf.h>
-#include <estring.h>
-#include <estdlib.h>
+#include <erty/eprintf.h>
+#include <erty/ecstring.h>
+#include <erty/estdlib.h>
 
 static void eprintf_local_uint_padding_left(ebuff_t **buff,
-    char *nb_s, eprintf_mod_t *mod)
+    cstr_t nb_s, eprintf_mod_t *mod)
 {
     (mod->modflag.space) ? eappend_buff_str(buff, " ") : 0;
     if (mod->modflag.zero) {
@@ -26,7 +26,7 @@ static void eprintf_local_uint_padding_left(ebuff_t **buff,
 }
 
 static void eprintf_local_uint_padding_right(ebuff_t **buff,
-    char *nb_s, eprintf_mod_t *mod)
+    cstr_t nb_s, eprintf_mod_t *mod)
 {
     (mod->modflag.plus) ? eappend_buff_str(buff, "+") : 0;
     eprintf_append_padding(buff, mod->modflag.precision, true);
@@ -38,7 +38,7 @@ static void eprintf_local_uint_padding_right(ebuff_t **buff,
 void eprintf_local_uint(ebuff_t **buff, va_list *ap, eprintf_mod_t *mod)
 {
     uint64_t value = get_signed_arg(ap, mod->len);
-    int nb_len = eunblen(value);
+    i64_t nb_len = eunblen(value);
     char nb_s[nb_len + 1];
 
     euitoa(value, nb_s, "0123456789");

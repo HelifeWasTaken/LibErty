@@ -5,8 +5,8 @@
 ** linked_split
 */
 
-#include <linked_split.h>
-#include <estring.h>
+#include <erty/linked_split.h>
+#include <erty/ecstring.h>
 
 void free_linked_esplit(linked_esplit_t *head)
 {
@@ -18,7 +18,7 @@ void free_linked_esplit(linked_esplit_t *head)
     }
 }
 
-static linked_esplit_t *eadd_linked_esplit_node(char *str)
+static linked_esplit_t *eadd_linked_esplit_node(cstr_t str)
 {
     linked_esplit_t *ptr = emalloc(sizeof(linked_esplit_t));
 
@@ -27,7 +27,7 @@ static linked_esplit_t *eadd_linked_esplit_node(char *str)
     return (ptr);
 }
 
-static void put_in_esplit_list(linked_esplit_t **head, char *str)
+static void put_in_esplit_list(linked_esplit_t **head, cstr_t str)
 {
     linked_esplit_t *ptr = *head;
 
@@ -39,7 +39,7 @@ static void put_in_esplit_list(linked_esplit_t **head, char *str)
     ptr->next = eadd_linked_esplit_node(str);
 }
 
-static void find_new_esplit_string(char *str, char *sep,
+static void find_new_esplit_string(cstr_t str, cstr_t sep,
     linked_esplit_t **list_esplit, size_t *i_str)
 {
     size_t size_sep = estrlen(sep);
@@ -55,7 +55,7 @@ static void find_new_esplit_string(char *str, char *sep,
     *i_str = (*(str + i) ? offset : i);
 }
 
-linked_esplit_t *linked_esplit(char *str, char *sep)
+linked_esplit_t *linked_esplit(cstr_t str, cstr_t sep)
 {
     size_t index_str = 0;
     linked_esplit_t *list_esplit = NULL;

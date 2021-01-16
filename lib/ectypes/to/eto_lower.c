@@ -5,9 +5,9 @@
 ** eto_lower
 */
 
-#include <ectypes.h>
+#include <erty/ectypes.h>
 
-int eto_lower(int c)
+i32_t eto_lower(i32_t c)
 {
     return (eis_upper(c) ? c + 32 : c);
 }

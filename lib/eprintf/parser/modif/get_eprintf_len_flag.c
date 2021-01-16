@@ -5,8 +5,8 @@
 ** get_eprintf_len_flag
 */
 
-#include <estring.h>
-#include <eprintf.h>
+#include <erty/ecstring.h>
+#include <erty/eprintf.h>
 
 static const char known_flag[10][2] = {
     "hh", "h", "l", "ll", "q",
@@ -25,9 +25,9 @@ static const u_int8_t ids[10] = {
     EPRINTF_MOD_SIZE_T, EPRINTF_MOD_PTRDIFF_T
 };
 
-void mod_eprintf_len_flags(char const **format, eprintf_mod_t *mod)
+void mod_eprintf_len_flags(const_cstr_t*format, eprintf_mod_t *mod)
 {
-    for (uint8_t i = 0; i < 8; i++) {
+    for (u8_t i = 0; i < 8; i++) {
         if (HAS_SAME_FORMAT(format, mod->offset, known_flag[i], len_flags[i])) {
             consume_format_char(format, len_flags[i]);
             mod->len = ids[i];

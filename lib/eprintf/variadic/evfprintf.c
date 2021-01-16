@@ -5,9 +5,9 @@
 ** evfprintf
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
-int evfprintf(FILE *stream, char const *format, va_list *ap)
+i32_t evfprintf(FILE *stream, const_cstr_t format, va_list *ap)
 {
     if (!stream)
         return (EPRINTF_FAILURE);

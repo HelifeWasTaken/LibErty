@@ -5,10 +5,10 @@
 ** euitoa
 */
 
-#include <ectypes.h>
-#include <estring.h>
+#include <erty/ectypes.h>
+#include <erty/ecstring.h>
 
-char *euitoa(uint64_t nb, char *tofill, char *base)
+cstr_t euitoa(u64_t nb, cstr_t tofill, cstr_t base)
 {
     size_t i = 0;
     size_t size_base = estrlen(base);

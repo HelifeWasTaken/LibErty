@@ -5,12 +5,12 @@
 ** eaitoa
 */
 
-#include <estring.h>
-#include <estdlib.h>
+#include <erty/ecstring.h>
+#include <erty/estdlib.h>
 
-char *eaitoa(int64_t nb, char const *base)
+cstr_t eaitoa(i64_t nb, const_cstr_t base)
 {
-    char *nbstr = emalloc(sizeof(char) * (enb_baselen(nb, estrlen(base)) + 1));
+    cstr_t nbstr = emalloc(sizeof(char) * (enb_baselen(nb, estrlen(base)) + 1));
 
     if (nbstr)
         eitoa(nb, nbstr, base);

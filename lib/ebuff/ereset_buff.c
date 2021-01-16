@@ -5,7 +5,7 @@
 ** ereset_buff
 */
 
-#include <ebuffer.h>
+#include <erty/ebuffer.h>
 
 void ereset_buff(ebuff_t **buff_info)
 {

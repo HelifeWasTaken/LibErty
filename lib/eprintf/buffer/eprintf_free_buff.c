@@ -5,7 +5,7 @@
 ** eprintf_free_buff
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
 void eprintf_free_buff(void)
 {

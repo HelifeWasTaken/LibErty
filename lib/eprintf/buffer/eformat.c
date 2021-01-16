@@ -5,11 +5,11 @@
 ** eformat
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
-char *eformat(char const *format, ...)
+cstr_t eformat(const_cstr_t format, ...)
 {
-    char *buff = NULL;
+    cstr_t buff = NULL;
     va_list ap;
 
     va_start(ap, format);

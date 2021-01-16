@@ -5,9 +5,9 @@
 ** eis_alpha
 */
 
-#include <ectypes.h>
+#include <erty/ectypes.h>
 
-bool eis_alpha(int c)
+bool eis_alpha(const i32_t c)
 {
     return (eis_lower(c) || eis_upper(c));
 }

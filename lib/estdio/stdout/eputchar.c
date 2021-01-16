@@ -5,9 +5,9 @@
 ** eputchar
 */
 
-#include <efile.h>
+#include <erty/efile.h>
 
-ssize_t eputchar(int c)
+ssize_t eputchar(i32_t c)
 {
     return (efputchar(stdout, c));
 }

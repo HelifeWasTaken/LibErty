@@ -5,9 +5,9 @@
 ** eis_num
 */
 
-#include <stdbool.h>
+#include <erty/ectypes.h>
 
-bool eis_num(int c)
+bool eis_num(const i32_t c)
 {
     return (c >= '0' && c <= '9');
 }

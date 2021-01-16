@@ -5,7 +5,7 @@
 ** convert_ewcslen
 */
 
-#include <ewchar.h>
+#include <erty/ewchar.h>
 
 size_t convert_ewcslen(wchar_t const *wcs)
 {

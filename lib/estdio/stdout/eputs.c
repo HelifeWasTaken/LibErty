@@ -5,9 +5,9 @@
 ** eputs
 */
 
-#include <efile.h>
+#include <erty/efile.h>
 
-ssize_t eputs(char const *str)
+ssize_t eputs(const_cstr_t str)
 {
     return (efputs(stdout, str));
 }

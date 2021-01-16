@@ -5,11 +5,23 @@
 ** euatol
 */
 
-#include <estdlib.h>
+#include <erty/estdlib.h>
 
-unsigned long euatol(char const *str)
+OPT(u64) euatol(const_cstr_t str)
 {
-    unsigned long long result = euatoll(str);
+    u64_t result = 0;
+    size_t i = 0;
 
-    return ((result > ULONG_MAX) ? 0 : result);
+    while (eis_num(str[i])) {
+        if (ADD_OVERFLOW_CHECK(result, str[i] - '0'))
+            return (ERR(u64));
+        result += str[i] - '0';
+        if (eis_num(str[i + 1])) {
+            if (MUL_OVERFLOW_CHECK(result, 10))
+                return (ERR(u64));
+            result *= 10;
+        }
+        i++;
+    }
+    return (OK(u64, result));
 }

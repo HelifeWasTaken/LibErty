@@ -5,9 +5,9 @@
 ** edputnbr
 */
 
-#include <efd.h>
+#include <erty/efd.h>
 
-size_t efputnbr(FILE *stream, int64_t nb)
+size_t efputnbr(FILE *stream, i64_t nb)
 {
     return (edputnbr(stream->_fileno, nb));
 }

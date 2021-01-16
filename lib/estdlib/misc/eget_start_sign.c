@@ -5,7 +5,9 @@
 ** eget_start_sign
 */
 
-int eget_start_sign(char const *str, int *index)
+#include <erty/ectypes.h>
+
+int eget_start_sign(const_cstr_t str, i32_t *index)
 {
     if (*str == '-') {
         *index += 1;

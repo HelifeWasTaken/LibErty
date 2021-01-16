@@ -5,15 +5,15 @@
 ** estrtol
 */
 
-#include <ectypes.h>
-#include <estdlib.h>
+#include <erty/ectypes.h>
+#include <erty/estdlib.h>
 
-long estrtol(char *str, char **endptr, int base)
+long estrtol(cstr_t str, cstr_t *endptr, i32_t base)
 {
     long result = 0;
     size_t i = 0;
-    int8_t sign = eget_start_sign(str, &i);
-    uint8_t indexbase = 0;
+    i8_t sign = eget_start_sign(str, &i);
+    u8_t indexbase = 0;
 
     *endptr = str;
     if (sign == -1)

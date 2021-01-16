@@ -5,11 +5,11 @@
 ** eprintf
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
-int eprintf(char const *format, ...)
+i32_t eprintf(const_cstr_t format, ...)
 {
-    int result = EPRINTF_FAILURE;
+    i32_t result = EPRINTF_FAILURE;
     va_list ap;
 
     va_start(ap, format);

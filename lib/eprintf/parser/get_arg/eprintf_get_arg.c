@@ -5,9 +5,9 @@
 ** eprintf_get_arg
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
-int64_t get_signed_arg(va_list *ap, u_int8_t mod)
+int64_t get_signed_arg(va_list *ap, u8_t mod)
 {
     union eprintf_arg arg = get_eprintf_ptr(ap);
 
@@ -31,7 +31,7 @@ int64_t get_signed_arg(va_list *ap, u_int8_t mod)
     }
 }
 
-uint64_t get_unsigned_arg(va_list *ap, u_int8_t mod)
+uint64_t get_unsigned_arg(va_list *ap, u8_t mod)
 {
     union eprintf_arg arg = get_eprintf_ptr(ap);
 
@@ -55,7 +55,7 @@ uint64_t get_unsigned_arg(va_list *ap, u_int8_t mod)
     }
 }
 
-void *get_ptr_arg(va_list *ap, u_int8_t mod)
+void *get_ptr_arg(va_list *ap, u8_t mod)
 {
     union eprintf_arg arg = get_eprintf_ptr(ap);
 

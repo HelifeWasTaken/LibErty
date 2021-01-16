@@ -17,7 +17,7 @@ DEBUG_FLAGS 	= 	-g3 -ggdb
 
 TEST_FLAGS 		= 	--coverage -lcriterion
 
-CFLAGS 			=	-W -Wall -Wextra $(IFLAGS) $(DEBUG_FLAGS)
+CFLAGS 			=	-W -Wall -Wextra -Werror $(IFLAGS) $(DEBUG_FLAGS)
 
 SRC_CTYPE_IS	=	./ectypes/is/eis_alpha.c 			\
 					./ectypes/is/eis_lower.c 			\
@@ -59,10 +59,8 @@ SRC_STDLIB_MEM	=	./estdlib/mem/emalloc.c 			\
 
 SRC_STDLIB_NUM	=	./estdlib/num/eatoi.c 				\
 					./estdlib/num/eatol.c 				\
-					./estdlib/num/eatoll.c 				\
 					./estdlib/num/euatoi.c 				\
 					./estdlib/num/euatol.c 				\
-					./estdlib/num/euatoll.c 			\
 					./estdlib/num/eitoa.c 				\
 					./estdlib/num/eaitoa.c 				\
 					./estdlib/num/euitoa.c 				\
@@ -81,45 +79,45 @@ SRC_STDLIB_MISC	=	./estdlib/misc/eget_start_sign.c 	\
 					./estdlib/misc/eis_valid_strtoll.c 	\
 					./estdlib/misc/eget_float_decimals.c
 
-SRC_STRING_CMP	=	./estring/cmp/estrlen.c 			\
-					./estring/cmp/estrchr.c 			\
-					./estring/cmp/estrcmp.c 			\
-					./estring/cmp/estrncmp.c 			\
-					./estring/cmp/estrstr.c 			\
-					./estring/cmp/ecount_occurences.c 	\
-					./estring/cmp/estartswith.c 		\
-					./estring/cmp/eendswith.c 			\
-					./estring/cmp/earray_len.c
+SRC_CSTRING_CMP	=	./ecstring/cmp/estrlen.c 			\
+					./ecstring/cmp/estrchr.c 			\
+					./ecstring/cmp/estrcmp.c 			\
+					./ecstring/cmp/estrncmp.c 			\
+					./ecstring/cmp/estrstr.c 			\
+					./ecstring/cmp/ecount_occurences.c 	\
+					./ecstring/cmp/estartswith.c 		\
+					./ecstring/cmp/eendswith.c 			\
+					./ecstring/cmp/earray_len.c
 
-SRC_STRING_CPY	=	./estring/cpy/estrcpy.c 			\
-					./estring/cpy/estrncpy.c 			\
-					./estring/cpy/estrdup.c 			\
-					./estring/cpy/estrndup.c 			\
-					./estring/cpy/estrcat.c 			\
-					./estring/cpy/esplit.c 				\
-					./estring/cpy/econcat.c 			\
-					./estring/cpy/earrconcat.c 			\
-					./estring/cpy/egetsubstr.c
+SRC_CSTRING_CPY	=	./ecstring/cpy/estrcpy.c 			\
+					./ecstring/cpy/estrncpy.c 			\
+					./ecstring/cpy/estrdup.c 			\
+					./ecstring/cpy/estrndup.c 			\
+					./ecstring/cpy/estrcat.c 			\
+					./ecstring/cpy/esplit.c 				\
+					./ecstring/cpy/econcat.c 			\
+					./ecstring/cpy/earrconcat.c 			\
+					./ecstring/cpy/egetsubstr.c
 
-SRC_STRING_IS	=	./estring/is/estr_isalpha.c 		\
-					./estring/is/estr_isalphanum.c 		\
-					./estring/is/estr_islower.c 		\
-					./estring/is/estr_isnum.c 			\
-					./estring/is/estr_isprintable.c 	\
-					./estring/is/estr_isupper.c
+SRC_CSTRING_IS	=	./ecstring/is/estr_isalpha.c 		\
+					./ecstring/is/estr_isalphanum.c 		\
+					./ecstring/is/estr_islower.c 		\
+					./ecstring/is/estr_isnum.c 			\
+					./ecstring/is/estr_isprintable.c 	\
+					./ecstring/is/estr_isupper.c
 
-SRC_STRING_MEM	=	./estring/mem/ememcpy.c 			\
-					./estring/mem/ememset.c 			\
-					./estring/mem/ememcmp.c 			\
-					./estring/mem/ebzero.c 				\
+SRC_CSTRING_MEM	=	./ecstring/mem/ememcpy.c 			\
+					./ecstring/mem/ememset.c 			\
+					./ecstring/mem/ememcmp.c 			\
+					./ecstring/mem/ebzero.c 				\
 
-SRC_STRING_NUM	=	./estring/num/enblen.c 				\
-					./estring/num/enb_baselen.c 		\
-					./estring/num/eunblen.c 			\
-					./estring/num/eunb_baselen.c
+SRC_CSTRING_NUM	=	./ecstring/num/enblen.c 				\
+					./ecstring/num/enb_baselen.c 		\
+					./ecstring/num/eunblen.c 			\
+					./ecstring/num/eunb_baselen.c
 
-SRC_STRING_MISC	=	./estring/misc/erevstr.c 			\
-					./estring/misc/estr_capitalize.c
+SRC_CSTRING_MISC	=	./ecstring/misc/erevstr.c 			\
+					./ecstring/misc/estr_capitalize.c
 
 SRC_LINKED 		= 	./linked/linked_esplit.c
 
@@ -136,7 +134,6 @@ SRC_EBUFF 		=	./ebuff/ecreate_buff.c				\
 					./ebuff/eget_buff.c 				\
 					./ebuff/erealloc_buff.c 			\
 					./ebuff/ereset_buff.c
-
 
 SRC_EPRINTF_STD	=	./eprintf/standard/eprintf.c 		\
 					./eprintf/standard/easprintf.c 		\
@@ -188,6 +185,17 @@ SRC_EPRINTF_BUF =	./eprintf/buffer/eprintf_global_buff.c 		\
 SRC_EWRITE		=	./ewrite/ewrite.c 					\
 					./ewrite/efwrite.c
 
+SRC_SSTR		=	./esstring/init.c 				\
+					./esstring/append.c 			\
+					./esstring/assign.c 			\
+					./esstring/assign_n.c			\
+					./esstring/at.c 				\
+					./esstring/compare.c 			\
+					./esstring/ncompare.c 			\
+					./esstring/print.c 				\
+					./esstring/to_buf.c 			\
+					./esstring/free.c
+
 SRC_ESTDIO		=	$(SRC_ESTDOUT) 							\
 					$(SRC_ESTDERR)
 
@@ -202,12 +210,12 @@ SRC_STDLIB 		= 	$(SRC_STDLIB_MEM)						\
 					$(SRC_STDLIB_PTR)						\
 					$(SRC_STDLIB_MISC)
 
-SRC_STRING		=	$(SRC_STRING_CMP)						\
-					$(SRC_STRING_CPY) 						\
-					$(SRC_STRING_IS)						\
-					$(SRC_STRING_MISC) 						\
-					$(SRC_STRING_NUM)						\
-					$(SRC_STRING_MEM)
+SRC_CSTRING		=	$(SRC_CSTRING_CMP)						\
+					$(SRC_CSTRING_CPY) 						\
+					$(SRC_CSTRING_IS)						\
+					$(SRC_CSTRING_MISC) 						\
+					$(SRC_CSTRING_NUM)						\
+					$(SRC_CSTRING_MEM)
 
 SRC_EPRINTF	 	=	$(SRC_EPRINTF_STD) 						\
 					$(SRC_EPRINTF_VAR)						\
@@ -231,7 +239,9 @@ SRC				=	$(SRC_EWRITE) 							\
 					$(SRC_WSTRING)							\
 					$(SRC_EPRINTF) 							\
 					$(SRC_EFILE)							\
-					$(SRC_STDIO)
+					$(SRC_STDIO) 							\
+					$(SRC_CSTRING) 							\
+					$(SRC_SSTR)
 
 TEST_ECTYPE_IS 	=	./tests/ectypes/is/test_eis_alpha.c 	\
 					./tests/ectypes/is/test_eis_lower.c 	\
@@ -302,7 +312,7 @@ main: ## Build main file for testing purposes
 copy: 	## Copy includes
 	mkdir -p ../include
 	mkdir -p ../lib_files
-	cp include/*.h ../include
+	ln -rsf ./include/erty ../include/erty
 	mv $(NAME) ../lib_files
 
 clean: ## Clean every temporay well knowed files

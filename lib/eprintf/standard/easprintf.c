@@ -5,12 +5,12 @@
 ** esprintf
 */
 
-#include <eprintf.h>
-#include <estring.h>
+#include <erty/eprintf.h>
+#include <erty/ecstring.h>
 
-int easprintf(char **buff, char const *format, ...)
+i32_t easprintf(cstr_t *buff, const_cstr_t format, ...)
 {
-    int result = EPRINTF_FAILURE;
+    i32_t result = EPRINTF_FAILURE;
     va_list ap;
 
     va_start(ap, format);

@@ -5,7 +5,7 @@
 ** eprintf_buffer_reset
 */
 
-#include <ebuffer.h>
+#include <erty/ebuffer.h>
 
 void eprintf_buffer_reset(ebuff_t **buff)
 {

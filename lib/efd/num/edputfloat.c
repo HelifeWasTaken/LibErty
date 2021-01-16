@@ -5,17 +5,17 @@
 ** edputfloat
 */
 
-#include <efd.h>
-#include <estdlib.h>
+#include <erty/efd.h>
+#include <erty/estdlib.h>
 
-static size_t edputfloat_print(int fd, int64_t nb, uint8_t precision)
+static size_t edputfloat_print(i32_t fd, int64_t nb, uint8_t precision)
 {
     return ((precision) ?
         edputfloat_print(fd, nb / 10, --precision) +
         edputchar(fd, nb % 10 + '0') : 0);
 }
 
-size_t edputfloat(int fd, double nb, uint8_t precision)
+size_t edputfloat(i32_t fd, f64_t nb, uint8_t precision)
 {
     return ((precision) ?
         edputnbr(fd, (int64_t)nb) + edputchar(fd, '.') +

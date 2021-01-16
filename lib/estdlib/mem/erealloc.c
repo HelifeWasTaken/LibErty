@@ -5,7 +5,7 @@
 ** erealloc
 */
 
-#include <estring.h>
+#include <erty/ecstring.h>
 
 static void *do_erealloc(void *old_ptr, size_t new_size, size_t old_size)
 {

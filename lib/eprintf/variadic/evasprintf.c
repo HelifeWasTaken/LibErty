@@ -5,9 +5,9 @@
 ** evasprintf
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
-int evasprintf(char **buff, char const *format, va_list *ap)
+i32_t evasprintf(cstr_t *buff, const_cstr_t format, va_list *ap)
 {
     ebuff_t **buff_info = NULL;
 

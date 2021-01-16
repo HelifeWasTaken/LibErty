@@ -5,9 +5,10 @@
 ** edputchar
 */
 
-#include <ewrite.h>
+#include <erty/ewrite.h>
+#include <erty/ectypes.h>
 
-ssize_t edputchar(int fd, int c)
+ssize_t edputchar(fd_t fd, i32_t c)
 {
     return (ewrite(fd, &c, 1));
 }

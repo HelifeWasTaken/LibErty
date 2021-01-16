@@ -5,9 +5,9 @@
 ** eis_alphanum
 */
 
-#include <ectypes.h>
+#include <erty/ectypes.h>
 
-bool eis_alphanum(int c)
+bool eis_alphanum(const i32_t c)
 {
     return (eis_alpha(c) || eis_num(c));
 }

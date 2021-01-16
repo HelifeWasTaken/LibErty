@@ -5,12 +5,12 @@
 ** eappend_buff
 */
 
-#include <ebuffer.h>
+#include <erty/ebuffer.h>
 
-ssize_t eappend_buff_str(ebuff_t **buff_info, char *toadd)
+ssize_t eappend_buff_str(ebuff_t **buff_info, cstr_t toadd)
 {
     size_t size_toadd = estrlen(toadd);
-    char *ptr = NULL;
+    cstr_t ptr = NULL;
 
     if (!(*buff_info))
         return (-1);
@@ -25,7 +25,7 @@ ssize_t eappend_buff_str(ebuff_t **buff_info, char *toadd)
     return (0);
 }
 
-ssize_t eappend_buff_char(ebuff_t **buff_info, int c)
+ssize_t eappend_buff_char(ebuff_t **buff_info, i32_t c)
 {
     char str[2];
 

@@ -5,11 +5,11 @@
 ** ebuff_flush
 */
 
-#include <ebuffer.h>
+#include <erty/ebuffer.h>
 
-ssize_t eflush_buff(ebuff_t **buff_info, int fd)
+ssize_t eflush_buff(ebuff_t **buff_info, fd_t fd)
 {
-    char *buff = 0;
+    cstr_t buff = 0;
     size_t used = 0;
     size_t result = -1;
 

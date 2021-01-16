@@ -5,9 +5,9 @@
 ** get_eprintf_flag_modifiers
 */
 
-#include <eprintf.h>
-#include <estdlib.h>
-#include <estring.h>
+#include <erty/eprintf.h>
+#include <erty/estdlib.h>
+#include <erty/ecstring.h>
 
 static bool check_eprintf_flag_modifiers(eprintf_modflag_t *mod, char const c)
 {
@@ -29,30 +29,44 @@ static bool check_eprintf_flag_modifiers(eprintf_modflag_t *mod, char const c)
     }
 }
 
-static void get_eprintf_precision(char const **format,
+static void get_eprintf_precision(const_cstr_t*format,
     eprintf_mod_t *mod, va_list *ap)
 {
+    OPT(u32) precision;
+
     if (get_char_format_at_index(format, mod->offset) != '.')
         return;
     mod->offset++;
     if (get_char_format_at_index(format, mod->offset) == '*') {
         mod->modflag.precision = va_arg(*ap, unsigned int);
-        mod->offset += enblen(mod->modflag.pad.size);
-    } else if (eis_num(get_char_format_at_index(format, mod->offset))) {
-        mod->modflag.precision = (unsigned int)eatoi(*format);
-        mod->offset += enblen(mod->modflag.pad.size);
+        mod->offset += enblen(mod->modflag.precision);
+        return;
+    }
+    if (eis_num(get_char_format_at_index(format, mod->offset))) {
+        precision = euatoi(*format);
+        if (precision.is_ok) {
+            mod->modflag.precision = precision.value;
+            mod->offset += enblen(mod->modflag.precision);
+        }
     }
 }
 
-static void get_eprintf_padding(char const **format,
+static void get_eprintf_padding(const_cstr_t*format,
     eprintf_mod_t *mod, va_list *ap)
 {
+    OPT(u32) padding;
+
     if (get_char_format_at_index(format, mod->offset) == '*') {
         mod->modflag.pad.size = va_arg(*ap, unsigned int);
         mod->offset += enblen(mod->modflag.pad.size);
-    } else if (eis_num(get_char_format_at_index(format, mod->offset))) {
-        mod->modflag.pad.size = eatoi(*format);
-        mod->offset += enblen(mod->modflag.pad.size);
+        return;
+    }
+    if (eis_num(get_char_format_at_index(format, mod->offset))) {
+        padding = euatoi(*format);
+        if (padding.is_ok) {
+            mod->modflag.pad.size = padding.value;
+            mod->offset += enblen(mod->modflag.pad.size);
+        }
     }
 }
 
@@ -69,7 +83,7 @@ static void parse_eprintf_flag_modifiers(eprintf_modflag_t *mod)
         mod->space = false;
 }
 
-void get_eprintf_flag_modifiers(char const **format,
+void get_eprintf_flag_modifiers(const_cstr_t*format,
     eprintf_mod_t *mod, va_list *ap)
 {
     eprintf_modflag_t modflag = {0};

@@ -5,9 +5,9 @@
 ** check_eprintf_format
 */
 
-#include <ectypes.h>
+#include <erty/ectypes.h>
 
-bool check_eprintf_format(char const *format)
+bool check_eprintf_format(const_cstr_t format)
 {
     for (size_t i = 0; format[i]; i++) {
         if (format[i] == '%') {

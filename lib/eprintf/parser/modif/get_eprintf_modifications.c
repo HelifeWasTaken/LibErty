@@ -5,9 +5,9 @@
 ** get_eprintf_modifications
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
-eprintf_mod_t get_eprintf_modifications(char const **format, va_list *ap)
+eprintf_mod_t get_eprintf_modifications(const_cstr_t*format, va_list *ap)
 {
     eprintf_mod_t mod = {0};
 

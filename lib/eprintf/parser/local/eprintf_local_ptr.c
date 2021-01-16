@@ -5,7 +5,7 @@
 ** eprintf_local_ptr
 */
 
-#include <eprintf.h>
+#include <erty/eprintf.h>
 
 void eprintf_local_ptr(ebuff_t **buff, va_list *ap, eprintf_mod_t *mod)
 {

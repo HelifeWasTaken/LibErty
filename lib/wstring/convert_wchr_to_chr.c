@@ -5,7 +5,7 @@
 ** convert_wchr_to_chr
 */
 
-#include <ewchar.h>
+#include <erty/ewchar.h>
 
 char convert_wchr_to_chr(wchar_t c)
 {

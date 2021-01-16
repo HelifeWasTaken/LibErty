@@ -5,10 +5,10 @@
 ** evdprintf
 */
 
-#include <eprintf.h>
-#include <estring.h>
+#include <erty/eprintf.h>
+#include <erty/ecstring.h>
 
-int evdprintf(int fd, char const *format, va_list *ap)
+i32_t evdprintf(fd_t fd, const_cstr_t format, va_list *ap)
 {
     ebuff_t **buff = NULL;
     ssize_t result = 0;

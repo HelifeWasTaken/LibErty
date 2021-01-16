@@ -5,9 +5,9 @@
 ** eis_space
 */
 
-#include <stdbool.h>
+#include <erty/ectypes.h>
 
-bool eis_space(int c)
+bool eis_space(const i32_t c)
 {
     return (c == ' ');
 }

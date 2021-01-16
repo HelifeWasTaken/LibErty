@@ -5,12 +5,12 @@
 ** eprintf_local_int
 */
 
-#include <eprintf.h>
-#include <estring.h>
-#include <estdlib.h>
+#include <erty/eprintf.h>
+#include <erty/ecstring.h>
+#include <erty/estdlib.h>
 
 static void eprintf_local_double_padding_left(ebuff_t **buff,
-    char *nb_s, eprintf_mod_t *mod)
+    cstr_t nb_s, eprintf_mod_t *mod)
 {
     (mod->modflag.space) ? eappend_buff_str(buff, " ") : 0;
     if (mod->modflag.zero) {
@@ -24,7 +24,7 @@ static void eprintf_local_double_padding_left(ebuff_t **buff,
 }
 
 static void eprintf_local_double_padding_right(ebuff_t **buff,
-    char *nb_s, eprintf_mod_t *mod)
+    cstr_t nb_s, eprintf_mod_t *mod)
 {
     (mod->modflag.plus) ? eappend_buff_str(buff, "+") : 0;
     eappend_buff_str(buff, nb_s);
@@ -34,8 +34,8 @@ static void eprintf_local_double_padding_right(ebuff_t **buff,
 
 void eprintf_local_double(ebuff_t **buff, va_list *ap, eprintf_mod_t *mod)
 {
-    double value = va_arg(*ap, double);
-    int nb_len = enblen((int64_t)value) +
+    f64_t value = va_arg(*ap, double);
+    i32_t nb_len = enblen((int64_t)value) +
         ((mod->modflag.precision != -1) ? mod->modflag.precision : 6);
     char nb_s[nb_len + 2];
 

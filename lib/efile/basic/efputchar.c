@@ -5,9 +5,10 @@
 ** efputchar
 */
 
-#include <ewrite.h>
+#include <erty/ewrite.h>
+#include <erty/ectypes.h>
 
-ssize_t efputchar(FILE *stream, int c)
+ssize_t efputchar(FILE *stream, i32_t c)
 {
     return (efwrite(stream, &c, 1));
 }

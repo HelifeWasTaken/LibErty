@@ -5,11 +5,12 @@
 ** ecreate_buff
 */
 
-#include <ebuffer.h>
+#include <erty/ebuffer.h>
+#include <erty/ealloc.h>
 
-ebuff_t *ecreate_buff(char *buffer)
+ebuff_t *ecreate_buff(cstr_t buffer)
 {
-    ebuff_t *buff_info = emalloc(sizeof(ebuff_t));
+    ebuff_t *buff_info = ecalloc(sizeof(ebuff_t), 1);
 
     if (!buff_info)
         return (NULL);
