@@ -17,7 +17,7 @@ ebuff_t *ecreate_buff(cstr_t buffer)
     if (buff_info->buff)
         efree_buff(&buff_info);
     if (!buffer) {
-        buff_info->buff = emalloc(sizeof(char) * BUFF_CHUNK);
+        buff_info->buff = ecalloc(sizeof(char), BUFF_CHUNK);
         buff_info->buff_size = BUFF_CHUNK;
     } else {
         buff_info->buff = buffer;

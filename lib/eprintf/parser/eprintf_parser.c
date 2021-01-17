@@ -52,7 +52,7 @@ ebuff_t **eprintf_parser(const_cstr_t format, va_list *ap)
         if (*format == '%' && *(format + 1) != '%') {
             consume_format_char(&format, 1);
             error = eprintf_parse_flag(buffer, &format, ap);
-        } else if (*format == '%' && *(format + 1) != '%') {
+        } else if (*format == '%' && *(format + 1) == '%') {
             eappend_buff_str(buffer, "%");
             consume_format_char(&format, 2);
         } else {

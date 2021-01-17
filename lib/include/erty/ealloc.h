@@ -85,4 +85,22 @@
 
     void *erealloc(void *old_ptr, size_t old_size, size_t new_size);
 
+    #define FREE(x) \
+        if (x) { \
+            efree(x); \
+            x = NULL; \
+        }
+
+    static inline void my_free(int n, ...)
+    {
+        __builtin_va_list ap;
+        void *tmp = NULL;
+
+        __builtin_va_start(ap, n);
+        for (int i = 0; i < n; i++) {
+            tmp = __builtin_va_arg(ap, void *);
+            efree(tmp);
+        }
+    }
+
 #endif /* !__LIBERTY__EALLOC__H__ */

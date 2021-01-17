@@ -11,9 +11,7 @@ AR 				= 	ar rc
 
 IFLAGS 			=	-I./include
 
-LFLAGS 			=	-L. -lErty
-
-DEBUG_FLAGS 	= 	-g3 -ggdb
+DEBUG_FLAGS 	= 	-g3 -ggdb -O0 -O2 -fsanitize=address
 
 TEST_FLAGS 		= 	--coverage -lcriterion
 
@@ -21,7 +19,9 @@ WFLAGS 			=	-W -Wall -Wextra -Werror
 
 POSIX_FLAGS 	=	-D_POSIX_C_SOURCE=200809L -D_GNU_SOURCE
 
-CFLAGS 			=	 $(WFLAGS) $(POSIX_FLAGS) -std=c99 $(IFLAGS) $(DEBUG_FLAGS)
+STANDARD_FLAGS 	=	-std=c99
+
+CFLAGS 			=	 $(WFLAGS) $(POSIX_FLAGS) $(STANDARD_FLAGS) $(IFLAGS)
 
 SRC_CTYPE_IS	=	./ectypes/is/eis_alpha.c 			\
 					./ectypes/is/eis_lower.c 			\
@@ -309,9 +309,6 @@ $(NAME): build_lib copy	## Call build_lib
 
 build_lib: $(OBJ) ## Build LibErty
 	$(AR) $(NAME) $(OBJ)
-
-main: ## Build main file for testing purposes
-	$(CC) main.c $(LFLAGS) $(CFLAGS) -o erty
 
 copy: 	## Copy includes
 	mkdir -p ../include

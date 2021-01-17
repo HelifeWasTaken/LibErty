@@ -6,16 +6,13 @@
 */
 
 #include <erty/ecstring.h>
+#include <erty/estdlib.h>
 
 cstr_t erevstr(cstr_t str)
 {
-    char tmp;
     size_t size_str = estrlen(str);
 
-    for (size_t i = 0; i < size_str / 2; i++) {
-        tmp = str[i];
-        str[i] = str[size_str - i - 1];
-        str[size_str - i - 1] = tmp;
-    }
+    for (size_t i = 0; i < size_str / 2; i++)
+        AUTO_SWAP(str[i], str[size_str - i - 1]);
     return (str);
 }
