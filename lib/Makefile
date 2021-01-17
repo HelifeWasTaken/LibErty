@@ -17,7 +17,11 @@ DEBUG_FLAGS 	= 	-g3 -ggdb
 
 TEST_FLAGS 		= 	--coverage -lcriterion
 
-CFLAGS 			=	-W -Wall -Wextra -Werror $(IFLAGS) $(DEBUG_FLAGS)
+WFLAGS 			=	-W -Wall -Wextra -Werror
+
+POSIX_FLAGS 	=	-D_POSIX_C_SOURCE=200809L -D_GNU_SOURCE
+
+CFLAGS 			=	 $(WFLAGS) $(POSIX_FLAGS) -std=c99 $(IFLAGS) $(DEBUG_FLAGS)
 
 SRC_CTYPE_IS	=	./ectypes/is/eis_alpha.c 			\
 					./ectypes/is/eis_lower.c 			\
