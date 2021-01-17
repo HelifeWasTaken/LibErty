@@ -7,29 +7,49 @@
 
 #include <erty/ebuffer.h>
 
-ssize_t eappend_buff_str(ebuff_t **buff_info, cstr_t toadd)
+ssize_t eappend_buff_nbytes(ebuff_t **buff_info, cstr_t toadd, size_t n)
 {
-    size_t size_toadd = estrlen(toadd);
     cstr_t ptr = NULL;
 
     if (!(*buff_info))
         return (-1);
-    if (size_toadd > (*buff_info)->buff_size - ((*buff_info)->used + 1))
-        erealloc_buff(buff_info, size_toadd);
+    if (n > (*buff_info)->buff_size - ((*buff_info)->used + 2))
+        erealloc_buff(buff_info, n);
     if (!(*buff_info)->buff)
         return (-1);
     ptr = (*buff_info)->buff;
-    ememcpy((*buff_info)->buff + (*buff_info)->used, toadd, size_toadd + 1);
+    ememcpy((*buff_info)->buff + (*buff_info)->used, toadd, n);
     (*buff_info)->buff = ptr;
-    (*buff_info)->used += size_toadd;
+    (*buff_info)->used += n;
     return (0);
+}
+
+ssize_t eappend_buff_str(ebuff_t **buff_info, cstr_t toadd)
+{
+    return (eappend_buff_nbytes(buff_info, toadd, estrlen(toadd) + 1));
 }
 
 ssize_t eappend_buff_char(ebuff_t **buff_info, i32_t c)
 {
-    char str[2];
+    return (eappend_buff_nbytes(buff_info, (cstr_t)&c, 1));
+}
 
-    str[0] = c;
-    str[1] = 0;
-    return (eappend_buff_str(buff_info, str));
+
+ssize_t eappend_buff_unsigned_number(ebuff_t **buff,
+        u64_t nb, char const *base, u8_t base_size)
+{
+    return ((nb >= base_size) ?
+            eappend_buff_unsigned_number(
+                buff, nb / base_size, base, base_size) +
+            eappend_buff_char(buff, base[nb % base_size]) :
+            eappend_buff_char(buff, base[nb]));
+}
+
+ssize_t eappend_buff_signed_number(ebuff_t **buff,
+        i64_t nb, char const *base, u8_t base_size)
+{
+    return ((nb > 0) ?
+            eappend_buff_unsigned_number(buff, nb, base, base_size) :
+            eappend_buff_char(buff, '-') +
+            eappend_buff_unsigned_number(buff, -nb, base, base_size));
 }

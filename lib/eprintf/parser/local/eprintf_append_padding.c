@@ -10,11 +10,8 @@
 
 void eprintf_append_padding(ebuff_t **buff, i32_t size, bool iszero)
 {
-    char str[size + 1];
-
     if (size <= 0)
         return;
-    str[size] = 0;
-    ememset(str, (iszero) ? '0' : ' ', sizeof(char) * size);
-    eappend_buff_str(buff, str);
+    for (i32_t i = 0; i < size; i++)
+        eappend_buff_char(buff, (iszero) ? '0' : ' ');
 }

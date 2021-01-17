@@ -114,6 +114,60 @@
 
     ////////////////////////////////////////////////////////////
     ///
+    /// \brief Sets a signed number into the buffer
+    ///
+    /// \param buff  The structure with all info about the buffer
+    ///
+    /// \param nb   The number to set in
+    ///
+    /// \param base The base of the number
+    ///
+    /// \param base_size The size of the base
+    ///
+    /// \return The number of bytes written (Undefined if an error occured)
+    ///
+    ////////////////////////////////////////////////////////////
+
+    ssize_t eappend_buff_signed_number(ebuff_t **buff,
+        i64_t nb, char const *base, u8_t base_size);
+
+    ////////////////////////////////////////////////////////////
+    ///
+    /// \brief Sets a unsigned number into the buffer
+    ///
+    /// \param buff  The structure with all info about the buffer
+    ///
+    /// \param nb   The number to set in
+    ///
+    /// \param base The base of the number
+    ///
+    /// \param base_size The size of the base
+    ///
+    /// \return The number of bytes written (Undefined if an error occured)
+    ///
+    ////////////////////////////////////////////////////////////
+
+    ssize_t eappend_buff_unsigned_number(ebuff_t **buff,
+        u64_t nb, char const *base, u8_t base_size);
+
+    ////////////////////////////////////////////////////////////
+    ///
+    /// \brief Sets a unsigned number into the buffer
+    ///
+    /// \param buff  The structure with all info about the buffer
+    ///
+    /// \param toadd The string to add
+    ///
+    /// \param Hom many bytes should be written
+    ///
+    /// \return The number of bytes written (Undefined if an error occured)
+    ///
+    ////////////////////////////////////////////////////////////
+
+    ssize_t eappend_buff_nbytes(ebuff_t **buff_info, cstr_t toadd, size_t n);
+
+    ////////////////////////////////////////////////////////////
+    ///
     /// \brief resets the buffer without freeing the pointer
     ///
     /// \param buff_info  The structure with all info about the buffer
