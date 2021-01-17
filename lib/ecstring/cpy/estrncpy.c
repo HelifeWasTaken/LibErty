@@ -11,7 +11,7 @@ cstr_t estrncpy(cstr_t dest, const_cstr_t src, size_t n)
 {
     size_t i = 0;
 
-    for (; src[i] && i < n; i++)
+    for (; i < n && src[i]; i++)
         dest[i] = src[i];
     for (; i < n; i++)
         dest[i] = '\0';
