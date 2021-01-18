@@ -11,7 +11,7 @@ AR 				= 	ar rc
 
 IFLAGS 			=	-I./include
 
-DEBUG_FLAGS 	= 	-g3 -ggdb -O0 -O2 -fsanitize=address
+DEBUG_FLAGS 	= 	-g3 -ggdb -O0 -O2 -fsanitize=address -lefence
 
 TEST_FLAGS 		= 	--coverage -lcriterion
 
@@ -21,7 +21,7 @@ POSIX_FLAGS 	=	-D_POSIX_C_SOURCE=200809L -D_GNU_SOURCE
 
 STANDARD_FLAGS 	=	-std=c99
 
-CFLAGS 			=	 $(WFLAGS) $(POSIX_FLAGS) $(STANDARD_FLAGS) $(IFLAGS)
+CFLAGS 			=	 $(WFLAGS) $(POSIX_FLAGS) $(STANDARD_FLAGS) $(IFLAGS) $(DEBUG_FLAGS)
 
 SRC_CTYPE_IS	=	./ectypes/is/eis_alpha.c 			\
 					./ectypes/is/eis_lower.c 			\
