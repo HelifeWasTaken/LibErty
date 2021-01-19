@@ -38,6 +38,5 @@
     #include <erty/estring.h>
     #include <erty/ewchar.h>
     #include <erty/ewrite.h>
-    #include <erty/linked_split.h>
 
 #endif

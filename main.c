@@ -13,33 +13,48 @@
 #include <erty/efd.h>
 #include <stdio.h>
 #include <erty/ebuffer.h>
-#include <erty/linked_split.h>
 #include <erty/eprintf.h>
 #include <erty/esstring.h>
+#include <erty/ealloc.h>
 #include <malloc.h>
+#include <erty/ehashmap.h>
+#include <erty/elinked.h>
+
+static void insert_head_elinked_empty_list(elinked_t *list,
+    struct elinked_container *ptr, void *data)
+{
+    ptr = ecalloc(sizeof(struct elinked_container), 1);
+    if (ptr) {
+        ptr->data = data;
+        ptr->next = NULL;
+        ptr->prev = NULL;
+        list->head = ptr;
+        list->tail = ptr;
+    } else {
+        ASSERT("elinked", "insert head list empty failed");
+    }
+}
+
+void insert_head_elinked(elinked_t *list, void *data)
+{
+    struct elinked_container *ptr = NULL;
+
+    if (!list->head) {
+        insert_head_elinked_empty_list(list, ptr, data);
+        return;
+    }
+    ptr = ecalloc(sizeof(struct elinked_container), 1);
+    if (ptr) {
+        ptr->data = data;
+        ptr->next = list->head;
+        list->head->prev = ptr;
+        ptr->prev = NULL;
+        list->head = ptr;
+    } else
+        ASSERT("elinked", "insert head list already inited failed");
+}
 
 int main(void)
 {
-    size_t size = (size_t)"hello" + (size_t)"lol";
-    ebuff_t *buff = ecreate_buff(NULL);
-    if (!buff)
-        printf("Buffer create failed but did not segv\n");
-    else
-        printf("Buffer create sucesfully\n");
-    char *calloced_buff = calloc(size, 1);
-
-    if (!calloced_buff)
-        printf("Calloced buffer failed to be allocated\n");
-    else
-        printf("Calloced buffer has been sucessfully allocated\n");
-    for (size_t i = 0; i < 100; i++) {
-        if (eappend_buff_nbytes(&buff, calloced_buff, size) != -1)
-            printf("Append success: %d\n", i);
-        else
-            printf("Append failed but did not segv : %d\n", i);
-        fflush(stdout);
-    }
-    efree_buff(&buff);
-    free(calloced_buff);
     return (0);
 }

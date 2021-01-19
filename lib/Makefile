@@ -11,7 +11,7 @@ AR 				= 	ar rc
 
 IFLAGS 			=	-I./include
 
-DEBUG_FLAGS 	= 	-g3 -ggdb -O0 -O2 -fsanitize=address -lefence
+DEBUG_FLAGS 	= 	-g3 -ggdb -O0 -O2 -lefence
 
 TEST_FLAGS 		= 	--coverage -lcriterion
 
@@ -123,7 +123,7 @@ SRC_CSTRING_NUM	=	./ecstring/num/enblen.c 				\
 SRC_CSTRING_MISC	=	./ecstring/misc/erevstr.c 			\
 					./ecstring/misc/estr_capitalize.c
 
-SRC_LINKED 		= 	./linked/linked_esplit.c
+SRC_LINKED 		=
 
 SRC_WSTRING		=	./wstring/ewcslen.c 				\
 					./wstring/ewcsputs.c 				\
@@ -200,6 +200,10 @@ SRC_SSTR		=	./esstring/init.c 				\
 					./esstring/to_buf.c 			\
 					./esstring/free.c
 
+SRC_EHASHMAP 	=	./ehashmap/free_ehashmap.c 		\
+					./ehashmap/get_ehashmap.c 		\
+					./ehashmap/insert_ehashmap.c
+
 SRC_ESTDIO		=	$(SRC_ESTDOUT) 							\
 					$(SRC_ESTDERR)
 
@@ -245,7 +249,8 @@ SRC				=	$(SRC_EWRITE) 							\
 					$(SRC_EFILE)							\
 					$(SRC_STDIO) 							\
 					$(SRC_CSTRING) 							\
-					$(SRC_SSTR)
+					$(SRC_SSTR) 							\
+					$(SRC_EHASHMAP)
 
 TEST_ECTYPE_IS 	=	./tests/ectypes/is/test_eis_alpha.c 	\
 					./tests/ectypes/is/test_eis_lower.c 	\

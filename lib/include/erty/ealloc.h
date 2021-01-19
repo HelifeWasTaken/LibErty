@@ -103,4 +103,7 @@
         }
     }
 
+    #define new(var, size, nb) \
+        var = (__typeof__(var))my_calloc(size, nb)
+
 #endif /* !__LIBERTY__EALLOC__H__ */
