@@ -9,6 +9,7 @@
 
 cstr_t estrncpy(cstr_t dest, const_cstr_t src, size_t n)
 {
+#ifndef ALLOW_STRNCPY_LIBC
     size_t i = 0;
 
     for (; i < n && src[i]; i++)
@@ -16,4 +17,7 @@ cstr_t estrncpy(cstr_t dest, const_cstr_t src, size_t n)
     for (; i < n; i++)
         dest[i] = '\0';
     return (dest);
+#else
+    return (strncpy(dest, src, n));
+#endif
 }

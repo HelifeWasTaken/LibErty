@@ -13,7 +13,11 @@ cstr_t eformat(const_cstr_t format, ...)
     va_list ap;
 
     va_start(ap, format);
+#ifndef ALLOW_ASPRINTF_LIBC
     evasprintf(&buff, format, &ap);
+#else
+    asprintf(&buff, format, ap);
+#endif
     va_end(ap);
     return (buff);
 }

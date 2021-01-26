@@ -8,6 +8,7 @@
 #include <erty/ectypes.h>
 #include <erty/ecstring.h>
 
+#ifndef ALLOW_LIBC_ITOA
 cstr_t eitoa(i64_t nb, cstr_t tofill, cstr_t base)
 {
     size_t i = 0;
@@ -28,3 +29,9 @@ cstr_t eitoa(i64_t nb, cstr_t tofill, cstr_t base)
     tofill[i] = '\0';
     return (erevstr(tofill));
 }
+#else
+cstr_t eitoa(i64_t nb, cstr_t tofill, cstr_t base)
+{
+    return (itoa(nb, tofill, base));
+}
+#endif

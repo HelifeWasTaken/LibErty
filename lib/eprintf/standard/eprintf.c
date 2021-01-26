@@ -13,7 +13,11 @@ i32_t eprintf(const_cstr_t format, ...)
     va_list ap;
 
     va_start(ap, format);
+#ifndef ALLOW_PRINTF_LIBC
     result = evprintf(format, &ap);
+#else
+    result = vprintf(format, ap);
+#endif
     va_end(ap);
     return (result);
 }

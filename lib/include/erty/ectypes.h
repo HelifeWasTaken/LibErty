@@ -18,6 +18,7 @@
     #include <sys/types.h>
     #include <limits.h>
     #include <erty/opt.h>
+    #include <erty/allow_libc.h>
 
     //   _____
     //  |_   _|

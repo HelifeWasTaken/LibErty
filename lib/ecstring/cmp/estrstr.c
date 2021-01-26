@@ -9,6 +9,7 @@
 
 cstr_t estrstr(const_cstr_t haystack, const_cstr_t needle)
 {
+#ifndef ALLOW_STRSTR_LIBC
     size_t size_needle;
     size_t size_haystack;
     size_t i = 0;
@@ -23,4 +24,7 @@ cstr_t estrstr(const_cstr_t haystack, const_cstr_t needle)
         if (estrncmp(haystack + i, needle, size_needle) == 0)
             return ((char *)haystack + i);
     return (NULL);
+#else
+    return (strstr(haystack, needle));
+#endif
 }

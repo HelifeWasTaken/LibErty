@@ -14,7 +14,13 @@ i32_t easprintf(cstr_t *buff, const_cstr_t format, ...)
     va_list ap;
 
     va_start(ap, format);
+#ifndef ALLOW_ASPRINTF_LIBC
     result = evasprintf(buff, format, &ap);
     va_end(ap);
     return ((*buff) ? result : EPRINTF_FAILURE);
+#else
+    result = vasprintf(buff, format, ap);
+    va_end(ap);
+    return (result);
+#endif
 }

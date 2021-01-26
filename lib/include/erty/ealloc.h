@@ -83,7 +83,11 @@
     ///
     ////////////////////////////////////////////////////////////
 
+#ifndef ALLOW_REALLOC_LIBC
     void *erealloc(void *old_ptr, size_t old_size, size_t new_size);
+#else
+    void *erealloc(void *old_ptr, size_t newsize);
+#endif
 
     #define FREE(x) \
         if (x) { \

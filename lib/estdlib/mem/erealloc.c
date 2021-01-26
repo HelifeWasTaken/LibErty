@@ -7,6 +7,7 @@
 
 #include <erty/ecstring.h>
 
+#ifndef ALLOW_REALLOC_LIBC
 static void *do_erealloc(void *old_ptr, size_t new_size, size_t old_size)
 {
     void *ptr = emalloc(new_size);
@@ -27,3 +28,9 @@ void *erealloc(void *old_ptr, size_t old_size, size_t new_size)
     else
         return (do_erealloc(old_ptr, new_size, old_size));
 }
+#else
+void *erealloc(void *ptr, size_t newsize)
+{
+    return (realloc(ptr, newsize));
+}
+#endif
