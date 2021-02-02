@@ -14,7 +14,7 @@
 
     static const u64_t MAGIC_NUMBER = 0xab13;
 
-    static const u64_t TAB_SIZE = 1000;
+    static const u64_t TAB_SIZE = 10000;
 
     typedef struct hash_entry hash_t;
 

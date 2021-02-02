@@ -5,6 +5,21 @@
 ## Makefile
 ##
 
+GREEN 			=	\x1b[32;01m
+RED 			=	\x1b[31;01m
+YELLOW 			=	\x1b[33;01m
+WHITE 			=	\x1b[33;01m
+CYAN 			=	\x1b[33;01m
+DEFAULT 		= 	\x1b[36;01m
+
+ENTRY_MSG 			=	echo -e "$(GREEN)Entering Library$(DEFAULT)"
+COMPILE_OBJMSG 		=	echo -e "$(YELLOW)Compiling objects...$(DEFAULT)"
+COMPILE_OBJMSG_OK 	=	echo -e "$(RED)Objects succesfully compiled$(DEFAULT)"
+COMPILE_LIBMSG 		=	echo -e "$(CYAN)Building liberty.a...$(DEFAULT)"
+COMPILE_LIBMSG_OK 	=	echo -e "$(RED)LibErty sucessfully created$(DEFAULT)"
+COPYING_FILES 		= 	echo -e "$(WHITE)Copying files$(DEFAULT)"
+COPYING_FILES_OK	= 	echo -e "$(RED)Copying files sucessfully created$(DEFAULT)"
+
 CC				=	gcc
 
 AR 				= 	ar rc
@@ -310,16 +325,25 @@ NAME 		=	liberty.a
 
 all:		$(NAME)	## Put whatever you want here (default : Call build_lib)
 
-$(NAME): build_lib copy	## Call build_lib
+$(NAME):	## Call build_lib
+	@${ENTRY_MSG}
+	@$(COMPILE_OBJMSG)
+	make -C . build_lib
+	make -C . copy
 
 build_lib: $(OBJ) ## Build LibErty
+	@$(COMPILE_OBJMSG_OK)
+	@$(COMPILE_LIBMSG)
 	$(AR) $(NAME) $(OBJ)
+	@$(COMPILE_LIBMSG_OK)
 
 copy: 	## Copy includes
+	$(COPYING_FILES)
 	mkdir -p ../include
 	mkdir -p ../lib_files
 	ln -rsf ./include/erty ../include/erty
 	mv $(NAME) ../lib_files
+	@$(COPYING_FILES_OK)
 
 clean: ## Clean every temporay well knowed files
 	@find . -type f \( -name "\#*\#" -o -name "*.swp" \) -delete

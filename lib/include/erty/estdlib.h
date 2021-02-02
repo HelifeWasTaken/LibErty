@@ -365,11 +365,4 @@
 
     #define MIN(x, y)       (x < y) ? x : y
 
-    #define AUTO_SWAP(a, b) \
-        do { \
-            __auto_type c = a; \
-            a = b; \
-            b = c; \
-        } while (0);
-
 #endif /* !__LIBERTY__ESTDLIB__H__ */
