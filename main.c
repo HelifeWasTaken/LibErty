@@ -55,18 +55,19 @@
    ASSERT("elinked", "insert head list already inited failed");
    */
 
+INIT_LIST(integers_list, int);
+
+typedef LIST(integers_list) ilist_t;
+
 int main(void)
 {
-    /*
-    hash_t *tab = init_ehashmap();
+    LIST(integers_list) *mytoto = NULL;
 
-    insert_ehashmap(&tab, "toto", "john");
-    insert_ehashmap(&tab, "aled", "paul");
-    printf("%s %s\n",
-            (char *)get_ehashmap(tab, "toto"), get_ehashmap(tab, "aled"));
-    printf("TAB_SIZE = %ld, toto = %ld aled = %ld",
-            TAB_SIZE, ehash("toto"), ehash("aled"));
-    free_ehashmap(&tab);
+    APPEND_TO_HEAD(integers_list, &mytoto, 3);
+    APPEND_TO_HEAD(integers_list, &mytoto, 5);
+    APPEND_TO_HEAD(integers_list, &mytoto, 2);
+    printf("%d -> %d -> %d\n", mytoto->data, mytoto->next->data, mytoto->next->next->data);
+    REVERSE_LIST(integers_list, &mytoto);
+    printf("%d -> %d -> %d\n", mytoto->data, mytoto->next->data, mytoto->next->next->data);
     return (0);
-    */
 }
