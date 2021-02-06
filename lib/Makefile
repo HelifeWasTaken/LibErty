@@ -138,8 +138,6 @@ SRC_CSTRING_NUM	=	./ecstring/num/enblen.c 				\
 SRC_CSTRING_MISC	=	./ecstring/misc/erevstr.c 			\
 					./ecstring/misc/estr_capitalize.c
 
-SRC_LINKED 		=
-
 SRC_WSTRING		=	./wstring/ewcslen.c 				\
 					./wstring/ewcsputs.c 				\
 					./wstring/convert_ewcslen.c 		\
@@ -257,7 +255,6 @@ SRC				=	$(SRC_EWRITE) 							\
 					$(SRC_FD)								\
 					$(SRC_STRING)							\
 					$(SRC_STDLIB)							\
-					$(SRC_LINKED)							\
 					$(SRC_EBUFF)							\
 					$(SRC_WSTRING)							\
 					$(SRC_EPRINTF) 							\
@@ -341,7 +338,7 @@ copy: 	## Copy includes
 	$(COPYING_FILES)
 	mkdir -p ../include
 	mkdir -p ../lib_files
-	ln -rsf ./include/erty ../include/erty
+	ln -rsf ./include/erty ../include/
 	mv $(NAME) ../lib_files
 	@$(COPYING_FILES_OK)
 
