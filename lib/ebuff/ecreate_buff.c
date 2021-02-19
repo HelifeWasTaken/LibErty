@@ -8,7 +8,7 @@
 #include <erty/ebuffer.h>
 #include <erty/ealloc.h>
 
-ebuff_t *ecreate_buff(cstr_t buffer)
+ebuff_t *ecreate_buff(cstr_t buffer, bool flush)
 {
     ebuff_t *buff_info = ecalloc(sizeof(ebuff_t), 1);
 
@@ -23,5 +23,6 @@ ebuff_t *ecreate_buff(cstr_t buffer)
         buff_info->buff = buffer;
         buff_info->buff_size = estrlen(buffer);
     }
+    buff_info->flush = flush;
     return (buff_info);
 }

@@ -13,8 +13,13 @@ ssize_t eappend_buff_nbytes(ebuff_t **buff_info, cstr_t toadd, size_t n)
 
     if (!(*buff_info))
         return (-1);
-    if (n > (*buff_info)->buff_size - ((*buff_info)->used + 2))
-        erealloc_buff(buff_info, n);
+    if (n > (*buff_info)->buff_size - ((*buff_info)->used + 2)) {
+        if ((*buff_info)->flush) {
+            eflush_buff(buff_info);
+            ereset_buff(buff_info);
+        } else
+            erealloc_buff(buff_info, n);
+    }
     if (!(*buff_info)->buff)
         return (-1);
     ptr = (*buff_info)->buff;
@@ -47,7 +52,7 @@ ssize_t eappend_buff_unsigned_number(ebuff_t **buff,
 ssize_t eappend_buff_signed_number(ebuff_t **buff,
         i64_t nb, char const *base, u8_t base_size)
 {
-    return ((nb > 0) ?
+    return ((nb >= 0) ?
             eappend_buff_unsigned_number(buff, nb, base, base_size) :
             eappend_buff_char(buff, '-') +
             eappend_buff_unsigned_number(buff, -nb, base, base_size));

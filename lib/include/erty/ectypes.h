@@ -54,13 +54,14 @@
     typedef struct string_class         sstr_t;
     typedef const struct string_class   const_sstr_t;
 
+
     ////////////////////////////////////////////////////////////
     ///
     /// \brief Structure for vector in a two dimensional array
     ///
     ////////////////////////////////////////////////////////////
 
-    typedef struct signed_vector_two_dimensional {
+    typedef struct signed_vector2d {
         i64_t x;
         i64_t y;
     } vector_t;
@@ -72,7 +73,7 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    typedef struct unsigned_vector_two_dimensional {
+    typedef struct unsigned_vector2d {
         u64_t x;
         u64_t y;
     } uvector_t;

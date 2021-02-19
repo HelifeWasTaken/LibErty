@@ -43,6 +43,8 @@
         size_t buff_size;
         size_t used;
         cstr_t buff;
+        bool flush;
+        fd_t fd;
     } ebuff_t;
 
     ////////////////////////////////////////////////////////////
@@ -69,7 +71,7 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    ebuff_t *ecreate_buff(cstr_t buffer);
+    ebuff_t *ecreate_buff(cstr_t buffer, bool flush);
 
     ////////////////////////////////////////////////////////////
     ///
@@ -196,27 +198,11 @@
     ///
     /// \param buff_info  The structure with all info about the buffer
     ///
-    /// \param fd file descritor to write in
-    ///
     /// \return size flushed if everything went well -1 if something went wrong
     ///
     ////////////////////////////////////////////////////////////
 
-    ssize_t eflush_buff(ebuff_t **buff, i32_t fd);
-
-    ////////////////////////////////////////////////////////////
-    ///
-    /// \brief flush the buffer to a file stream
-    ///
-    /// \param buff_info  The structure with all info about the buffer
-    ///
-    /// \param stream file steam to write in
-    ///
-    /// \return size flushed if everything went well -1 if something went wrong
-    ///
-    ////////////////////////////////////////////////////////////
-
-    ssize_t efflush_buff(ebuff_t **buff, FILE *stream);
+    ssize_t eflush_buff(ebuff_t **buff);
 
     ////////////////////////////////////////////////////////////
     ///

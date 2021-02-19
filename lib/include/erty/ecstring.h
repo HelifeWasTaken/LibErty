@@ -138,6 +138,30 @@
 
     bool eendswith(const_cstr_t haystack, const_cstr_t needle);
 
+    ////////////////////////////////////////////////////////////
+    ///
+    /// \brief Count the number of tab there is in a char **
+    ///
+    /// \param tab the parameter to count in
+    ///
+    /// \return returns the number of tab
+    ///
+    ////////////////////////////////////////////////////////////
+
+    size_t ecount_tab(char **tab);
+
+    ////////////////////////////////////////////////////////////
+    ///
+    /// \brief Copies an array of char
+    ///
+    /// \param tab the tab to copy
+    ///
+    /// \return returns the array copied
+    ///
+    ////////////////////////////////////////////////////////////
+
+    char **ecopy_tab(char **tab);
+
     ///////////////////         CPY         /////////////////////
 
     ////////////////////////////////////////////////////////////
@@ -245,6 +269,21 @@
     /// \brief Frees a double array
     ///
     /// \param buf array to free
+    ///
+    ////////////////////////////////////////////////////////////
+
+    char **eappend_tab(char ***tab, char *src);
+
+    ////////////////////////////////////////////////////////////
+    ///
+    /// \brief Create an array like [src, NULL] if tab is NULL
+    ///        or append src to tab (If tab != NULL tab old tab is freed)
+    ///
+    /// \param tab the array passed as address (prone to change)
+    ///
+    /// \param src the string to append
+    ///
+    /// \return the new allocated array
     ///
     ////////////////////////////////////////////////////////////
 

@@ -8,17 +8,11 @@
 GREEN 			=	\x1b[32;01m
 RED 			=	\x1b[31;01m
 YELLOW 			=	\x1b[33;01m
-WHITE 			=	\x1b[33;01m
-CYAN 			=	\x1b[33;01m
+WHITE 			=	\x1b[00;00m
+CYAN 			=	\x1b[34;01m
 DEFAULT 		= 	\x1b[36;01m
 
-ENTRY_MSG 			=	echo -e "$(GREEN)Entering Library$(DEFAULT)"
-COMPILE_OBJMSG 		=	echo -e "$(YELLOW)Compiling objects...$(DEFAULT)"
-COMPILE_OBJMSG_OK 	=	echo -e "$(RED)Objects succesfully compiled$(DEFAULT)"
-COMPILE_LIBMSG 		=	echo -e "$(CYAN)Building liberty.a...$(DEFAULT)"
-COMPILE_LIBMSG_OK 	=	echo -e "$(RED)LibErty sucessfully created$(DEFAULT)"
-COPYING_FILES 		= 	echo -e "$(WHITE)Copying files$(DEFAULT)"
-COPYING_FILES_OK	= 	echo -e "$(RED)Copying files sucessfully created$(DEFAULT)"
+SHELL 			=	bash
 
 CC				=	gcc
 
@@ -106,16 +100,19 @@ SRC_CSTRING_CMP	=	./ecstring/cmp/estrlen.c 			\
 					./ecstring/cmp/ecount_occurences.c 	\
 					./ecstring/cmp/estartswith.c 		\
 					./ecstring/cmp/eendswith.c 			\
-					./ecstring/cmp/earray_len.c
+					./ecstring/cmp/earray_len.c 		\
+					./ecstring/cmp/ecount_tab.c
 
 SRC_CSTRING_CPY	=	./ecstring/cpy/estrcpy.c 			\
 					./ecstring/cpy/estrncpy.c 			\
 					./ecstring/cpy/estrdup.c 			\
 					./ecstring/cpy/estrndup.c 			\
 					./ecstring/cpy/estrcat.c 			\
-					./ecstring/cpy/esplit.c 				\
+					./ecstring/cpy/esplit.c 			\
+					./ecstring/cpy/eappend_tab.c 		\
+					./ecstring/cpy/ecopy_tab.c 			\
 					./ecstring/cpy/econcat.c 			\
-					./ecstring/cpy/earrconcat.c 			\
+					./ecstring/cpy/earrconcat.c 		\
 					./ecstring/cpy/egetsubstr.c
 
 SRC_CSTRING_IS	=	./ecstring/is/estr_isalpha.c 		\
@@ -323,32 +320,33 @@ NAME 		=	liberty.a
 all:		$(NAME)	## Put whatever you want here (default : Call build_lib)
 
 $(NAME):	## Call build_lib
-	@${ENTRY_MSG}
-	@$(COMPILE_OBJMSG)
-	make -C . build_lib
-	make -C . copy
+	@make -j -C . build_lib --silent
+	@make -j -C . copy --silent
 
 build_lib: $(OBJ) ## Build LibErty
-	@$(COMPILE_OBJMSG_OK)
-	@$(COMPILE_LIBMSG)
+	#@printf "[\e[1;33mLinked\e[0m] % 43s\n" $(OBJ) | tr ' ' '.'
+	@printf "$(GREEN)[$(YELLOW)Linked$(GREEN)]$(WHITE) % 43s\n$(DEFAULT)" $(OBJ) | tr ' ' '.'
 	$(AR) $(NAME) $(OBJ)
-	@$(COMPILE_LIBMSG_OK)
+	@printf "$(GREEN)[$(YELLOW)Linked$(GREEN)]$(WHITE) % 43s$(DEFAULT)\n" $(NAME) | tr ' ' '.'
+	@printf "$(GREEN)[$(CYAN)Linked all Liberty files$(GREEN)]\n$(WHITE)"
 
 copy: 	## Copy includes
 	$(COPYING_FILES)
-	mkdir -p ../include
-	mkdir -p ../lib_files
-	ln -rsf ./include/erty ../include/
-	mv $(NAME) ../lib_files
-	@$(COPYING_FILES_OK)
+	@mkdir -p ../include
+	@mkdir -p ../lib_files
+	@ln -rsf ./include/erty ../include/
+	@mv $(NAME) ../lib_files
+	#@printf "[\e[1;32mMoved includes" ./include/*.h | tr ' ' '.'
 
 clean: ## Clean every temporay well knowed files
+	@rm -f $(OBJ) $(NAME) $(MAIN_OBJ) $(TEST_OBJ) $(COVERAGE) $(CPPDEPS)
+	@printf "[\e[1;31mRemoved\e[0m] % 42s\n" $(OBJ) | tr ' ' '.'
+	@printf "[\e[1;31mRemoved\e[0m] % 42s\n" $(NAME) | tr ' ' '.'
+	@printf "\e[1;32mFinished removing objects\e[0m\n"
 	@find . -type f \( -name "\#*\#" -o -name "*.swp" \) -delete
-	@find . -type f \( -name "*.gc*" -o -name "a.out" \) -delete
-	@echo "Cleaned project !"
 
 fclean:		clean ## Call clean rule and remove *.o and *.a files
-	@find . -type f \( -name "*.o" -o -name "*~" -o -name "*.a" \) -delete
+	@find . -type f \( -name "*~" -o -name "*.a" \) -delete
 
 valgrind: build_lib main ## Build the lib the main.c and launch with valgrind
 	valgrind --exit-on-first-error=yes ./erty
