@@ -9,6 +9,13 @@ Here is the "Libmy" that I used at Epitech
 A documentation is aviable if you have Doxygen : `doxygen Doxyfile` in order to
 generate the documentation
 
+## Disclaimer
+
+I noticed that buffer handling for asprintf won't work
+As I moved recently on Github totally I will implement asap Github Actions for compilation security
+More unit tests with criterion (actually 37% of the library is tested with 19% of the library which is untestable because of malloc verification)
+Fix of the buffer handling
+
 ## Coding style
 
 The code follows a particular coding style enforced by my school. The most
