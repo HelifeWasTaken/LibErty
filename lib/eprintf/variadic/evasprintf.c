@@ -6,25 +6,25 @@
 */
 
 #include <erty/eprintf.h>
+#include <erty/eassert.h>
 
 i32_t evasprintf(cstr_t *buff, const_cstr_t format, va_list *ap)
 {
     ebuff_t **buff_info = NULL;
 
-    if (*buff) {
-        *buff = NULL;
-        efree(*buff);
-    }
+    FREE(*buff);
     if (!check_eprintf_format(format)) {
         *buff = estrdup(format);
-        return ((*buff) ? (ssize_t)estrlen(*buff) : -1);
+        return ((*buff) ? (ssize_t)estrlen(*buff) :
+            PRINTF_FAIL("evasprintf"));
     }
     buff_info = eprintf_parser(format, ap);
-    if (*buff_info != NULL && (*buff_info)->buff) {
+    if (buff_info != NULL && *buff_info != NULL && (*buff_info)->buff) {
         *buff = edup_buff(*buff_info);
         if ((*buff_info)->buff_size >= BUFF_CHUNK * 2)
             efree_buff(buff_info);
-        return ((*buff) ? (signed int)estrlen(*buff) : EPRINTF_FAILURE);
+        return ((*buff) ? (signed int)estrlen(*buff) :
+            PRINTF_FAIL("evasprintf"));
     }
-    return (EPRINTF_FAILURE);
+    return (PRINTF_FAIL("evasprintf"));
 }

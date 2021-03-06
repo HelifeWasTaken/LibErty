@@ -13,11 +13,11 @@ OPT(u64) euatol(const_cstr_t str)
     size_t i = 0;
 
     while (eis_num(str[i])) {
-        if (ADD_OVERFLOW_CHECK(result, str[i] - '0'))
+        if (ADD_OVERFLOW_CHECK(result, (u64_t)(str[i] - '0')))
             return (ERR(u64));
         result += str[i] - '0';
         if (eis_num(str[i + 1])) {
-            if (MUL_OVERFLOW_CHECK(result, 10))
+            if (MUL_OVERFLOW_CHECK(result, (u64_t)10))
                 return (ERR(u64));
             result *= 10;
         }

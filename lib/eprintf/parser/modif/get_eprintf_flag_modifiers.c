@@ -32,21 +32,23 @@ static bool check_eprintf_flag_modifiers(eprintf_modflag_t *mod, char const c)
 static void get_eprintf_precision(const_cstr_t*format,
     eprintf_mod_t *mod, va_list *ap)
 {
-    OPT(u32) precision;
+    OPT(u64) precision;
 
     if (get_char_format_at_index(format, mod->offset) != '.')
         return;
     mod->offset++;
     if (get_char_format_at_index(format, mod->offset) == '*') {
         mod->modflag.precision = va_arg(*ap, unsigned int);
-        mod->offset += enblen(mod->modflag.precision);
+        for (; eis_num(get_char_format_at_index(format, mod->offset));
+            mod->offset++);
         return;
     }
     if (eis_num(get_char_format_at_index(format, mod->offset))) {
-        precision = euatoi(*format);
+        precision = euatol(*format);
         if (precision.is_ok) {
             mod->modflag.precision = precision.value;
-            mod->offset += enblen(mod->modflag.precision);
+            for (; eis_num(get_char_format_at_index(format, mod->offset));
+                mod->offset++);
         }
     }
 }
@@ -54,18 +56,20 @@ static void get_eprintf_precision(const_cstr_t*format,
 static void get_eprintf_padding(const_cstr_t*format,
     eprintf_mod_t *mod, va_list *ap)
 {
-    OPT(u32) padding;
+    OPT(u64) padding;
 
     if (get_char_format_at_index(format, mod->offset) == '*') {
         mod->modflag.pad.size = va_arg(*ap, unsigned int);
-        mod->offset += enblen(mod->modflag.pad.size);
+        for (; eis_num(get_char_format_at_index(format, mod->offset));
+            mod->offset++);
         return;
     }
     if (eis_num(get_char_format_at_index(format, mod->offset))) {
-        padding = euatoi(*format);
+        padding = euatol(*format);
         if (padding.is_ok) {
             mod->modflag.pad.size = padding.value;
-            mod->offset += enblen(mod->modflag.pad.size);
+            for (; eis_num(get_char_format_at_index(format, mod->offset));
+                mod->offset++);
         }
     }
 }

@@ -20,7 +20,7 @@ AR 				= 	ar rc
 
 IFLAGS 			=	-I./include
 
-DEBUG_FLAGS 	= 	-g3 -ggdb -O0 -O2 -lefence
+DEBUG_FLAGS 	= 	-g3 -ggdb -O0 -O2
 
 TEST_FLAGS 		= 	--coverage -lcriterion
 
@@ -30,7 +30,13 @@ POSIX_FLAGS 	=	-D_POSIX_C_SOURCE=200809L -D_GNU_SOURCE
 
 STANDARD_FLAGS 	=	-std=c99
 
-CFLAGS 			=	 $(WFLAGS) $(POSIX_FLAGS) $(STANDARD_FLAGS) $(IFLAGS) $(DEBUG_FLAGS)
+CFLAGS 			?=	 $(WFLAGS) $(POSIX_FLAGS) $(STANDARD_FLAGS) $(IFLAGS)
+
+DEBUG 			?=	0
+
+ifeq ($(DEBUG),1)
+	CFLAGS 		+=	$(DEBUG_FLAGS)
+endif
 
 SRC_CTYPE_IS	=	./ectypes/is/eis_alpha.c 			\
 					./ectypes/is/eis_lower.c 			\
@@ -133,7 +139,7 @@ SRC_CSTRING_NUM	=	./ecstring/num/enblen.c 				\
 					./ecstring/num/eunb_baselen.c
 
 SRC_CSTRING_MISC	=	./ecstring/misc/erevstr.c 			\
-					./ecstring/misc/estr_capitalize.c
+						./ecstring/misc/estr_capitalize.c
 
 SRC_WSTRING		=	./wstring/ewcslen.c 				\
 					./wstring/ewcsputs.c 				\
@@ -184,7 +190,8 @@ SRC_EPRINTF_LCL	=	$(EPRINTF_LCL)/eprintf_append_padding.c 		\
 					$(EPRINTF_LCL)/eprintf_local_double.c 			\
 					$(EPRINTF_LCL)/get_conversion_padding.c
 
-SRC_EPRINTF_MSC =	./eprintf/misc/check_eprintf_format.c
+SRC_EPRINTF_MSC =	./eprintf/misc/check_eprintf_format.c 		\
+					./eprintf/misc/eprintf_failure.c
 
 SRC_EPRINTF_PRS	=	$(SRC_EPRINTF_LCL) 						\
 					$(SRC_EPRINTF_MOD)						\
@@ -319,29 +326,25 @@ NAME 		=	liberty.a
 
 all:		$(NAME)	## Put whatever you want here (default : Call build_lib)
 
-$(NAME):	## Call build_lib
+$(NAME): info ## Call build_lib
 	@make -j -C . build_lib --silent
 	@make -j -C . copy --silent
 
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "$(GREEN)[$(YELLOW)Linked$(GREEN)]$(WHITE) % 43s\n$(DEFAULT)" $@ | tr ' ' '.'
+
 build_lib: $(OBJ) ## Build LibErty
-	#@printf "[\e[1;33mLinked\e[0m] % 43s\n" $(OBJ) | tr ' ' '.'
-	@printf "$(GREEN)[$(YELLOW)Linked$(GREEN)]$(WHITE) % 43s\n$(DEFAULT)" $(OBJ) | tr ' ' '.'
 	$(AR) $(NAME) $(OBJ)
 	@printf "$(GREEN)[$(YELLOW)Linked$(GREEN)]$(WHITE) % 43s$(DEFAULT)\n" $(NAME) | tr ' ' '.'
 	@printf "$(GREEN)[$(CYAN)Linked all Liberty files$(GREEN)]\n$(WHITE)"
 
 copy: 	## Copy includes
-	$(COPYING_FILES)
 	@mkdir -p ../include
-	@mkdir -p ../lib_files
 	@ln -rsf ./include/erty ../include/
-	@mv $(NAME) ../lib_files
-	#@printf "[\e[1;32mMoved includes" ./include/*.h | tr ' ' '.'
 
 clean: ## Clean every temporay well knowed files
-	@rm -f $(OBJ) $(NAME) $(MAIN_OBJ) $(TEST_OBJ) $(COVERAGE) $(CPPDEPS)
-	@printf "[\e[1;31mRemoved\e[0m] % 42s\n" $(OBJ) | tr ' ' '.'
-	@printf "[\e[1;31mRemoved\e[0m] % 42s\n" $(NAME) | tr ' ' '.'
+	@rm -f $(OBJ) $(NAME)
 	@printf "\e[1;32mFinished removing objects\e[0m\n"
 	@find . -type f \( -name "\#*\#" -o -name "*.swp" \) -delete
 
@@ -351,10 +354,22 @@ fclean:		clean ## Call clean rule and remove *.o and *.a files
 valgrind: build_lib main ## Build the lib the main.c and launch with valgrind
 	valgrind --exit-on-first-error=yes ./erty
 
-re:			fclean all ## Call fclean then all rule
+re: ## Call fclean then all
+	make -j -C . fclean --silent
+	make -j -C . all --silent
 
-usage: ## Print the usage
-	@grep -h "##" Makefile | sed -e 's/\(\:.*\#\#\)/\:\ /' | grep -v grep | sed -e 's/\\$$//' | sed -e 's/##//'
-	@echo "\nEnjoy the project ! :D"
+info:
+	@printf "██╗     ██╗██████╗ ███████╗██████╗ ████████╗██╗   ██╗\n"
+	@printf "██║     ██║██╔══██╗██╔════╝██╔══██╗╚══██╔══╝╚██╗ ██╔╝\n"
+	@printf "██║     ██║██████╔╝█████╗  ██████╔╝   ██║    ╚████╔╝\n"
+	@printf "██║     ██║██╔══██╗██╔══╝  ██╔══██╗   ██║     ╚██╔╝\n"
+	@printf "███████╗██║██████╔╝███████╗██║  ██║   ██║      ██║\n"
+	@printf "╚══════╝╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝      ╚═╝\n"
+	@printf "%50s\n" " " | tr ' ' '-'
+	@printf "$(GREEN)[$(YELLOW)Info$(GREEN)] $(WHITE)Linking objects with:"
+	@printf "\n\t$(CYAN)CC        $(WHITE)= $(GREEN)$(CC)"
+	@printf "\n\t$(CYAN)CFLAGS    $(WHITE)= $(GREEN)$(CFLAGS)$(DEFAULT)"
+	@printf "\n\t$(CYAN)AR        $(WHITE)= $(GREEN)$(AR)$(DEFAULT)"
+	@printf "\n\t$(CYAN)SHELL     $(WHITE)= $(GREEN)$(SHELL)$(DEFAULT)\n"
 
 .PHONY:		all build_lib copy clean fclean re

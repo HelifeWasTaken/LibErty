@@ -10,6 +10,6 @@
 i32_t evfprintf(FILE *stream, const_cstr_t format, va_list *ap)
 {
     if (!stream)
-        return (EPRINTF_FAILURE);
+        return (PRINTF_FAIL("evfprintf"));
     return (evdprintf(stream->_fileno, format, ap));
 }

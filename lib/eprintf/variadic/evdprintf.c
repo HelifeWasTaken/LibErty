@@ -7,6 +7,7 @@
 
 #include <erty/eprintf.h>
 #include <erty/ecstring.h>
+#include <erty/eassert.h>
 
 i32_t evdprintf(fd_t fd, const_cstr_t format, va_list *ap)
 {
@@ -14,14 +15,14 @@ i32_t evdprintf(fd_t fd, const_cstr_t format, va_list *ap)
     i32_t result = 0;
 
     if (format == NULL)
-        return (EPRINTF_FAILURE);
+        return (PRINTF_FAIL("evdprintf"));
     if (fd == -1)
-        return (EPRINTF_FAILURE);
+        return (PRINTF_FAIL("evdprintf"));
     if (!check_eprintf_format(format))
         return (ewrite(fd, format, estrlen(format)));
     buff = eprintf_parser(format, ap);
-    if (*buff == NULL)
-        return (EPRINTF_FAILURE);
+    if (!buff || *buff == NULL)
+        return (PRINTF_FAIL("evdprintf"));
     result = eflush_buff(buff);
     ereset_buff(buff);
     return (result);

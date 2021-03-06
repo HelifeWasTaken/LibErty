@@ -24,7 +24,15 @@ size_t eget_buffusable(ebuff_t *buff_info)
 
 cstr_t edup_buff(ebuff_t *buff_info)
 {
-    if (buff_info->buff)
-        return (estrdup(buff_info->buff));
+    char *s = NULL;
+
+    if (buff_info->buff) {
+        s = emalloc(sizeof(char) * (buff_info->used + 1));
+        if (s != NULL) {
+            ememcpy(s, buff_info->buff, buff_info->used);
+            s[buff_info->used] = 0;
+        }
+        return (s);
+    }
     return (NULL);
 }

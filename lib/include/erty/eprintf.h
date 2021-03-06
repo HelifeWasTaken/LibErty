@@ -853,10 +853,29 @@
     ///
     /// \param format
     ///
-    /// \return returns true if is lightly well formtatted
+    /// \return returns false if the string can just be writed directly
+    ///         (has no '%' char)
     ///
     ////////////////////////////////////////////////////////////
 
     bool check_eprintf_format(const_cstr_t format);
+
+    ////////////////////////////////////////////////////////////
+    ///
+    /// \brief Write on stderr without printf (not fast and not bufferised)
+    ///        Is only there when printf failed and a output should be shown
+    ///
+    /// \param prg the program name
+    /// \param file the file where it failed
+    /// \param line the line where it failed
+    ///
+    /// \return returns always EPRINTF_FAILURE
+    ///
+    ////////////////////////////////////////////////////////////
+
+    int eprintf_failure(char *prg, char *file, int line);
+
+    #define PRINTF_FAIL(prg) \
+        eprintf_failure(prg, __FILE__, __LINE__)
 
 #endif /* !__LIBERTY__EPRINTF__H__ */

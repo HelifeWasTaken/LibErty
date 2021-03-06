@@ -31,7 +31,7 @@ ssize_t eappend_buff_nbytes(ebuff_t **buff_info, cstr_t toadd, size_t n)
 
 ssize_t eappend_buff_str(ebuff_t **buff_info, cstr_t toadd)
 {
-    return (eappend_buff_nbytes(buff_info, toadd, estrlen(toadd) + 1));
+    return (eappend_buff_nbytes(buff_info, toadd, estrlen(toadd)));
 }
 
 ssize_t eappend_buff_char(ebuff_t **buff_info, i32_t c)

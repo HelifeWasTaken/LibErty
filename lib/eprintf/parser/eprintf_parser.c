@@ -26,7 +26,7 @@ static ssize_t eprintf_parse_flag(ebuff_t **buffer,
     eprintf_mod_t mod = get_eprintf_modifications(format, ap);
 
     if (get_char_format_at_index(format, mod.offset) == '\0')
-        return (EPRINTF_ERROR_FORMAT);
+        return (PRINTF_FAIL("eprintf_parse_flag"));
     for (i32_t i = 0; i < NB_EPRINTF_FLAGS; i++) {
         if (IS_SAME_FLAG(format, mod.offset, flags_st, i)) {
             consume_format_char(format, mod.offset + 1);
@@ -39,7 +39,8 @@ static ssize_t eprintf_parse_flag(ebuff_t **buffer,
         consume_format_char(format, 1);
         return (EPRINTF_SUCCESS);
     }
-    return (EPRINTF_ERROR_FORMAT);
+    printf("%s\n", *format);
+    return (PRINTF_FAIL("eprintf_parse_flag"));
 }
 
 ebuff_t **eprintf_parser(const_cstr_t format, va_list *ap)
