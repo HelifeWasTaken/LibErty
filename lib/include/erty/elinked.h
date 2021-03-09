@@ -8,7 +8,7 @@
 #ifndef __LIBERTY__LINKED__H__
     #define __LIBERTY__LINKED__H__
 
-    #include <erty/ealloc.h>
+    #include <erty/estdlib.h>
     #include <erty/ectypes.h>
 
     #define LIST(name) struct liberty_templated_list_##name

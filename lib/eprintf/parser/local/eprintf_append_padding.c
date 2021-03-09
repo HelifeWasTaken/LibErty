@@ -6,7 +6,7 @@
 */
 
 #include <erty/eprintf.h>
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 void eprintf_append_padding(ebuff_t **buff, i32_t size, bool iszero)
 {

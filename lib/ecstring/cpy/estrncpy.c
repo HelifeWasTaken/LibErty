@@ -5,7 +5,7 @@
 ** estrncpy
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 cstr_t estrncpy(cstr_t dest, const_cstr_t src, size_t n)
 {

@@ -5,7 +5,7 @@
 ** econcat
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 cstr_t econcat(cstr_t s1, cstr_t s2)
 {

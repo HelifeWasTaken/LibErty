@@ -5,7 +5,7 @@
 ** estrcmp
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/estdlib.h>
 
 i32_t  estrcmp(const_cstr_t s1, const_cstr_t s2)

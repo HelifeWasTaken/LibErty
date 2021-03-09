@@ -5,7 +5,7 @@
 ** eaitoa
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/estdlib.h>
 
 cstr_t eaitoa(i64_t nb, const_cstr_t base)

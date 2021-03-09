@@ -34,7 +34,7 @@
         EPRINTF_MOD_LONG,
         EPRINTF_MOD_LONG_LONG,
         EPRINTF_MOD_LONG_DOUBLE,
-        EPRINTF_MOD_INTMAX_t,
+        EPRINTF_MOD_INTMAX,
         EPRINTF_MOD_SIZE_T,
         EPRINTF_MOD_PTRDIFF_T,
         EPRINTF_MOD_DEFAULT
@@ -862,7 +862,7 @@
 
     ////////////////////////////////////////////////////////////
     ///
-    /// \brief Write on stderr without printf (not fast and not bufferised)
+    /// \brief Write on stderr without eprintf (not fast and not bufferised)
     ///        Is only there when printf failed and a output should be shown
     ///
     /// \param prg the program name

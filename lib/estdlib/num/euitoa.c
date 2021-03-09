@@ -6,7 +6,7 @@
 */
 
 #include <erty/ectypes.h>
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 cstr_t euitoa(u64_t nb, cstr_t tofill, cstr_t base)
 {

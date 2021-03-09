@@ -5,7 +5,7 @@
 ** eftoa
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/estdlib.h>
 
 cstr_t eftoa(f64_t nb, u8_t precision, cstr_t tofill, const_cstr_t base)

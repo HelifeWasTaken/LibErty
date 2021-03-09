@@ -5,7 +5,7 @@
 ** estrndup
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 cstr_t estrndup(const_cstr_t src, size_t n)
 {

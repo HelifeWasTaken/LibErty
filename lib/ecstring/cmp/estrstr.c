@@ -5,7 +5,7 @@
 ** estrstr
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 cstr_t estrstr(const_cstr_t haystack, const_cstr_t needle)
 {

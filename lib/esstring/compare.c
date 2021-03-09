@@ -5,14 +5,9 @@
 ** compare
 */
 
-#include <erty/esstring.h>
+#include <erty/string/esstring.h>
 
-i32_t compare_cstr(const string_t *this, char *cstring)
+i32_t compare_cstr(const string_t *this, const_cstr_t cstring)
 {
     return (estrcmp(this->str, cstring));
-}
-
-i32_t compare_sstr(const string_t *this, const string_t *sstring)
-{
-    return (estrcmp(this->str, sstring->str));
 }

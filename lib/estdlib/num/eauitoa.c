@@ -5,7 +5,7 @@
 ** eauitoa
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/estdlib.h>
 
 cstr_t eauitoa(u64_t nb, const_cstr_t base)

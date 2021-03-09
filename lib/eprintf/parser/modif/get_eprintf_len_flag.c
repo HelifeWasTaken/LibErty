@@ -5,7 +5,7 @@
 ** get_eprintf_len_flag
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/eprintf.h>
 
 static const char known_flag[10][2] = {
@@ -21,7 +21,7 @@ static const u_int8_t len_flags[10] = {
 static const u_int8_t ids[10] = {
     EPRINTF_MOD_CHAR, EPRINTF_MOD_SHORT,
     EPRINTF_MOD_LONG, EPRINTF_MOD_LONG_LONG, EPRINTF_MOD_LONG_LONG,
-    EPRINTF_MOD_LONG_DOUBLE, EPRINTF_MOD_INTMAX_t, EPRINTF_MOD_SIZE_T,
+    EPRINTF_MOD_LONG_DOUBLE, EPRINTF_MOD_INTMAX, EPRINTF_MOD_SIZE_T,
     EPRINTF_MOD_SIZE_T, EPRINTF_MOD_PTRDIFF_T
 };
 

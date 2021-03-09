@@ -5,7 +5,7 @@
 ** count
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 size_t ecount_tab(char **tab)
 {

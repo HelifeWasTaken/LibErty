@@ -5,7 +5,7 @@
 ** enblen
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 u64_t enblen(i64_t nb)
 {

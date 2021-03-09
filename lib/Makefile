@@ -106,7 +106,6 @@ SRC_CSTRING_CMP	=	./ecstring/cmp/estrlen.c 			\
 					./ecstring/cmp/ecount_occurences.c 	\
 					./ecstring/cmp/estartswith.c 		\
 					./ecstring/cmp/eendswith.c 			\
-					./ecstring/cmp/earray_len.c 		\
 					./ecstring/cmp/ecount_tab.c
 
 SRC_CSTRING_CPY	=	./ecstring/cpy/estrcpy.c 			\
@@ -208,6 +207,7 @@ SRC_EWRITE		=	./ewrite/ewrite.c 					\
 
 SRC_SSTR		=	./esstring/init.c 				\
 					./esstring/append.c 			\
+					./esstring/append_n.c 			\
 					./esstring/assign.c 			\
 					./esstring/assign_n.c			\
 					./esstring/at.c 				\

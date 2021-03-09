@@ -5,24 +5,7 @@
 ** init
 */
 
-#include <erty/esstring.h>
-
-static const void *FUNCTIONS_POINTERS_SSTR[] = {
-    assign_sstr,
-    assign_cstr,
-    append_sstr,
-    append_cstr,
-    at_sstr,
-    compare_sstr,
-    compare_cstr,
-    ncompare_sstr,
-    ncompare_cstr,
-    assign_n_from_cstr,
-    assign_n_from_sstr,
-    sstr_to_buf,
-    print_sstr,
-    free_sstr
-};
+#include <erty/string/esstring.h>
 
 string_t init_string(char *buffer)
 {
@@ -34,7 +17,15 @@ string_t init_string(char *buffer)
         this.size = 0;
         this.str = NULL;
     }
-    ememcpy(&this.assign_sstr, FUNCTIONS_POINTERS_SSTR,
-        sizeof(FUNCTIONS_POINTERS_SSTR));
+    this.assign = assign_cstr;
+    this.assign_n = assign_n_from_cstr;
+    this.append = append_cstr;
+    this.append_n = append_n_from_cstr;
+    this.at = at_sstr;
+    this.compare = compare_cstr;
+    this.ncompare = ncompare_cstr;
+    this.to_buf = sstr_to_buf;
+    this.print = print_sstr;
+    this.free = free_sstr;
     return (this);
 }

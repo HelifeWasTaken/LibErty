@@ -5,7 +5,7 @@
 ** esplit
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 void free_esplit(cstr_t *buf)
 {
@@ -16,34 +16,54 @@ void free_esplit(cstr_t *buf)
     efree(buf);
 }
 
-static cstr_t find_new_esplit_string(const_cstr_t str,
-    const_cstr_t sep, size_t *i_str)
+static void skip_char_copy(cstr_t str, char c, size_t *i)
 {
-    size_t size_sep = estrlen(sep);
-    size_t i = *i_str;
-    size_t offset;
-    cstr_t new_str = NULL;
-
-    for (; *(str + i) && estrncmp(str + i, sep, size_sep) != 0; i++);
-    offset = i + 1;
-    if (*(str + i))
-        for (; *(str + offset) &&
-            estrncmp(str + offset, sep, size_sep) == 0; offset++);
-    new_str = estrndup(str + *i_str, i - *i_str);
-    *i_str = (*(str + i) ? offset : i);
-    return (new_str);
+    for (; str[*i] == c; (*i)++);
 }
 
-cstr_t *esplit(const_cstr_t str, const_cstr_t separator)
+static size_t count_array(cstr_t str, char c)
 {
-    size_t index_str = 0;
-    size_t len_array = ecount_occurences(str, separator) + 1;
-    cstr_t *new_array = emalloc(sizeof(cstr_t ) * (len_array + 1));
+    size_t count = 1;
+    size_t i = 0;
 
-    if (!new_array)
+    skip_char_copy(str, c, &i);
+    for (; str[i]; i++) {
+        if (str[i] == c) {
+            count++;
+            skip_char_copy(str, c, &i);
+        }
+    }
+    return (count);
+}
+
+static cstr_t get_sub_string(cstr_t str, char c, size_t *i)
+{
+    size_t index2 = *i;
+    char *new = NULL;
+
+    for (; str[index2]; index2++)
+        if (str[index2] == c)
+            break;
+    new = estrndup(str + *i, index2 - *i);
+    *i = index2;
+    return (new);
+}
+
+cstr_t *split(cstr_t str, char c)
+{
+    size_t i = 0;
+    size_t j = 0;
+    cstr_t *new_buff = emalloc(sizeof(cstr_t) * (count_array(str, c) + 1));
+
+    if (new_buff == NULL)
         return (NULL);
-    new_array[len_array] = NULL;
-    for (size_t i = 0; i < len_array; i++)
-        new_array[i] = find_new_esplit_string(str, separator, &index_str);
-    return (new_array);
+    for (; str[i]; j++) {
+        skip_char_copy(str, c, &i);
+        if (!str[i])
+            break;
+        if ((new_buff[j] = get_sub_string(str, c, &i)) == NULL)
+            return (NULL);
+    }
+    new_buff[j] = NULL;
+    return (new_buff);
 }

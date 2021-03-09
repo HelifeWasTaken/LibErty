@@ -5,7 +5,7 @@
 ** eunblen
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 u64_t eunblen(u64_t nb)
 {

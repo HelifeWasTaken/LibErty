@@ -6,7 +6,7 @@
 */
 
 #include <erty/eprintf.h>
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/eassert.h>
 
 i32_t evdprintf(fd_t fd, const_cstr_t format, va_list *ap)

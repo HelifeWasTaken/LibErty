@@ -64,7 +64,7 @@
     typedef struct signed_vector2d {
         i64_t x;
         i64_t y;
-    } vector_t;
+    } vector2_t;
 
     ////////////////////////////////////////////////////////////
     ///
@@ -76,7 +76,7 @@
     typedef struct unsigned_vector2d {
         u64_t x;
         u64_t y;
-    } uvector_t;
+    } uvector2_t;
 
     ////////////////////////////////////////////////////////////
     ///
@@ -208,8 +208,10 @@
 
     #undef  EXIT_SUCCESS
     #undef  EXIT_FAILURE
+    #undef  NULL
     #define EXIT_SUCCESS         0
     #define EXIT_FAILURE        84
     #define UNUSED              __attribute__((unused))
+    #define NULL                (void *)0
 
 #endif /* !__LIBERTY__CTYPES__H__ */

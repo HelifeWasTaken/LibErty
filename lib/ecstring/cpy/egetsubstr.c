@@ -5,7 +5,7 @@
 ** egetsubstr
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/estdlib.h>
 
 cstr_t egetsubstr(const_cstr_t str, i64_t start, i64_t end)

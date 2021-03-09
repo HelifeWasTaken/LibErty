@@ -5,7 +5,7 @@
 ** erevstr
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/estdlib.h>
 
 cstr_t erevstr(cstr_t str)

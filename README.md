@@ -62,7 +62,7 @@ int main(void)
 ```
 
 ```c
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 int main(void)
 {

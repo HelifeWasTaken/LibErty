@@ -5,7 +5,7 @@
 ** print
 */
 
-#include <erty/esstring.h>
+#include <erty/string/esstring.h>
 #include <erty/estdio.h>
 
 ssize_t print_sstr(const string_t *this)

@@ -5,7 +5,7 @@
 ** ebzero
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 void *ebzero(void *ptr, size_t size)
 {

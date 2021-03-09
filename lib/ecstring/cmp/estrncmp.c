@@ -5,7 +5,7 @@
 ** estrncmp
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/estdlib.h>
 
 int estrncmp(const_cstr_t s1, const_cstr_t s2, size_t n)

@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main, dev ]
+  pull_request:
+    branches: [ master, main, dev ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install make && gcc && lolcat
+        run: sudo apt install -y gcc make lolcat
+
+      - uses: actions/checkout@v2
+
+      - run: make -C ./lib && echo "$(ls -l ./lib/liberty.a)" | lolcat --force --spread 0.2
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: liberty
+          path: liberty

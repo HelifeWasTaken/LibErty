@@ -15,7 +15,7 @@
     #include <erty/ealloc.h>
     #include <erty/ectypes.h>
     #include <erty/ewrite.h>
-    #include <erty/ecstring.h>
+    #include <erty/string/ecstring.h>
 
     //   _____ _            __  __
     //  |  ___| |          / _|/ _|

@@ -85,12 +85,6 @@
 
     void *erealloc(void *old_ptr, size_t old_size, size_t new_size);
 
-    #define FREE(x) \
-        if (x) { \
-            efree(x); \
-            x = NULL; \
-        }
-
     static inline void my_free(int n, ...)
     {
         __builtin_va_list ap;

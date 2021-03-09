@@ -5,7 +5,7 @@
 ** estrcat
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 cstr_t estrcat(cstr_t dest, const_cstr_t src)
 {

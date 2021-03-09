@@ -5,20 +5,15 @@
 ** assign_n
 */
 
-#include <erty/esstring.h>
+#include <erty/string/esstring.h>
 
-void assign_n_from_cstr(string_t *self, const_cstr_t s, size_t n)
+ssize_t assign_n_from_cstr(string_t *this, const_cstr_t s, size_t n)
 {
-    if (self->str)
-        efree(self->str);
-    self->str = estrndup(s, n);
-    self->size = estrlen(self->str);
-}
-
-void assign_n_from_sstr(string_t *self, string_t *sstring, size_t n)
-{
-    if (self->str)
-        efree(self->str);
-    self->str = estrndup(sstring->str, n);
-    self->size = estrlen(self->str);
+    if (this->str)
+        efree(this->str);
+    this->str = estrndup(s, n);
+    this->size = estrlen(this->str);
+    if (this->str)
+        return (this->size);
+    return (-1);
 }

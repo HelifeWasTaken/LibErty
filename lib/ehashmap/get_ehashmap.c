@@ -6,7 +6,7 @@
 */
 
 #include <erty/ehashmap.h>
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 void *get_ehashmap(hash_t *head, char const *key)
 {

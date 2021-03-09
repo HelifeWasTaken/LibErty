@@ -6,7 +6,7 @@
 */
 
 #include <erty/eprintf.h>
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 i32_t easprintf(cstr_t *buff, const_cstr_t format, ...)
 {

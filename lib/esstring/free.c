@@ -5,7 +5,7 @@
 ** free
 */
 
-#include <erty/esstring.h>
+#include <erty/string/esstring.h>
 
 void free_sstr(string_t *this)
 {

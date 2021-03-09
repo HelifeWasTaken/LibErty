@@ -5,7 +5,7 @@
 ** to_buf
 */
 
-#include <erty/esstring.h>
+#include <erty/string/esstring.h>
 
 cstr_t sstr_to_buf(string_t *this)
 {

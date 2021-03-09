@@ -21,7 +21,7 @@
     // Headers
     ////////////////////////////////////////////////////////////
 
-    #include <erty/ecstring.h>
-    #include <erty/esstring.h>
+    #include <erty/string/ecstring.h>
+    #include <erty/string/esstring.h>
 
 #endif /* !__LIBERTY__ESTRING__H__ */

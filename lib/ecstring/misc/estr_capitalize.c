@@ -5,7 +5,7 @@
 ** estr_strcapitalize
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 cstr_t estr_capitalize(cstr_t src)
 {

@@ -6,6 +6,7 @@
 */
 
 #include <erty/ehashmap.h>
+#include <erty/estdlib.h>
 
 static void free_all_next_pointers_ehashmap(hash_t **head, size_t i)
 {

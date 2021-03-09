@@ -7,7 +7,7 @@
 
 #include <erty/eprintf.h>
 #include <erty/estdlib.h>
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 static bool check_eprintf_flag_modifiers(eprintf_modflag_t *mod, char const c)
 {

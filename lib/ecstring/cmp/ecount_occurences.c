@@ -5,7 +5,7 @@
 ** count_occurences
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 size_t ecount_occurences(const_cstr_t buf, const_cstr_t occurence)
 {

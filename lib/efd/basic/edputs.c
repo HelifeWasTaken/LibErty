@@ -6,7 +6,7 @@
 */
 
 #include <erty/efd.h>
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 ssize_t edputs(fd_t fd, const_cstr_t buf)
 {

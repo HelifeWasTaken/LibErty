@@ -6,7 +6,7 @@
 */
 
 #include <erty/eprintf.h>
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
 void eprintf_local_str(ebuff_t **buff, va_list *ap, eprintf_mod_t *mod)
 {

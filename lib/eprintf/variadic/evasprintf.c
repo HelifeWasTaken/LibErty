@@ -7,6 +7,7 @@
 
 #include <erty/eprintf.h>
 #include <erty/eassert.h>
+#include <erty/estdlib.h>
 
 i32_t evasprintf(cstr_t *buff, const_cstr_t format, va_list *ap)
 {

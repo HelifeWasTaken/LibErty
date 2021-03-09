@@ -16,6 +16,7 @@
     #include <erty/ebitwise.h>
     #include <erty/eoverflow.h>
     #include <erty/ealloc.h>
+    #include <erty/eassert.h>
 
     //   _   _                 _
     //  | \ | |               | |
@@ -284,12 +285,6 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    #define AUTO_SWAP(a, b) \
-        do { \
-            __auto_type c = a; \
-            a = b; \
-            b = c; \
-        } while (0);
 
     //  ___  ____
     //  |  \/  (_)
@@ -370,6 +365,38 @@
             __auto_type c = a; \
             a = b; \
             b = c; \
-        } while (0);
+        } while (0)
+
+    #define SORT(a, b) \
+        do { \
+            if ((a) > (b)) \
+                AUTO_SWAP((a), (b)); \
+        } while (0)
+
+    #define FOREACH(i, arr) \
+        for (int m_keep = 1, \
+            m_count = 0,\
+            m_size = sizeof(arr) / sizeof * (arr); \
+            m_keep && m_count != m_size; \
+            m_keep = !m_keep, m_count++) \
+            for (i = (arr) + m_count; m_keep; m_keep = !m_keep)
+
+    #define EXMALLOC(var, size, retv) \
+        if ((var = emalloc(size)) == NULL) { \
+            DEBUG_ASSERT("emalloc", "Allocation failed"); \
+            return (retv); \
+        }
+
+    #define EXCALLOC(var, nmem, memb, retv) \
+        if ((var = ecalloc(nmem, memb)) == NULL) { \
+            DEBUG_ASSERT("emalloc", "Allocation failed"); \
+            return (retv); \
+        }
+
+    #define FREE(x) \
+        if (x) { \
+            efree(x); \
+            x = NULL; \
+        }
 
 #endif /* !__LIBERTY__ESTDLIB__H__ */

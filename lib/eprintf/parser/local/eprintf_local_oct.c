@@ -6,7 +6,7 @@
 */
 
 #include <erty/eprintf.h>
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/estdlib.h>
 
 static void eprintf_local_oct_padding_left(ebuff_t **buff,

@@ -5,12 +5,12 @@
 ** cp
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 
-char **ecopy_tab(char **tab)
+cstr_t *ecopy_tab(cstr_t *tab)
 {
     size_t i = 0;
-    char **copy = emalloc(sizeof(char *) * (ecount_tab(tab) + 1));
+    cstr_t *copy = emalloc(sizeof(cstr_t) * (ecount_tab(tab) + 1));
 
     if (copy == NULL)
         return (NULL);

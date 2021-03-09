@@ -24,7 +24,7 @@ int64_t get_signed_arg(va_list *ap, u8_t mod)
             return (arg.dble);
         case EPRINTF_MOD_SIZE_T:
             return (arg.st);
-        case EPRINTF_MOD_INTMAX_t:
+        case EPRINTF_MOD_INTMAX:
             return (arg.imax);
         default:
             return (arg.i);
@@ -48,7 +48,7 @@ uint64_t get_unsigned_arg(va_list *ap, u8_t mod)
             return (arg.st);
         case EPRINTF_MOD_PTRDIFF_T:
             return (arg.ptrdiff);
-        case EPRINTF_MOD_INTMAX_t:
+        case EPRINTF_MOD_INTMAX:
             return (arg.uimax);
         default:
             return (arg.ui);

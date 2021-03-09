@@ -9,7 +9,7 @@
 
 OPT(u32) euatoi(const_cstr_t str)
 {
-    OPT(u64) result = euatol(str);
+    OPT(u64) v = euatol(str);
 
-    return ((result.value > UINT_MAX) ? OK(u32, result.value) : ERR(u32));
+    return ((OPT(u32)){v.value, v.is_ok});
 }

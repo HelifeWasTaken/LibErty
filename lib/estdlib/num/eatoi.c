@@ -10,8 +10,7 @@
 
 OPT(i32) eatoi(const_cstr_t str)
 {
-    OPT(i64) res = eatol(str);
+    OPT(i64) v = eatol(str);
 
-    return ((res.value > INT_MAX || res.value < INT_MIN) ?
-        ERR(i32) : OK(i32, res.value));
+    return ((OPT(i32)){v.value, v.is_ok});
 }

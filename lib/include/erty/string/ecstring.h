@@ -630,25 +630,4 @@
 
     cstr_t estr_capitalize(cstr_t str);
 
-    ////////////////////////////////////////////////////////////
-    ///
-    ///  Get the lenght of a variable
-    ///
-    ////////////////////////////////////////////////////////////
-
-    #define LEN(x) _Generic((x), \
-        cstr_t: estrlen, \
-        const_cstr_t: estrlen, \
-        cstr_t *: earray_len, \
-        const_cstr_t *: earray_len, \
-        int **: earray_len, \
-        int const **: earray_len, \
-        int: enblen, \
-        unsigned int: enblen, \
-        long: enblen, \
-        unsigned long: enblen, \
-        long long: enblen, \
-        unsigned long long: enblen) \
-        (x)
-
 #endif /* !__LIBERTY__ESTRING__H__ */

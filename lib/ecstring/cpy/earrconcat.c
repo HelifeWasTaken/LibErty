@@ -5,7 +5,7 @@
 ** e_arrconcat
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <stdio.h>
 #include <erty/estdlib.h>
 

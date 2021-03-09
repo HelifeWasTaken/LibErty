@@ -5,7 +5,7 @@
 ** efputstr
 */
 
-#include <erty/ecstring.h>
+#include <erty/string/ecstring.h>
 #include <erty/efile.h>
 
 ssize_t efputs(FILE *stream, const_cstr_t buf)

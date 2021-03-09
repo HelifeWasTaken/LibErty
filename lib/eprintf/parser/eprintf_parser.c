@@ -39,7 +39,6 @@ static ssize_t eprintf_parse_flag(ebuff_t **buffer,
         consume_format_char(format, 1);
         return (EPRINTF_SUCCESS);
     }
-    printf("%s\n", *format);
     return (PRINTF_FAIL("eprintf_parse_flag"));
 }
 
