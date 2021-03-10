@@ -6,141 +6,148 @@
 */
 
 #ifndef __LIBERTY__EVECTOR__H__
-#define __LIBERTY__EVECTOR__H__
+    #define __LIBERTY__EVECTOR__H__
 
-#define VECTOR(name) struct liberty_templated_vector_##name
+    #include <erty/estdlib.h>
+    #include <erty/estring.h>
 
-#define VECTOR_PUSH_BACK_NAME(name) \
-    liberty_templated_vector_push_back_##name
+    #define VECTOR(name) struct liberty_templated_vector_##name
 
-#define VECTOR_PUSH_BACK_DECLARATION(name) \
-    ssize_t VECTOR_PUSH_BACK_NAME(name)
+    #define VECTOR_PUSH_BACK_NAME(name) \
+        liberty_templated_vector_push_back_##name
 
-#define VECTOR_CREATE_NAME(name) \
-    liberty_templated_vector_create_##name
+    #define VECTOR_PUSH_BACK_DECLARATION(name) \
+        ssize_t VECTOR_PUSH_BACK_NAME(name)
 
-#define VECTOR_CREATE_DECLARATION(name) \
-    VECTOR(name) VECTOR_CREATE_NAME(name)
+    #define VECTOR_CREATE_NAME(name) \
+        liberty_templated_vector_create_##name
 
-#define VECTOR_CREATE(name) \
-    liberty_templated_vector_create_##name()
+    #define VECTOR_CREATE_DECLARATION(name) \
+        VECTOR(name) VECTOR_CREATE_NAME(name)
 
-#define VECTOR_CLEAR_NAME(name) \
-    liberty_templated_vector_clear_##name
+    #define VECTOR_CREATE(name) \
+        liberty_templated_vector_create_##name()
 
-#define VECTOR_CLEAR_DECLARATION(name) \
-    void VECTOR_CLEAR_NAME(name)
+    #define VECTOR_CLEAR_NAME(name) \
+        liberty_templated_vector_clear_##name
 
-#define VECTOR_ERASE_NAME(name) \
-    liberty_templated_vector_erase_##name
+    #define VECTOR_CLEAR_DECLARATION(name) \
+        void VECTOR_CLEAR_NAME(name)
 
-#define VECTOR_ERASE_DECLARATION(name) \
-    ssize_t VECTOR_ERASE_NAME(name)
+    #define VECTOR_ERASE_NAME(name) \
+        liberty_templated_vector_erase_##name
 
-#define VECTOR_INSERT_NAME(name) \
-    liberty_templated_vector_insert_##name
+    #define VECTOR_ERASE_DECLARATION(name) \
+        ssize_t VECTOR_ERASE_NAME(name)
 
-#define VECTOR_INSERT_DECLARATION(name) \
-    ssize_t VECTOR_INSERT_NAME(name)
+    #define VECTOR_INSERT_NAME(name) \
+        liberty_templated_vector_insert_##name
 
-#define INIT_VECTOR(name, dataname, type, del_member_fun) \
-    VECTOR(name) { \
-        type *dataname; \
-        size_t size; \
-        ssize_t (*push_back)(VECTOR(name) *, type); \
-        void (*_del)(type *); \
-        ssize_t (*erase)(VECTOR(name) *, size_t idx); \
-        void (*clear)(VECTOR(name) *); \
-        ssize_t (*insert)(VECTOR(name) *, type, size_t idx); \
-    }; \
-    \
-    VECTOR_PUSH_BACK_DECLARATION(name)(VECTOR(name) *this, type add) \
-    { \
-        type *tmp = NULL; \
+    #define VECTOR_INSERT_DECLARATION(name) \
+        ssize_t VECTOR_INSERT_NAME(name)
+
+    #define INIT_VECTOR(name, dataname, type, del_member_fun) \
+        VECTOR(name) { \
+            type *dataname; \
+            size_t size; \
+            ssize_t (*push_back)(VECTOR(name) *, type); \
+            void (*_del)(type *); \
+            ssize_t (*erase)(VECTOR(name) *, size_t idx); \
+            void (*clear)(VECTOR(name) *); \
+            ssize_t (*insert)(VECTOR(name) *, type, size_t idx); \
+        }; \
         \
-        EXCALLOC(tmp, sizeof(type), this->size + 1, -1); \
-        for (size_t i = 0; i < this->size; i++) \
-            ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
-        ememcpy(&tmp[this->size], &add, sizeof(type)); \
-        FREE(this->dataname); \
-        this->dataname = tmp; \
-        this->size++; \
-        return (this->size); \
-    } \
-    \
-    VECTOR_INSERT_DECLARATION(name)(VECTOR(name) *this, type toadd, \
-                                    size_t idx) \
-    { \
-        type *tmp = NULL; \
-        size_t i = 0; \
-        size_t i2 = 0; \
-        \
-        if (this->size <= idx) \
-            return (-1); \
-        EXCALLOC(tmp, sizeof(type), this->size + 1, -1); \
-        for (; i != idx; i++) \
-            ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
-        ememcpy(&tmp[i], &toadd, sizeof(type)); \
-        i2 = i; \
-        for (i += 1; i < this->size + 1; i++) { \
-            ememcpy(&tmp[i], &this->dataname[i2], sizeof(type)); \
-            i2++; \
+        VECTOR_PUSH_BACK_DECLARATION(name)(VECTOR(name) *this, type add) \
+        { \
+            type *tmp = NULL; \
+            \
+            EXCALLOC(tmp, sizeof(type), this->size + 1, -1); \
+            for (size_t i = 0; i < this->size; i++) \
+                ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
+            ememcpy(&tmp[this->size], &add, sizeof(type)); \
+            FREE(this->dataname); \
+            this->dataname = tmp; \
+            this->size++; \
+            return (this->size); \
         } \
-        FREE(this->dataname); \
-        this->size = i; \
-        this->dataname = tmp; \
-        return (this->size); \
-    } \
-    \
-    VECTOR_CLEAR_DECLARATION(name)(VECTOR(name) *this) \
-    { \
-        if (this->_del) { \
-            for (size_t i = 0; i < this->size; i++) { \
-                this->_del(&this->dataname[i]); \
+        \
+        VECTOR_INSERT_DECLARATION(name)(VECTOR(name) *this, type toadd, \
+                                        size_t idx) \
+        { \
+            type *tmp = NULL; \
+            size_t i = 0; \
+            size_t i2 = 0; \
+            \
+            if (this->size <= idx) \
+                return (-1); \
+            EXCALLOC(tmp, sizeof(type), this->size + 1, -1); \
+            for (; i != idx; i++) \
+                ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
+            ememcpy(&tmp[i], &toadd, sizeof(type)); \
+            i2 = i; \
+            for (i += 1; i < this->size + 1; i++) { \
+                ememcpy(&tmp[i], &this->dataname[i2], sizeof(type)); \
+                i2++; \
             } \
+            FREE(this->dataname); \
+            this->size = i; \
+            this->dataname = tmp; \
+            return (this->size); \
         } \
-        FREE(this->dataname); \
-        this->size = 0; \
-    } \
-    \
-    VECTOR_ERASE_DECLARATION(name)(VECTOR(name) *this, size_t idx) \
-    { \
-        type *tmp = NULL; \
-        size_t i = 0; \
         \
-        if (this->size <= idx) \
-            return (-1); \
-        EXCALLOC(tmp, sizeof(type), this->size - 1, -1); \
-        for (; i != idx; i++) \
-            ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
-        if (this->_del) \
-            this->_del(&this->dataname[i]); \
-        i++; \
-        for (; i < this->size; i++) \
-            ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
-        FREE(this->dataname); \
-        this->dataname = tmp; \
-        this->size = i; \
-        return (this->size); \
-    } \
-    \
-    VECTOR_CREATE_DECLARATION(name)(void) \
-    { \
-        VECTOR(name) this = {0}; \
+        VECTOR_CLEAR_DECLARATION(name)(VECTOR(name) *this) \
+        { \
+            if (this->_del) { \
+                for (size_t i = 0; i < this->size; i++) { \
+                    this->_del(&this->dataname[i]); \
+                } \
+            } \
+            FREE(this->dataname); \
+            this->size = 0; \
+        } \
         \
-        this.push_back = VECTOR_PUSH_BACK_NAME(name); \
-        this._del = del_member_fun; \
-        this.erase = VECTOR_ERASE_NAME(name); \
-        this.clear = VECTOR_CLEAR_NAME(name); \
-        this.insert = VECTOR_INSERT_NAME(name); \
-        this.size = 0; \
-        this.dataname = NULL; \
-        return (this); \
-    }
+        VECTOR_ERASE_DECLARATION(name)(VECTOR(name) *this, size_t idx) \
+        { \
+            type *tmp = NULL; \
+            size_t i = 0; \
+            \
+            if (this->size <= idx) \
+                return (-1); \
+            EXCALLOC(tmp, sizeof(type), this->size - 1, -1); \
+            for (; i != idx; i++) \
+                ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
+            if (this->_del) \
+                this->_del(&this->dataname[i]); \
+            i++; \
+            for (; i < this->size; i++) \
+                ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
+            FREE(this->dataname); \
+            this->dataname = tmp; \
+            this->size = i; \
+            return (this->size); \
+        } \
+        \
+        VECTOR_CREATE_DECLARATION(name)(void) \
+        { \
+            VECTOR(name) this = {0}; \
+            \
+            this.push_back = VECTOR_PUSH_BACK_NAME(name); \
+            this._del = del_member_fun; \
+            this.erase = VECTOR_ERASE_NAME(name); \
+            this.clear = VECTOR_CLEAR_NAME(name); \
+            this.insert = VECTOR_INSERT_NAME(name); \
+            this.size = 0; \
+            this.dataname = NULL; \
+            return (this); \
+        }
 
-// TODO
-// insert
-// erase
-// pop back
+    INIT_VECTOR(string, v, string_t, free_sstr);
+    typedef VECTOR(string) vstring_t;
+
+    INIT_VECTOR(cstr, v, cstr_t, free_cstr);
+    typedef VECTOR(cstr_t) vcstr_t;
+
+    INIT_VECTOR(int, v, int, NULL);
+    typedef VECTOR(int) vint_t;
 
 #endif

@@ -630,4 +630,20 @@
 
     cstr_t estr_capitalize(cstr_t str);
 
+    ////////////////////////////////////////////////////////////
+    ///
+    /// \brief Used for templating (see evector.h)
+    ///
+    /// \param cstring string to free
+    ///
+    ////////////////////////////////////////////////////////////
+
+    static inline void free_cstr(cstr_t *cstring)
+    {
+        if (*cstring) {
+            efree(*cstring);
+            *cstring = NULL;
+        }
+    }
+
 #endif /* !__LIBERTY__ESTRING__H__ */

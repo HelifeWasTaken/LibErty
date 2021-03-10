@@ -21,8 +21,6 @@
 #include <erty/elinked.h>
 #include <erty/evector.h>
 
-INIT_VECTOR(string, data, sstr_t, free_sstr);
-
 int main(void)
 {
     VECTOR(string) v = VECTOR_CREATE(string);
@@ -30,9 +28,10 @@ int main(void)
     v.push_back(&v, init_string("toto"));
     v.push_back(&v, init_string("john"));
     printf("%ld\n", v.size);
-    v.data[0].print(&v.data[0]);
-    v.data[1].print(&v.data[1]);
-    printf("%s\n", v.data[0].str);
+    v.v[0].print(&v.v[0]);
+    v.v[1].print(&v.v[1]);
+    printf("%s\n", v.v[0].str);
     v.clear(&v);
+
     return (0);
 }
