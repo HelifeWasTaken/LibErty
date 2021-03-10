@@ -9,7 +9,8 @@
     #define __LIBERTY__EVECTOR__H__
 
     #include <erty/estdlib.h>
-    #include <erty/estring.h>
+    #include <erty/string/esstring.h>
+    #include <erty/string/ecstring.h>
 
     #define VECTOR(name) struct liberty_templated_vector_##name
 
@@ -155,7 +156,7 @@
     typedef VECTOR(vstring) vdbstring_t;
     typedef vdbstring_t vdbsstr_t;
 
-    INIT_VECTOR(vcstr, cstr, VECTOR(cstr_t), VECTOR_CLEAR_NAME(cstr))
+    INIT_VECTOR(vcstr, cstr, VECTOR(cstr), VECTOR_CLEAR_NAME(cstr));
     typedef VECTOR(vcstr) vdbcstr_t;
 
 #endif

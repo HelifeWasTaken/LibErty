@@ -41,7 +41,7 @@ int main(void)
     printf("%s\n", v.sstr[0].str);
 
 
-
+    // std::vector<std::vector<std::string>>
     VECTOR(vstring) vstr = VECTOR_CREATE(vstring);
 
     vstr.push_back(&vstr, v);
