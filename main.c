@@ -21,25 +21,18 @@
 #include <erty/elinked.h>
 #include <erty/evector.h>
 
-INIT_VECTOR(toto, data, sstr_t, v_t);
-
-void free_vector_sstring(v_t *this)
-{
-    for (size_t i = 0; i < this->size; i++) {
-        this->data[i].free(&this->data[i]);
-    }
-    FREE(this->data);
-}
+INIT_VECTOR(string, data, sstr_t, free_sstr);
 
 int main(void)
 {
-    sstr_t s = init_string("toto");
-    VECTOR(toto) v = VECTOR_CREATE(toto, free_vector_sstring);
+    VECTOR(string) v = VECTOR_CREATE(string);
 
-    v.push_back(&v, &s);
+    v.push_back(&v, init_string("toto"));
+    v.push_back(&v, init_string("john"));
     printf("%ld\n", v.size);
     v.data[0].print(&v.data[0]);
+    v.data[1].print(&v.data[1]);
     printf("%s\n", v.data[0].str);
-    v.free(&v);
+    v.clear(&v);
     return (0);
 }
