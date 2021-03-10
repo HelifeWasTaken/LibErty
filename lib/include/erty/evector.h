@@ -141,13 +141,21 @@
             return (this); \
         }
 
-    INIT_VECTOR(string, v, string_t, free_sstr);
+    INIT_VECTOR(string, sstr, string_t, free_sstr);
     typedef VECTOR(string) vstring_t;
+    typedef vstring_t vsstr_t;
 
-    INIT_VECTOR(cstr, v, cstr_t, free_cstr);
+    INIT_VECTOR(cstr, cstr, cstr_t, free_cstr);
     typedef VECTOR(cstr_t) vcstr_t;
 
-    INIT_VECTOR(int, v, int, NULL);
-    typedef VECTOR(int) vint_t;
+    INIT_VECTOR(i64, i64, int64_t, NULL);
+    typedef VECTOR(i64) vint_t;
+
+    INIT_VECTOR(vstring, vsstr, VECTOR(string), VECTOR_CLEAR_NAME(string));
+    typedef VECTOR(vstring) vdbstring_t;
+    typedef vdbstring_t vdbsstr_t;
+
+    INIT_VECTOR(vcstr, cstr, VECTOR(cstr_t), VECTOR_CLEAR_NAME(cstr))
+    typedef VECTOR(vcstr) vdbcstr_t;
 
 #endif

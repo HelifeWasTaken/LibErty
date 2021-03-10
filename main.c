@@ -28,10 +28,28 @@ int main(void)
     v.push_back(&v, init_string("toto"));
     v.push_back(&v, init_string("john"));
     printf("%ld\n", v.size);
-    v.v[0].print(&v.v[0]);
-    v.v[1].print(&v.v[1]);
-    printf("%s\n", v.v[0].str);
-    v.clear(&v);
+    v.sstr[0].print(&v.sstr[0]);
+    v.sstr[1].print(&v.sstr[1]);
+    printf("%s\n", v.sstr[0].str);
 
+    VECTOR(string) v2 = VECTOR_CREATE(string);
+    v2.push_back(&v2, init_string("lol"));
+    v2.push_back(&v2, init_string("jpp"));
+    printf("%ld\n", v.size);
+    v2.sstr[0].print(&v2.sstr[0]);
+    v2.sstr[1].print(&v2.sstr[1]);
+    printf("%s\n", v.sstr[0].str);
+
+
+
+    VECTOR(vstring) vstr = VECTOR_CREATE(vstring);
+
+    vstr.push_back(&vstr, v);
+    vstr.push_back(&vstr, v2);
+
+    vstr.vsstr[0].sstr[0].print(&vstr.vsstr[0].sstr[0]);
+    vstr.vsstr[1].sstr[1].print(&vstr.vsstr[1].sstr[1]);
+
+    vstr.clear(&vstr);
     return (0);
 }
