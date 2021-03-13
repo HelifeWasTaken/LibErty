@@ -12,10 +12,10 @@ static int match_it(char *expr, char const *reg, char **endptr);
 
 static int match_question_mark(char *expr, char const *reg, char **endptr)
 {
-    if (*reg == *expr && match_it(reg + 2, expr + 1, endptr))
+    if (*reg == *expr && match_it(expr + 1, reg + 2, endptr))
         return (1);
     else
-        return (match_it(reg + 2, expr, endptr));
+        return (match_it(expr, reg + 2, endptr));
 }
 
 static int match_prev_star(char const prev, char *expr,
