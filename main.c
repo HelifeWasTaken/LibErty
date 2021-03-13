@@ -53,3 +53,32 @@ int main(void)
     vstr.clear(&vstr);
     return (0);
 }
+
+/*
+char *json_obj(char *json, char const *obj)
+{
+    char *expr;
+    char *startptr = NULL;
+    char *useless = NULL;
+
+    asprintf(&expr, "\"%s\":.*{", obj);
+    printf("%s\n", expr);
+    if (expr == NULL)
+        return (NULL);
+    if (regex(json, expr, &startptr, &useless) == 0)
+        return (NULL);
+    free(expr);
+    return (startptr);
+}
+
+int main(void)
+{
+    int fd = open("conf.json", O_RDONLY);
+    struct stat st;
+    stat("conf.json", &st);
+    char *buf = malloc(sizeof(char) * (st.st_size + 1));
+    read(fd, buf, st.st_size);
+    buf[st.st_size] = 0;
+    char *r = json_obj(buf, "toto");
+    r = json_obj(r, "lol");
+    printf("obj: \n%s\n", r);

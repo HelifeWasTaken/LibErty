@@ -220,6 +220,8 @@ SRC_SSTR		=	./esstring/init.c 				\
 SRC_EHASHMAP 	=	./ehashmap/free_ehashmap.c 		\
 					./ehashmap/get_ehashmap.c 		\
 					./ehashmap/insert_ehashmap.c
+SRC_EREGEX 		=	./eregex/eregex.c 				\
+					./eregex/eregex_utilities.c
 
 SRC_ESTDIO		=	$(SRC_ESTDOUT) 							\
 					$(SRC_ESTDERR)
@@ -266,7 +268,8 @@ SRC				=	$(SRC_EWRITE) 							\
 					$(SRC_STDIO) 							\
 					$(SRC_CSTRING) 							\
 					$(SRC_SSTR) 							\
-					$(SRC_EHASHMAP)
+					$(SRC_EHASHMAP)							\
+					$(SRC_EREGEX)
 
 TEST_ECTYPE_IS 	=	./tests/ectypes/is/test_eis_alpha.c 	\
 					./tests/ectypes/is/test_eis_lower.c 	\
