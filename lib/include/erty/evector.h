@@ -55,7 +55,7 @@
         ssize_t VECTOR_INSERT_NAME(name)
 
     #define INIT_VECTOR(name, dataname, type, del_member_fun) \
-        INIT_OPT(type, name);
+        INIT_OPT(type, name); \
         VECTOR(name) { \
             type *dataname; \
             size_t size; \
@@ -160,22 +160,5 @@
             this.dataname = NULL; \
             return (this); \
         }
-
-    INIT_VECTOR(string, sstr, string_t, free_sstr);
-    typedef VECTOR(string) vstring_t;
-    typedef vstring_t vsstr_t;
-
-    INIT_VECTOR(cstr, cstr, cstr_t, free_cstr);
-    typedef VECTOR(cstr_t) vcstr_t;
-
-    INIT_VECTOR(i64, i64, int64_t, NULL);
-    typedef VECTOR(i64) vint_t;
-
-    INIT_VECTOR(vstring, vsstr, VECTOR(string), VECTOR_CLEAR_NAME(string));
-    typedef VECTOR(vstring) vdbstring_t;
-    typedef vdbstring_t vdbsstr_t;
-
-    INIT_VECTOR(vcstr, cstr, VECTOR(cstr), VECTOR_CLEAR_NAME(cstr));
-    typedef VECTOR(vcstr) vdbcstr_t;
 
 #endif

@@ -163,8 +163,15 @@
         static inline void CLEAR_LIST_DECLARATION(name)( \
             LIST_EXTERN(name) *head) \
         { \
-            while (head->list) \
-                head->pop_front(head); \
+            LIST(name) *tmp = NULL; \
+            \
+            while (head->list != NULL) {\
+                tmp = head->list; \
+                head->list = head->list->next; \
+                if (head->_del) \
+                    head->_del(&tmp->data); \
+                FREE(tmp); \
+            } \
         } \
         \
         static inline bool APPEND_TO_HEAD_DECLARATION(name)( \
