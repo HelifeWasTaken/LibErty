@@ -8,6 +8,7 @@
 #ifndef __LIBERTY__EVECTOR__H__
     #define __LIBERTY__EVECTOR__H__
 
+    #include <erty/opt.h>
     #include <erty/estdlib.h>
     #include <erty/string/esstring.h>
     #include <erty/string/ecstring.h>
@@ -41,6 +42,12 @@
     #define VECTOR_ERASE_DECLARATION(name) \
         ssize_t VECTOR_ERASE_NAME(name)
 
+    #define VECTOR_AT_NAME(name) \
+        liberty_templated_vector_at_##name
+
+    #define VECTOR_AT_DECLARATION(name) \
+        OPT(name) VECTOR_AT_NAME(name)
+
     #define VECTOR_INSERT_NAME(name) \
         liberty_templated_vector_insert_##name
 
@@ -48,6 +55,7 @@
         ssize_t VECTOR_INSERT_NAME(name)
 
     #define INIT_VECTOR(name, dataname, type, del_member_fun) \
+        INIT_OPT(type, name);
         VECTOR(name) { \
             type *dataname; \
             size_t size; \
@@ -56,7 +64,17 @@
             ssize_t (*erase)(VECTOR(name) *, size_t idx); \
             void (*clear)(VECTOR(name) *); \
             ssize_t (*insert)(VECTOR(name) *, type, size_t idx); \
+            OPT(name) (*at)(VECTOR(name) *, size_t idx); \
         }; \
+        \
+        VECTOR_AT_DECLARATION(name)(VECTOR(name) *this, size_t idx) \
+        { \
+            type useless; \
+            \
+            if (idx > this->size) \
+                return (ERR(name, useless)); \
+            return (OK(name, this->dataname[idx])); \
+        } \
         \
         VECTOR_PUSH_BACK_DECLARATION(name)(VECTOR(name) *this, type add) \
         { \
@@ -137,6 +155,7 @@
             this.erase = VECTOR_ERASE_NAME(name); \
             this.clear = VECTOR_CLEAR_NAME(name); \
             this.insert = VECTOR_INSERT_NAME(name); \
+            this.at = VECTOR_AT_NAME(name); \
             this.size = 0; \
             this.dataname = NULL; \
             return (this); \

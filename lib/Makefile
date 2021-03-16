@@ -217,9 +217,8 @@ SRC_SSTR		=	./esstring/init.c 				\
 					./esstring/to_buf.c 			\
 					./esstring/free.c
 
-SRC_EHASHMAP 	=	./ehashmap/free_ehashmap.c 		\
-					./ehashmap/get_ehashmap.c 		\
-					./ehashmap/insert_ehashmap.c
+SRC_EHASHMAP 	=
+
 SRC_EREGEX 		=	./eregex/eregex.c 				\
 					./eregex/eregex_utilities.c
 

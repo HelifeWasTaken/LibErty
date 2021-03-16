@@ -8,10 +8,20 @@
 #ifndef __LIBERTY__LINKED__H__
     #define __LIBERTY__LINKED__H__
 
-    #include <erty/estdlib.h>
+    #include <erty/opt.h>
     #include <erty/ectypes.h>
+    #include <erty/ealloc.h>
+    #include <erty/estdlib.h>
+    #include <erty/estdio.h>
 
     #define LIST(name) struct liberty_templated_list_##name
+    #define LIST_EXTERN(name) struct liberty_templated_list_extern_##name
+
+    #define CREATE_LIST_DECLARATION(name) \
+        liberty_templated_list_create_##name
+
+    #define CREATE_LIST(name) \
+        CREATE_LIST_DECLARATION(name)()
 
     // Node creation declaration
     #define CREATE_NODE_DECLARATION(name) \
@@ -66,6 +76,11 @@
     #define REMOVE_AT_INDEX(name, list, index) \
         REMOVE_AT_INDEX_DECLARATION(name)
 
+    #define CLEAR_LIST_DECLARATION(name) \
+        liberty_templated_list_clear_##name
+    #define CLEAR_LIST(name, list) \
+        CLEAR_LIST_DECLARATION(name)(list)
+
     // Count nodes
 
     #define COUNT_NODE_LIST_DECLARATION(name) \
@@ -80,141 +95,201 @@
     #define REVERSE_LIST(name, list) \
         REVERSE_LIST_DECLARATION(name)(list)
 
+    // Call to internal delete function
+
+    #define INTERNAL_DEL_FUN_DECLARATION(name) \
+        liberty_templated_list_internal_del_fun_##name
+
+    #define INTERNAL_DEL(name, list, delfun) \
+        INTERNAL_DEL_FUN_DECLARATION(name)(list, delfun)
+
+    #define LIST_AT_DECLARATION(name) \
+        liberty_templated_list_at_##name
+
+    #define LIST_AT(name, list, i) \
+        LIST_AT_DECLARATION(name)(list, i)
+
     // Functions
 
-    #define INIT_LIST(name, type) \
+    #define INIT_LIST(name, type, del_internal_fun) \
+        INIT_OPT(type, name); \
         LIST(name) { \
             type data; \
             LIST(name) *prev; \
             LIST(name) *next; \
         }; \
         \
+        LIST_EXTERN(name) { \
+            LIST(name) *list; \
+            bool (*push_back)(LIST_EXTERN(name) *head, type data); \
+            bool (*push_front)(LIST_EXTERN(name) *head, type data); \
+            bool (*insert)(LIST_EXTERN(name) *head, type data, size_t i); \
+            void (*pop_front)(LIST_EXTERN(name) *head); \
+            void (*pop_back)(LIST_EXTERN(name) *head); \
+            void (*erase)(LIST_EXTERN(name) *head, size_t i); \
+            void (*clear)(LIST_EXTERN(name) *head); \
+            void (*_del)(type *data); \
+            OPT(name) (*at)(LIST_EXTERN(name) *head, size_t i); \
+        }; \
+        \
+        static inline OPT(name) LIST_AT_DECLARATION(name)( \
+            LIST_EXTERN(name) *this, size_t i) \
+        { \
+            LIST(name) *tmp = this->list; \
+            type useless; \
+            \
+            for (size_t idx = 0; tmp && idx < i; i++) \
+                tmp = tmp->next; \
+            return (tmp ? OK(name, tmp->data) : ERR(name, useless)); \
+        } \
+        \
+        static inline void INTERNAL_DEL_FUN_DECLARATION(name)( \
+            LIST(name) **node, void (*_del)(type *data)) \
+        { \
+            if (_del) \
+                _del(&(*node)->data); \
+            FREE(*node); \
+        } \
+        \
         static inline LIST(name) *CREATE_NODE_DECLARATION(name)(type data) \
         { \
-            LIST(name) *new_node = ecalloc(sizeof(type), 1); \
+            LIST(name) *new_node = ecalloc(sizeof(LIST(name)), 1); \
             \
             if (new_node) \
                 new_node->data = data; \
             return (new_node); \
         } \
         \
-        static inline void \
-            APPEND_TO_HEAD_DECLARATION(name)(LIST(name) **head, type data) \
+        static inline void CLEAR_LIST_DECLARATION(name)( \
+            LIST_EXTERN(name) *head) \
+        { \
+            while (head->list) \
+                head->pop_front(head); \
+        } \
+        \
+        static inline bool APPEND_TO_HEAD_DECLARATION(name)( \
+                LIST_EXTERN(name) *head, type data) \
         { \
             LIST(name) *new_node =  CREATE_NODE(name, data); \
             \
             if (!new_node) \
-                return; \
-            new_node->next = *head; \
-            if (*head) \
-                (*head)->prev = new_node; \
-            *head = new_node; \
+                return (false); \
+            new_node->next = head->list; \
+            if (head->list) { \
+                head->list->prev = new_node; \
+            } \
+            head->list = new_node; \
+            return (true); \
         } \
         \
-        static inline void \
-            APPEND_TO_TAIL_DECLARATION(name)(LIST(name) **head, type data) \
+        static inline bool APPEND_TO_TAIL_DECLARATION(name)( \
+            LIST_EXTERN(name) *head, type data) \
         { \
-            LIST(name) *mv_ptr = *head; \
+            LIST(name) *mv_ptr = head->list; \
             \
-            if (*head == NULL) { \
-                APPEND_TO_HEAD(name, head, data); \
-                return; \
-            } \
+            if (head->list == NULL) \
+                return (head->push_front(head, data)); \
             for (; mv_ptr->next != NULL; mv_ptr = mv_ptr->next); \
             mv_ptr->next = CREATE_NODE(name, data); \
             mv_ptr->next->prev = mv_ptr; \
+            return (true); \
         } \
         \
-        static inline void \
+        static inline bool \
             APPEND_AT_INDEX_SUB_FUNCTION_DECLARATION(name)( \
                     LIST(name) *head, type data) \
         { \
             LIST(name) *new_node = CREATE_NODE(name, data); \
             LIST(name) *next = head->next; \
             \
+            if (new_node == NULL) \
+                return (false); \
             new_node->next = next; \
             head->next = new_node; \
+            return (true); \
         } \
         \
-        static inline void APPEND_AT_INDEX_DECLARATION(name)( \
-                LIST(name) **head, type data, size_t index) \
+        static inline bool APPEND_AT_INDEX_DECLARATION(name)( \
+                LIST_EXTERN(name) *head, type data, size_t index) \
         { \
-            LIST(name) *mvptr = *head; \
+            LIST(name) *mvptr = head->list; \
             size_t i = 0; \
             \
             if (!mvptr) \
-                return; \
-            if (!index) { \
-                APPEND_TO_HEAD(name, head, data); \
-                return;  \
-            } \
+                return (false); \
+            if (!index) \
+                return (head->push_front(head, data)); \
             for (; mvptr->next && i < index - 1; i++); \
                 mvptr = mvptr->next; \
             if (!mvptr->next) { \
                 efputs(stderr, "Reached end before index - TAIL - NULL"); \
-                return; \
+                return (false); \
             } \
-            APPEND_AT_INDEX_SUB_FUNCTION(name, mvptr, data); \
+            return (APPEND_AT_INDEX_SUB_FUNCTION(name, mvptr, data)); \
         } \
         \
-        static inline void REMOVE_TO_TAIL_DECLARATION(name)(LIST(name) **head) \
+        static inline void REMOVE_TO_TAIL_DECLARATION(name)( \
+            LIST_EXTERN(name) *head) \
         { \
-            LIST(name) *headptr = *head; \
+            LIST(name) *headptr = head->list; \
             \
             if (!headptr) \
                 return; \
             for (; headptr->next; headptr = headptr->next); \
             headptr->prev->next = NULL; \
-            free(headptr); \
+            INTERNAL_DEL(name, &headptr, head->_del); \
         } \
         \
-        static inline void REMOVE_TO_HEAD_DECLARATION(name)(LIST(name) **head) \
+        static inline void REMOVE_TO_HEAD_DECLARATION(name)( \
+            LIST_EXTERN(name) *head) \
         { \
-            LIST(name) *tmp = *head; \
+            LIST(name) *tmp = head->list; \
             \
             if (!tmp) \
                 return; \
-            *head = (*head)->next; \
-            free(tmp); \
+            head->list = head->list->next; \
+            INTERNAL_DEL(name, &tmp, head->_del); \
         } \
         \
         static inline void REMOVE_AT_INDEX_DECLARATION(name)( \
-                LIST(name) **head, size_t index) \
+                LIST_EXTERN(name) *head, size_t index) \
         { \
-            LIST(name) *headptr = *head; \
+            LIST(name) *headptr = head->list; \
             \
             for (size_t i = 0; i < index && headptr; headptr = headptr->next) \
                 i++; \
             if (!headptr) \
                 return; \
             if (!headptr->prev) { \
-                REMOVE_TO_HEAD(name, head); \
+                head->pop_front(head); \
                 return; \
             } \
             if (!headptr->next) { \
                 headptr->prev->next = NULL; \
-                free(headptr); \
+                INTERNAL_DEL(name, &headptr, head->_del); \
                 return; \
             } \
             headptr->prev->next = headptr->next; \
             headptr->next->prev = headptr->prev; \
-            free(headptr); \
+            INTERNAL_DEL(name, &headptr, head->_del); \
         } \
         \
         static inline size_t COUNT_NODE_LIST_DECLARATION(name)( \
-                LIST(name) *head) \
+                LIST_EXTERN(name) *head) \
         { \
+            LIST(name) *tmp = head->list; \
             size_t i = 0; \
             \
-            for (; head; head = head->next) \
+            for (; tmp; tmp = tmp->next) \
                 i++; \
             return (i); \
         } \
         \
-        static inline void REVERSE_LIST_DECLARATION(name)(LIST(name) **head) \
+        static inline void REVERSE_LIST_DECLARATION(name)( \
+            LIST_EXTERN(name) *head) \
         { \
             LIST(name) *tmp = NULL; \
-            LIST(name) *current = *head; \
+            LIST(name) *current = head->list; \
             \
             while (current) { \
                 tmp = current->prev; \
@@ -223,7 +298,25 @@
                 current = current->prev; \
             } \
             if (tmp) \
-                *head = tmp->prev; \
+                head->list = tmp->prev; \
+        } \
+        \
+        static inline LIST_EXTERN(name)CREATE_LIST_DECLARATION(name)(void) \
+        { \
+            LIST_EXTERN(name) new = {0}; \
+            \
+            return (LIST_EXTERN(name)){ \
+                .list = NULL, \
+                .push_back = APPEND_TO_TAIL_DECLARATION(name), \
+                .push_front = APPEND_TO_HEAD_DECLARATION(name), \
+                .insert = APPEND_AT_INDEX_DECLARATION(name), \
+                .pop_front = REMOVE_TO_HEAD_DECLARATION(name), \
+                .pop_back = REMOVE_TO_TAIL_DECLARATION(name), \
+                .erase = REMOVE_AT_INDEX_DECLARATION(name), \
+                .clear = CLEAR_LIST_DECLARATION(name), \
+                ._del = del_internal_fun, \
+                .at = LIST_AT_DECLARATION(name) \
+            }; \
         }
 
 #endif /* !__LIBERTY__LINKED__H__ */
