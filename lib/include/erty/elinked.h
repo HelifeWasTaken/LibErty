@@ -153,10 +153,10 @@
         \
         static inline LIST(name) *CREATE_NODE_DECLARATION(name)(type data) \
         { \
-            LIST(name) *new_node = ecalloc(sizeof(LIST(name)), 1); \
+            LIST(name) *new_node = NULL; \
             \
-            if (new_node) \
-                new_node->data = data; \
+            EXCALLOC(new_node, sizeof(LIST(name)), 1, NULL); \
+            new_node->data = data; \
             return (new_node); \
         } \
         \
