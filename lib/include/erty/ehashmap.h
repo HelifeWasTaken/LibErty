@@ -10,21 +10,13 @@
 
     #include <erty/elinked.h>
     #include <erty/ectypes.h>
-
-    #define TUPLE(name) \
-        struct liberty_templated_tuple_##name
-
-    #define TUPLE_CAST(name, key, value) \
-        TUPLE(name){key, name}
-
-    #define INIT_TUPLE(name, type) \
-        TUPLE(name) { \
-            char *key; \
-            type data; \
-        };
+    #include <erty/tuple.h>
 
     #define HASHMAP(name) \
         struct liberty_templated_hashmap_##name
+
+    #define TUPLE_NAME(name) \
+        liberty_temlated_hashmap_tuple_intern_##name
 
     #define HASHMAP_GETTER_NAME(name) \
         liberty_templated_hashmap_getter_##name
@@ -59,8 +51,7 @@
         HASHMAP_INIT_NAME(name)(size, map, hasher)
 
     #define INIT_HASHMAP(name, type, del_member_fun) \
-        INIT_TUPLE(name, type) \
-        INIT_LIST(name, TUPLE(name), del_member_fun) \
+        INIT_LIST(name, TUPLE(name), del_member_fun); \
         HASHMAP(name) { \
             u64_t (*hash)(const void *); \
             usize_t size; \
@@ -76,15 +67,20 @@
             uint64_t id = self->hash(key) % self->bucket_count; \
             LIST(name) *ptr = self->bucket[id].list; \
             TUPLE(name) tmp; \
+            OPT(name) res; \
             \
             while (ptr) { \
                 if (estrcmp((char *)key, ptr->data.key) == 0) { \
                     tmp = (TUPLE(name)){ptr->data.key, ptr->data.data}; \
-                    return (OK(name, tmp)); \
+                    res.is_ok = true; \
+                    res.value = tmp; \
+                    return (res); \
                 } \
                 ptr = ptr->next; \
             } \
-            return (ERR(name, tmp)); \
+            res.is_ok = false; \
+            res.value = tmp; \
+            return (res); \
         } \
         \
         HASHMAP_RESIZER_INTERNAL_DECLARATION(name)(HASHMAP(name) *self, \
@@ -171,5 +167,15 @@
                 self->bucket[i] = CREATE_LIST(name); \
             return (true); \
         }
+
+    static inline u64_t ehasher(const void *data)
+    {
+        const u8_t *data_cs = (const u8_t*) data;
+        u64_t hash = 0;
+
+        for (usize_t i = 0; data_cs[i]; i++)
+            hash = data_cs[i] + (hash << 6) + (hash << 16) - hash;
+        return (hash);
+    }
 
 #endif /* !__LIBERTY__EHASHMAP__H__ */

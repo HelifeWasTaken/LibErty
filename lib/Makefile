@@ -217,10 +217,15 @@ SRC_SSTR		=	./esstring/init.c 				\
 					./esstring/to_buf.c 			\
 					./esstring/free.c
 
-SRC_EHASHMAP 	=
-
 SRC_EREGEX 		=	./eregex/eregex.c 				\
 					./eregex/eregex_utilities.c
+
+SRC_JSON_LIST	=	./json/list/at.c \
+					./json/list/create.c \
+					./json/list/pop.c \
+					./json/list/push.c
+
+SRC_JSON 		=	$(SRC_JSON_LIST)
 
 SRC_ESTDIO		=	$(SRC_ESTDOUT) 							\
 					$(SRC_ESTDERR)
@@ -267,8 +272,8 @@ SRC				=	$(SRC_EWRITE) 							\
 					$(SRC_STDIO) 							\
 					$(SRC_CSTRING) 							\
 					$(SRC_SSTR) 							\
-					$(SRC_EHASHMAP)							\
-					$(SRC_EREGEX)
+					$(SRC_EREGEX)							\
+					$(SRC_JSON)
 
 TEST_ECTYPE_IS 	=	./tests/ectypes/is/test_eis_alpha.c 	\
 					./tests/ectypes/is/test_eis_lower.c 	\

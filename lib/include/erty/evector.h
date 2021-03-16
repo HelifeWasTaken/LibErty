@@ -54,10 +54,9 @@
     #define VECTOR_INSERT_DECLARATION(name) \
         ssize_t VECTOR_INSERT_NAME(name)
 
-    #define INIT_VECTOR(name, dataname, type, del_member_fun) \
-        INIT_OPT(type, name); \
+    #define INIT_VECTOR(name, type, del_member_fun) \
         VECTOR(name) { \
-            type *dataname; \
+            type *data; \
             size_t size; \
             ssize_t (*push_back)(VECTOR(name) *, type); \
             void (*_del)(type *); \
@@ -73,7 +72,7 @@
             \
             if (idx > this->size) \
                 return (ERR(name, useless)); \
-            return (OK(name, this->dataname[idx])); \
+            return (OK(name, this->data[idx])); \
         } \
         \
         VECTOR_PUSH_BACK_DECLARATION(name)(VECTOR(name) *this, type add) \
@@ -82,10 +81,10 @@
             \
             EXCALLOC(tmp, sizeof(type), this->size + 1, -1); \
             for (size_t i = 0; i < this->size; i++) \
-                ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
+                ememcpy(&tmp[i], &this->data[i], sizeof(type)); \
             ememcpy(&tmp[this->size], &add, sizeof(type)); \
-            FREE(this->dataname); \
-            this->dataname = tmp; \
+            FREE(this->data); \
+            this->data = tmp; \
             this->size++; \
             return (this->size); \
         } \
@@ -101,16 +100,16 @@
                 return (-1); \
             EXCALLOC(tmp, sizeof(type), this->size + 1, -1); \
             for (; i != idx; i++) \
-                ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
+                ememcpy(&tmp[i], &this->data[i], sizeof(type)); \
             ememcpy(&tmp[i], &toadd, sizeof(type)); \
             i2 = i; \
             for (i += 1; i < this->size + 1; i++) { \
-                ememcpy(&tmp[i], &this->dataname[i2], sizeof(type)); \
+                ememcpy(&tmp[i], &this->data[i2], sizeof(type)); \
                 i2++; \
             } \
-            FREE(this->dataname); \
+            FREE(this->data); \
             this->size = i; \
-            this->dataname = tmp; \
+            this->data = tmp; \
             return (this->size); \
         } \
         \
@@ -118,10 +117,10 @@
         { \
             if (this->_del) { \
                 for (size_t i = 0; i < this->size; i++) { \
-                    this->_del(&this->dataname[i]); \
+                    this->_del(&this->data[i]); \
                 } \
             } \
-            FREE(this->dataname); \
+            FREE(this->data); \
             this->size = 0; \
         } \
         \
@@ -134,14 +133,14 @@
                 return (-1); \
             EXCALLOC(tmp, sizeof(type), this->size - 1, -1); \
             for (; i != idx; i++) \
-                ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
+                ememcpy(&tmp[i], &this->data[i], sizeof(type)); \
             if (this->_del) \
-                this->_del(&this->dataname[i]); \
+                this->_del(&this->data[i]); \
             i++; \
             for (; i < this->size; i++) \
-                ememcpy(&tmp[i], &this->dataname[i], sizeof(type)); \
-            FREE(this->dataname); \
-            this->dataname = tmp; \
+                ememcpy(&tmp[i], &this->data[i], sizeof(type)); \
+            FREE(this->data); \
+            this->data = tmp; \
             this->size = i; \
             return (this->size); \
         } \
@@ -157,7 +156,7 @@
             this.insert = VECTOR_INSERT_NAME(name); \
             this.at = VECTOR_AT_NAME(name); \
             this.size = 0; \
-            this.dataname = NULL; \
+            this.data = NULL; \
             return (this); \
         }
 

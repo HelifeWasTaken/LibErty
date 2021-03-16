@@ -112,7 +112,6 @@
     // Functions
 
     #define INIT_LIST(name, type, del_internal_fun) \
-        INIT_OPT(type, name); \
         LIST(name) { \
             type data; \
             LIST(name) *prev; \
@@ -138,7 +137,7 @@
             LIST(name) *tmp = this->list; \
             type useless; \
             \
-            for (size_t idx = 0; tmp && idx < i; i++) \
+            for (size_t idx = 0; tmp && idx < i; idx++) \
                 tmp = tmp->next; \
             return (tmp ? OK(name, tmp->data) : ERR(name, useless)); \
         } \
@@ -197,7 +196,8 @@
             if (head->list == NULL) \
                 return (head->push_front(head, data)); \
             for (; mv_ptr->next != NULL; mv_ptr = mv_ptr->next); \
-            mv_ptr->next = CREATE_NODE(name, data); \
+            if ((mv_ptr->next = CREATE_NODE(name, data)) == NULL) \
+                return (false); \
             mv_ptr->next->prev = mv_ptr; \
             return (true); \
         } \
@@ -222,10 +222,10 @@
             LIST(name) *mvptr = head->list; \
             size_t i = 0; \
             \
-            if (!mvptr) \
-                return (false); \
             if (!index) \
                 return (head->push_front(head, data)); \
+            if (!mvptr) \
+                return (false); \
             for (; mvptr->next && i < index - 1; i++); \
                 mvptr = mvptr->next; \
             if (!mvptr->next) { \
@@ -310,8 +310,6 @@
         \
         static inline LIST_EXTERN(name)CREATE_LIST_DECLARATION(name)(void) \
         { \
-            LIST_EXTERN(name) new = {0}; \
-            \
             return (LIST_EXTERN(name)){ \
                 .list = NULL, \
                 .push_back = APPEND_TO_TAIL_DECLARATION(name), \
