@@ -24,6 +24,9 @@
     #define ERR(name, ...) \
         (OPT(name)){.value=(0, ##__VA_ARGS__), .is_ok=false}
 
+    #define EXPLICIT_ERR(name, v) \
+        (OPT(name)){.value=v, .is_ok=false}
+
     INIT_OPT(i8, int8_t)
     INIT_OPT(u8, u_int8_t)
     INIT_OPT(i16, int16_t)
