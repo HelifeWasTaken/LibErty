@@ -220,6 +220,17 @@ SRC_SSTR		=	./esstring/init.c 				\
 SRC_EREGEX 		=	./eregex/eregex.c 				\
 					./eregex/eregex_utilities.c
 
+SRC_JSON_PARSE 	=	./json/parser/get_buff.c \
+					./json/parser/array.c \
+					./json/parser/init.c \
+					./json/parser/value.c \
+					./json/parser/withespace.c \
+					./json/parser/bool.c \
+					./json/parser/null.c \
+					./json/parser/number.c \
+					./json/parser/object.c \
+					./json/parser/string.c
+
 SRC_JSON_VEC 	=	./json/vector/at.c \
 					./json/vector/clear.c \
 					./json/vector/insert.c
@@ -236,7 +247,8 @@ SRC_JSON_HASH 	=	./json/hashmap/clear.c \
 
 SRC_JSON 		=	$(SRC_JSON_LIST) \
 					$(SRC_JSON_HASH) \
-					$(SRC_JSON_VEC)
+					$(SRC_JSON_VEC) \
+					$(SRC_JSON_PARSE)
 
 SRC_ESTDIO		=	$(SRC_ESTDOUT) 							\
 					$(SRC_ESTDERR)

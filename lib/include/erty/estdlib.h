@@ -178,7 +178,7 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    long long estrtoll(cstr_t str, cstr_t *endptr, i32_t base);
+    long long estrtoll(cstr_t str, const_cstr_t *endptr, i32_t base);
 
     ////////////////////////////////////////////////////////////
     ///

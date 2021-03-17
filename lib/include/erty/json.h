@@ -12,46 +12,34 @@
     #include <erty/estring.h>
     #include <erty/ectypes.h>
     #include <erty/opt.h>
+    #include <sys/stat.h>
+    #include <sys/fcntl.h>
 
     typedef struct json json_t;
 
-    struct json {
-        union {
-            char *string;
-            f64_t number;
-            bool boolean;
-            void *null;
-        } v;
-        enum {
-            JSON_ANY,
-            JSON_STR,
-            JSON_NUM,
-            JSON_OBJ,
-            JSON_ARR,
-            JSON_BOOL,
-            JSON_NULL
-        } t;
+    enum json_type {
+        JSON_ANY,
+        JSON_STR,
+        JSON_NUM,
+        JSON_OBJ,
+        JSON_ARR,
+        JSON_BOOL,
+        JSON_NULL
     };
 
-    static inline void destroy_json(struct json *self)
-    {
-        switch (self->t) {
-            case JSON_ANY:
-            case JSON_NULL:
-                FREE(self->v.null)
-                break;
-            case JSON_STR:
-                FREE(self->v.string);
-                break;
-            case JSON_NUM:
-            case JSON_BOOL:
-                break;
-            case JSON_OBJ:
-                break;
-            case JSON_ARR:
-                break;
-        }
-    }
+    union json_value {
+        char *string;
+        f64_t number;
+        bool boolean;
+        void *null;
+        void *array;
+        void *object;
+    };
+
+    struct json {
+        union json_value v;
+        enum json_type t;
+    };
 
     INIT_OPT(json, struct json)
 
@@ -60,14 +48,28 @@
         struct json data;
     } json_tuple_bucket_t;
 
-    #define JSON_TUPLE(key, value) (json_tuple_bucket_t){key, value}
-    INIT_OPT(json_bucket, struct tuple_json_bucket)
+    struct json_array {
+        struct json *data;
+        usize_t size;
+        isize_t (*push_back)(struct json_array **, struct json);
+        void (*_del)(struct json *);
+        isize_t (*erase)(struct json_array **, usize_t idx);
+        void (*clear)(struct json_array **);
+        isize_t (*insert)(struct json_array **, struct json, usize_t idx);
+        OPT(json) (*at)(struct json_array **, usize_t idx);
+    };
 
-    static inline void destroy_json_tuple(struct tuple_json_bucket *data)
-    {
-        FREE(data->key);
-        destroy_json(&data->data);
-    }
+    typedef struct json_hashmap {
+        u64_t (*hash)(const void *);
+        usize_t size;
+        usize_t bucket_count;
+        bool (*insert)(struct json_hashmap **, struct tuple_json_bucket);
+        void (*clear)(struct json_hashmap **);
+        OPT(json) (*get)(struct json_hashmap **, void *key);
+        struct json_bucket *bucket;
+    } json_hashmap_t;
+
+    INIT_OPT(json_bucket, struct tuple_json_bucket)
 
     struct json_bucket_data {
         json_tuple_bucket_t data;
@@ -98,21 +100,11 @@
         return (hash);
     }
 
-    typedef struct json_hashmap {
-        u64_t (*hash)(const void *);
-        usize_t size;
-        usize_t bucket_count;
-        bool (*insert)(struct json_hashmap *, struct tuple_json_bucket);
-        void (*clear)(struct json_hashmap *);
-        OPT(json) (*get)(struct json_hashmap *, void *key);
-        struct json_bucket *bucket;
-    } json_hashmap_t;
-
-    bool json_hashmap_insert(struct json_hashmap *self,
+    bool json_hashmap_insert(struct json_hashmap **self,
                             struct tuple_json_bucket data);
-    OPT(json) json_hashmap_getter(struct json_hashmap *self, void *key);
-    bool json_hashmap_resizer(struct json_hashmap *self);
-    void json_hashmap_clear(struct json_hashmap *self);
+    OPT(json) json_hashmap_getter(struct json_hashmap **self, void *key);
+    bool json_hashmap_resizer(struct json_hashmap **self);
+    void json_hashmap_clear(struct json_hashmap **self);
 
     struct json_bucket_data *create_json_bucket_node(json_tuple_bucket_t data);
     bool json_bucket_push_back(struct json_bucket *self,
@@ -127,6 +119,42 @@
     void json_bucket_pop_tail(struct json_bucket *self);
 
     OPT(json_bucket) json_bucket_get_at(struct json_bucket *self, size_t i);
+
+    #define CLEAR_JSON_OBJECT(object) \
+        do { \
+            struct json_hashmap *tmp = object; \
+            tmp->clear(&tmp); \
+        } while (0);
+
+    #define CLEAR_JSON_ARRAY(array) \
+        do { \
+            struct json_array *tmp = array; \
+            tmp->clear(&tmp); \
+        } while (0);
+
+    static inline void destroy_json(struct json *self)
+    {
+        switch (self->t) {
+            case JSON_ANY:
+                FREE(self->v.null)
+                break;
+            case JSON_NULL:
+                FREE(self->v.null)
+                break;
+            case JSON_STR:
+                FREE(self->v.string);
+                break;
+            case JSON_NUM:
+            case JSON_BOOL:
+                break;
+            case JSON_OBJ:
+                CLEAR_JSON_OBJECT(self->v.object);
+                break;
+            case JSON_ARR:
+                CLEAR_JSON_ARRAY(self->v.array);
+                break;
+        }
+    }
 
     static inline struct json_bucket create_json_bucket(
         void (*_del)(json_tuple_bucket_t *))
@@ -145,9 +173,18 @@
         });
     }
 
-    static inline bool create_json_hashmap(struct json_hashmap *self,
-                            usize_t bucket_count, u64_t (*hash)(const void *))
+    static inline void destroy_json_tuple(struct tuple_json_bucket *data)
     {
+        FREE(data->key);
+        destroy_json(&data->data);
+    }
+
+    static inline struct json_hashmap *create_json_hashmap(usize_t bucket_count,
+                                            u64_t (*hash)(const void *))
+    {
+        struct json_hashmap *self = NULL;
+
+        EXCALLOC(self, sizeof(struct json_hashmap), 1, NULL);
         *self = (struct json_hashmap){
             .hash = hash,
             .size = 0,
@@ -157,33 +194,26 @@
             .get = json_hashmap_getter,
             .bucket = NULL
         };
-        EXCALLOC(self->bucket, sizeof(struct json_hashmap),
-                bucket_count, false);
+        EXCALLOC(self->bucket, sizeof(struct json_bucket),
+                bucket_count, NULL);
         for (usize_t i = 0; i < bucket_count; i++)
             self->bucket[i] = create_json_bucket(destroy_json_tuple);
+        return (self);
     }
 
-    struct json_array {
-        struct json *data;
-        usize_t size;
-        isize_t (*push_back)(struct json_array *, struct json);
-        void (*_del)(struct json *);
-        isize_t (*erase)(struct json_array *, usize_t idx);
-        void (*clear)(struct json_array *);
-        isize_t (*insert)(struct json_array *, struct json, usize_t idx);
-        OPT(json) (*at)(struct json_array *, usize_t idx);
-    };
-
-    isize_t json_vector_insert(struct json_array *self,
+    isize_t json_vector_insert(struct json_array **self,
                                 struct json add, usize_t idx);
-    isize_t json_vector_push_back(struct json_array *self, struct json add);
-    isize_t json_vector_erase(struct json_array *self, usize_t idx);
-    void json_vector_clear(struct json_array *self);
-    OPT(json) json_vector_at(struct json_array *self, usize_t idx);
+    isize_t json_vector_push_back(struct json_array **self, struct json add);
+    isize_t json_vector_erase(struct json_array **self, usize_t idx);
+    void json_vector_clear(struct json_array **self);
+    OPT(json) json_vector_at(struct json_array **self, usize_t idx);
 
-    static inline struct json_array json_vector_create(void)
+    static inline struct json_array *json_vector_create(void)
     {
-        return ((struct json_array){
+        struct json_array *self = NULL;
+
+        EXCALLOC(self, sizeof(struct json_array), 1, NULL);
+        *self = (struct json_array){
             .at = json_vector_at,
             .clear = json_vector_clear,
             .data = NULL,
@@ -192,12 +222,41 @@
             .push_back = json_vector_push_back,
             .size = 0,
             ._del = destroy_json
-        });
+        };
+        return (self);
     }
 
     #define FREE_INTERNAL_BUCKET(_del, ptr) \
         if (ptr && _del) \
             _del(&ptr->data); \
         FREE(ptr)
+
+    #define RESET_STRUCTURE_JSON(st) \
+        do { \
+            struct json resseted_intern_st = {0}; \
+            st = resseted_intern_st; \
+        } while (0)
+
+    #define IS_JSON_WITHESPACE(x) \
+        (x == ' ' || x == '\t' || x == '\n' || x == '\r')
+
+    #define JSON_TUPLE(key, value) (json_tuple_bucket_t){key, value}
+
+    INIT_OPT(string, struct string_class)
+
+    #define BUFF_CHUNK_JSON BUFF_CHUNK
+
+    bool json_parser(struct json *conf, char const *file);
+
+    bool json_parse_value(struct json *conf, char const **buff);
+
+    bool json_parse_array(struct json *conf, char const **buffer);
+    bool json_parse_string(struct json *conf, char const **buffer);
+    bool json_parse_number(struct json *conf, char const **buffer);
+    bool json_parse_boolean(struct json *conf, char const **buff);
+    bool json_parse_null(struct json *conf, char const **buff);
+    bool json_parse_object(struct json *conf, char const **buff);
+
+    void json_parse_withe_space(char const **buff);
 
 #endif

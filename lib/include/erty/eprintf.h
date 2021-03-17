@@ -389,7 +389,7 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    void eprintf_buffer_reset(ebuff_t **buff);
+    void eprintf_buffer_reset(ebuff_t **buff, bool flush, fd_t fd);
 
     ////////////////////////////////////////////////////////////
     ///
@@ -481,7 +481,8 @@
     ///
     ////////////////////////////////////////////////////////////
 
-    ebuff_t **eprintf_parser(const_cstr_t format, va_list *ap);
+    ebuff_t **eprintf_parser(const_cstr_t format, bool flush,
+                            fd_t fd, va_list *ap);
 
     ////////////////////////////////////////////////////////////
     ///

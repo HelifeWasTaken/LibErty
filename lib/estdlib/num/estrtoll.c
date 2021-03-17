@@ -8,11 +8,11 @@
 #include <erty/ectypes.h>
 #include <erty/estdlib.h>
 
-long long estrtoll(cstr_t str, cstr_t *endptr, i32_t base)
+long long estrtoll(cstr_t str, const_cstr_t *endptr, i32_t base)
 {
     long long result = 0;
     size_t i = 0;
-    i8_t sign = eget_start_sign(str, &i);
+    long long sign = eget_start_sign(str, &i);
     u8_t indexbase = 0;
 
     *endptr = str;

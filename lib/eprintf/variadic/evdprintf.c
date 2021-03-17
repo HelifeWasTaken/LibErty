@@ -20,7 +20,7 @@ i32_t evdprintf(fd_t fd, const_cstr_t format, va_list *ap)
         return (PRINTF_FAIL("evdprintf"));
     if (!check_eprintf_format(format))
         return (ewrite(fd, format, estrlen(format)));
-    buff = eprintf_parser(format, ap);
+    buff = eprintf_parser(format, true, fd, ap);
     if (!buff || *buff == NULL)
         return (PRINTF_FAIL("evdprintf"));
     result = eflush_buff(buff);

@@ -84,11 +84,17 @@
         efprintf(stderr, "%s: %s\n", assertinf.prg, assertinf.expr);
     }
 
+    #define COLORFUL_ASSERT
+
     #define DEBUG_ASSERT(prg, expr) \
         edebugassert((eassert_t){prg, expr, __FILE__, __func__, __LINE__})
 
-    #define ASSERT(prg, expr) \
-        eassert((eassert_t){prg, expr, NULL, NULL, 0})
+    #ifndef COLORFUL_ASSERT
+        #define ASSERT(prg, expr) \
+            eassert((eassert_t){prg, expr, NULL, NULL, 0})
+    #else
+        #define ASSERT(prg, expr) DEBUG_ASSERT(prg, expr)
+    #endif
 
     #define DEBUG_PRINTF(format, ...) \
         efprintf(stderr, GREEN"%s:%d -> "BLUE"["format"]\n"DEFAULT, \

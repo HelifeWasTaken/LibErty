@@ -42,12 +42,12 @@ static ssize_t eprintf_parse_flag(ebuff_t **buffer,
     return (PRINTF_FAIL("eprintf_parse_flag"));
 }
 
-ebuff_t **eprintf_parser(const_cstr_t format, va_list *ap)
+ebuff_t **eprintf_parser(const_cstr_t format, bool flush, fd_t fd, va_list *ap)
 {
     ebuff_t **buffer = eprintf_global_buff();
     i32_t error = EPRINTF_SUCCESS;
 
-    eprintf_buffer_reset(buffer);
+    eprintf_buffer_reset(buffer, flush, fd);
     while (*format) {
         if (*format == '%' && *(format + 1) != '%') {
             consume_format_char(&format, 1);

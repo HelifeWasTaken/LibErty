@@ -10,6 +10,7 @@
 
     #include <erty/ectypes.h>
     #include <erty/string/ecstring.h>
+    #include <erty/opt.h>
 
     typedef struct string_class string_t;
 
@@ -41,5 +42,7 @@
     ssize_t print_sstr(const string_t *this);
 
     string_t init_string(cstr_t buffer);
+
+    OPT(string) json_get_buffer(const int fd);
 
 #endif /* !__LIBERTY__SSTRING__H__ */

@@ -7,13 +7,12 @@
 
 #include <erty/json.h>
 
-OPT(json) json_hashmap_getter(struct json_hashmap *self, void *key)
+OPT(json) json_hashmap_getter(struct json_hashmap **self, void *key)
 {
-    u64_t id = self->hash(key) % self->bucket_count;
-    struct json unintialized UNUSED;
+    u64_t id = (*self)->hash(key) % (*self)->bucket_count;
+    struct json unintialized = {0};
 
-    UNINITIALIZED(unintialized);
-    for (struct json_bucket_data *ptr = self->bucket[id].list;
+    for (struct json_bucket_data *ptr = (*self)->bucket[id].list;
         ptr != NULL; ptr = ptr->next)
         if (estrcmp((char *)key, ptr->data.key) == 0)
             return (OK(json, ptr->data.data));

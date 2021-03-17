@@ -7,9 +7,10 @@
 
 #include <erty/json.h>
 
-void json_hashmap_clear(struct json_hashmap *self)
+void json_hashmap_clear(struct json_hashmap **self)
 {
-    for (usize_t i = 0; i < self->bucket_count; i++)
-        self->bucket[i].clear(&self->bucket[i]);
-    FREE(self->bucket);
+    for (usize_t i = 0; i < (*self)->bucket_count; i++)
+        (*self)->bucket[i].clear(&(*self)->bucket[i]);
+    FREE((*self)->bucket);
+    FREE(*self);
 }
