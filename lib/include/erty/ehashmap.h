@@ -105,7 +105,7 @@
         HASHMAP_RESIZER_DECLARATION(name)(HASHMAP(name) *self) \
         { \
             LIST_EXTERN(name) *n_buck = NULL; \
-            size_t original = self->bucket_count; \
+            usize_t original = self->bucket_count; \
             \
             self->bucket_count *= 2; \
             EXCALLOC(n_buck, sizeof(LIST_EXTERN(name)), \
@@ -125,8 +125,10 @@
         { \
             usize_t v = self->hash(data.key) % self->bucket_count; \
             LIST(name) *ptr = self->bucket[v].list; \
-            size_t count = 0; \
+            usize_t count = 0; \
             \
+            if (data.key == NULL) \
+                return (false); \
             if (HASHMAP_GETTER_NAME(name)(self, data.key).is_ok == true) { \
                 DEBUG_PRINTF("ERROR: Key duplicate detected: %s", data.key); \
                 return (false); \
@@ -137,7 +139,8 @@
                 self->size++; \
                 if ((count > 2 && (self->size >= self->bucket_count / 2)) \
                     || count > 3) \
-                    HASHMAP_RESIZER_NAME(name)(self); \
+                    return (HASHMAP_RESIZER_NAME(name)(self)); \
+                return (true); \
             } \
             return (false); \
         } \
@@ -149,8 +152,8 @@
             FREE(self->bucket); \
         } \
         \
-        HASHMAP_INIT_DECLARATION(name)(usize_t bucket_count, \
-            HASHMAP(name) *self, u64_t (*hash)(const void *)) \
+        HASHMAP_INIT_DECLARATION(name)(HASHMAP(name) *self, \
+            usize_t bucket_count, u64_t (*hash)(const void *)) \
         { \
             *self = (HASHMAP(name)){ \
                 .hash = hash, \
@@ -167,15 +170,5 @@
                 self->bucket[i] = CREATE_LIST(name); \
             return (true); \
         }
-
-    static inline u64_t ehasher(const void *data)
-    {
-        const u8_t *data_cs = (const u8_t*) data;
-        u64_t hash = 0;
-
-        for (usize_t i = 0; data_cs[i]; i++)
-            hash = data_cs[i] + (hash << 6) + (hash << 16) - hash;
-        return (hash);
-    }
 
 #endif /* !__LIBERTY__EHASHMAP__H__ */
