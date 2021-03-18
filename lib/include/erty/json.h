@@ -252,6 +252,7 @@
 
     bool json_parse_array(struct json *conf, char const **buffer);
     bool json_parse_string(struct json *conf, char const **buffer);
+    bool json_parse_string_internal(char **res, char const **buffer);
     bool json_parse_number(struct json *conf, char const **buffer);
     bool json_parse_boolean(struct json *conf, char const **buff);
     bool json_parse_null(struct json *conf, char const **buff);

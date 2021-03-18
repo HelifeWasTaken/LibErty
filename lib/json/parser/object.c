@@ -11,18 +11,14 @@ static bool json_object_read_data(struct json_hashmap *objects,
                                     char const **buff)
 {
     char *key = NULL;
-    char *endptr = NULL;
     struct json tmp = {0};
 
     json_parse_withe_space(buff);
     if (**buff != '\"')
         return (false);
     (*buff)++;
-    if ((endptr = estrchr(*buff, '\"')) == NULL)
+    if (json_parse_string_internal(&key, buff) == false)
         return (false);
-    if ((key = estrndup(*buff, endptr - *buff)) == NULL)
-        return (false);
-    *buff = ++endptr;
     json_parse_withe_space(buff);
     if (**buff != ':')
         return (false);

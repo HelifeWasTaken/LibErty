@@ -7,20 +7,77 @@
 
 #include <erty/json.h>
 
+struct escapes_equivalences {
+    char code;
+    char escape;
+};
+
+static const struct escapes_equivalences TOKENS_ESCAPE[] = {
+    {'\"', '\"'},
+    {'\\', '\\'},
+    {'/', '/'},
+    {'b', '\b'},
+    {'f', '\f'},
+    {'n', '\n'},
+    {'r', '\r'},
+    {'t', '\t'},
+    {'u', 'u'}
+};
+
+static bool parse_escape(char const **buffer, char *c)
+{
+    (*buffer)++;
+    for (usize_t i = 0; i < ARRAY_SIZE(TOKENS_ESCAPE); i++) {
+        if (TOKENS_ESCAPE[i].code == **buffer) {
+            *c = TOKENS_ESCAPE[i].escape;
+            return (true);
+        }
+    }
+    return (false);
+}
+
+bool json_parse_string_internal_end(char **res, char const **buffer,
+                                    struct string_class *str)
+{
+    if (**buffer != '\"')
+        return (false);
+    *res = str->to_buf(str);
+    (*buffer)++;
+    return (true);
+}
+
+bool json_parse_string_internal(char **res, char const **buffer)
+{
+    char tmp[2] = {0};
+    struct string_class str = init_string(NULL);
+
+    while (**buffer && **buffer != '\"') {
+        if (**buffer == '\\') {
+            (*buffer)++;
+            if (parse_escape(buffer, &tmp[0]) == false)
+                return (false);
+            if (str.append(&str, tmp) == -1)
+                return (false);
+            continue;
+        }
+        tmp[0] = **buffer;
+        (*buffer)++;
+        if (str.append(&str, tmp) == -1)
+            return (false);
+    }
+    return (json_parse_string_internal_end(res, buffer, &str));
+}
+
 bool json_parse_string(struct json *conf, char const **buffer)
 {
-    char *endptr = NULL;
     char *res = NULL;
 
     if (**buffer != '\"')
         return (false);
     (*buffer)++;
-    if ((endptr = estrchr(*buffer, '\"')) == NULL)
-        return (false);
-    if ((res = estrndup(*buffer, endptr - *buffer)) == NULL)
+    if (json_parse_string_internal(&res, buffer) == false)
         return (false);
     conf->t = JSON_STR;
     conf->v.string = res;
-    *buffer = ++endptr;
     return (true);
 }
