@@ -120,21 +120,21 @@
         \
         LIST_EXTERN(name) { \
             LIST(name) *list; \
-            bool (*push_back)(LIST_EXTERN(name) *head, type data); \
-            bool (*push_front)(LIST_EXTERN(name) *head, type data); \
-            bool (*insert)(LIST_EXTERN(name) *head, type data, size_t i); \
-            void (*pop_front)(LIST_EXTERN(name) *head); \
-            void (*pop_back)(LIST_EXTERN(name) *head); \
-            void (*erase)(LIST_EXTERN(name) *head, size_t i); \
-            void (*clear)(LIST_EXTERN(name) *head); \
+            bool (*push_back)(LIST_EXTERN(name) **head, type data); \
+            bool (*push_front)(LIST_EXTERN(name) **head, type data); \
+            bool (*insert)(LIST_EXTERN(name) **head, type data, size_t i); \
+            void (*pop_front)(LIST_EXTERN(name) **head); \
+            void (*pop_back)(LIST_EXTERN(name) **head); \
+            void (*erase)(LIST_EXTERN(name) **head, size_t i); \
+            void (*clear)(LIST_EXTERN(name) **head); \
             void (*_del)(type *data); \
-            OPT(name) (*at)(LIST_EXTERN(name) *head, size_t i); \
+            OPT(name) (*at)(LIST_EXTERN(name) **head, size_t i); \
         }; \
         \
         static inline OPT(name) LIST_AT_DECLARATION(name)( \
-            LIST_EXTERN(name) *this, size_t i) \
+            LIST_EXTERN(name) **this, size_t i) \
         { \
-            LIST(name) *tmp = this->list; \
+            LIST(name) *tmp = (*this)->list; \
             type useless; \
             \
             for (size_t idx = 0; tmp && idx < i; idx++) \
@@ -160,41 +160,41 @@
         } \
         \
         static inline void CLEAR_LIST_DECLARATION(name)( \
-            LIST_EXTERN(name) *head) \
+            LIST_EXTERN(name) **head) \
         { \
             LIST(name) *tmp = NULL; \
             \
-            while (head->list != NULL) {\
-                tmp = head->list; \
-                head->list = head->list->next; \
-                if (head->_del) \
-                    head->_del(&tmp->data); \
+            while ((*head)->list != NULL) {\
+                tmp = (*head)->list; \
+                (*head)->list = (*head)->list->next; \
+                if ((*head)->_del) \
+                    (*head)->_del(&tmp->data); \
                 FREE(tmp); \
             } \
         } \
         \
         static inline bool APPEND_TO_HEAD_DECLARATION(name)( \
-                LIST_EXTERN(name) *head, type data) \
+                LIST_EXTERN(name) **head, type data) \
         { \
             LIST(name) *new_node =  CREATE_NODE(name, data); \
             \
             if (!new_node) \
                 return (false); \
-            new_node->next = head->list; \
-            if (head->list) { \
-                head->list->prev = new_node; \
+            new_node->next = (*head)->list; \
+            if ((*head)->list) { \
+                (*head)->list->prev = new_node; \
             } \
-            head->list = new_node; \
+            (*head)->list = new_node; \
             return (true); \
         } \
         \
         static inline bool APPEND_TO_TAIL_DECLARATION(name)( \
-            LIST_EXTERN(name) *head, type data) \
+            LIST_EXTERN(name) **head, type data) \
         { \
-            LIST(name) *mv_ptr = head->list; \
+            LIST(name) *mv_ptr = (*head)->list; \
             \
-            if (head->list == NULL) \
-                return (head->push_front(head, data)); \
+            if ((*head)->list == NULL) \
+                return ((*head)->push_front(head, data)); \
             for (; mv_ptr->next != NULL; mv_ptr = mv_ptr->next); \
             if ((mv_ptr->next = CREATE_NODE(name, data)) == NULL) \
                 return (false); \
@@ -217,13 +217,13 @@
         } \
         \
         static inline bool APPEND_AT_INDEX_DECLARATION(name)( \
-                LIST_EXTERN(name) *head, type data, size_t index) \
+                LIST_EXTERN(name) **head, type data, size_t index) \
         { \
-            LIST(name) *mvptr = head->list; \
+            LIST(name) *mvptr = (*head)->list; \
             size_t i = 0; \
             \
             if (!index) \
-                return (head->push_front(head, data)); \
+                return ((*head)->push_front(head, data)); \
             if (!mvptr) \
                 return (false); \
             for (; mvptr->next && i < index - 1; i++); \
@@ -236,55 +236,61 @@
         } \
         \
         static inline void REMOVE_TO_TAIL_DECLARATION(name)( \
-            LIST_EXTERN(name) *head) \
+            LIST_EXTERN(name) **head) \
         { \
-            LIST(name) *headptr = head->list; \
+            LIST(name) *headptr = (*head)->list; \
+            LIST(name) *last = NULL; \
             \
             if (!headptr) \
                 return; \
-            for (; headptr->next; headptr = headptr->next); \
-            headptr->prev->next = NULL; \
-            INTERNAL_DEL(name, &headptr, head->_del); \
+            if (headptr->next == NULL) {\
+                INTERNAL_DEL(name, &headptr, (*head)->_del); \
+                return; \
+            } \
+            for (; headptr->next->next; headptr = headptr->next); \
+            last = headptr->next; \
+            headptr->next = NULL; \
+            INTERNAL_DEL(name, &last, (*head)->_del); \
         } \
         \
         static inline void REMOVE_TO_HEAD_DECLARATION(name)( \
-            LIST_EXTERN(name) *head) \
+            LIST_EXTERN(name) **head) \
         { \
-            LIST(name) *tmp = head->list; \
+            LIST(name) *tmp = (*head)->list; \
             \
             if (!tmp) \
                 return; \
-            head->list = head->list->next; \
-            INTERNAL_DEL(name, &tmp, head->_del); \
+            (*head)->list = (*head)->list->next; \
+            INTERNAL_DEL(name, &tmp, (*head)->_del); \
         } \
         \
         static inline void REMOVE_AT_INDEX_DECLARATION(name)( \
-                LIST_EXTERN(name) *head, size_t index) \
+                LIST_EXTERN(name) **head, size_t index) \
         { \
-            LIST(name) *headptr = head->list; \
+            LIST(name) *headptr = (*head)->list; \
             \
             for (size_t i = 0; i < index && headptr; headptr = headptr->next) \
                 i++; \
             if (!headptr) \
                 return; \
             if (!headptr->prev) { \
-                head->pop_front(head); \
+                (*head)->pop_front(head); \
                 return; \
             } \
             if (!headptr->next) { \
                 headptr->prev->next = NULL; \
-                INTERNAL_DEL(name, &headptr, head->_del); \
+                INTERNAL_DEL(name, &headptr, (*head)->_del); \
                 return; \
             } \
             headptr->prev->next = headptr->next; \
             headptr->next->prev = headptr->prev; \
-            INTERNAL_DEL(name, &headptr, head->_del); \
+            INTERNAL_DEL(name, &headptr, (*head)->_del); \
         } \
         \
         static inline size_t COUNT_NODE_LIST_DECLARATION(name)( \
-                LIST_EXTERN(name) *head) \
+                LIST_EXTERN(name) **head) \
         { \
-            LIST(name) *tmp = head->list; \
+            LIST(name) *tmp = (*head)->list; \
             size_t i = 0; \
             \
             for (; tmp; tmp = tmp->next) \
@@ -293,10 +299,10 @@
         } \
         \
         static inline void REVERSE_LIST_DECLARATION(name)( \
-            LIST_EXTERN(name) *head) \
+            LIST_EXTERN(name) **head) \
         { \
             LIST(name) *tmp = NULL; \
-            LIST(name) *current = head->list; \
+            LIST(name) *current = (*head)->list; \
             \
             while (current) { \
                 tmp = current->prev; \
@@ -305,23 +311,25 @@
                 current = current->prev; \
             } \
             if (tmp) \
-                head->list = tmp->prev; \
+                (*head)->list = tmp->prev; \
         } \
         \
-        static inline LIST_EXTERN(name)CREATE_LIST_DECLARATION(name)(void) \
+        static inline LIST_EXTERN(name) *CREATE_LIST_DECLARATION(name)(void) \
         { \
-            return (LIST_EXTERN(name)){ \
-                .list = NULL, \
-                .push_back = APPEND_TO_TAIL_DECLARATION(name), \
-                .push_front = APPEND_TO_HEAD_DECLARATION(name), \
-                .insert = APPEND_AT_INDEX_DECLARATION(name), \
-                .pop_front = REMOVE_TO_HEAD_DECLARATION(name), \
-                .pop_back = REMOVE_TO_TAIL_DECLARATION(name), \
-                .erase = REMOVE_AT_INDEX_DECLARATION(name), \
-                .clear = CLEAR_LIST_DECLARATION(name), \
-                ._del = del_internal_fun, \
-                .at = LIST_AT_DECLARATION(name) \
-            }; \
+            LIST_EXTERN(name) *self = NULL; \
+            \
+            EXCALLOC(self, sizeof(LIST_EXTERN(name)), 1, NULL); \
+            self->list = NULL; \
+            self->push_back = APPEND_TO_TAIL_DECLARATION(name); \
+            self->push_front = APPEND_TO_HEAD_DECLARATION(name); \
+            self->insert = APPEND_AT_INDEX_DECLARATION(name); \
+            self->pop_front = REMOVE_TO_HEAD_DECLARATION(name); \
+            self->pop_back = REMOVE_TO_TAIL_DECLARATION(name); \
+            self->erase = REMOVE_AT_INDEX_DECLARATION(name); \
+            self->clear = CLEAR_LIST_DECLARATION(name); \
+            self->_del = del_internal_fun; \
+            self->at = LIST_AT_DECLARATION(name); \
+            return (self); \
         }
 
 #endif /* !__LIBERTY__LINKED__H__ */

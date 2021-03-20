@@ -22,16 +22,18 @@ static const struct json_token_parser TOKENS_PARSER[] = {
 
 static bool failure_parse_value(void)
 {
-    ASSERT("LibSeraph", "Parsing value failed");
     return (false);
 }
 
 bool json_parse_value(struct json *conf, char const **buff)
 {
+    usize_t i = 0;
+
     json_parse_withe_space(buff);
-    for (usize_t i = 0; i < ARRAY_SIZE(TOKENS_PARSER) && buff && *buff; i++) {
+    for (; i < ARRAY_SIZE(TOKENS_PARSER) && buff && *buff; i++) {
         if (TOKENS_PARSER[i].parser(conf, buff) == true)
             return (true);
     }
+    ASSERT("LibSeraph", "No parser accepted the conf");
     return (failure_parse_value());
 }

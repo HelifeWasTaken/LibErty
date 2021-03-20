@@ -19,6 +19,18 @@ int main(int ac, char **av)
         file = av[1];
     if (json_parser(&conf, file) == false)
         return (132);
+    struct json_hashmap *map = conf.v.object;
+
+    struct json_array *arr = map->get(&map, "properties").value.v.object;
+    map = arr->data[1].v.object;
+    printf("%s\n", map->get(&map, "name").value.v.string);
+    /*
+    struct json_array *arr = map->get(&map, "properties").value.v.array;
+    printf("%ld\n", arr->size);
+    fflush(stdout);
+    printf("%s\n", map->get(&map, "value").value.v.string);
+//    printf("%s\n", map->get(&map, "value").value.v.string);
+    */
     destroy_json(&conf);
     eprintf_free_buff();
     return 0;

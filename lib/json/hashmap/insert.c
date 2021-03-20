@@ -7,7 +7,8 @@
 
 #include <erty/json.h>
 
-bool json_hashmap_insert(struct json_hashmap **self, struct tuple_json_bucket data)
+bool json_hashmap_insert(struct json_hashmap **self,
+                        struct tuple_json_bucket data)
 {
     usize_t v = (*self)->hash(data.key) % (*self)->bucket_count;
     struct json_bucket_data *ptr = (*self)->bucket[v].list;

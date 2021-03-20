@@ -84,16 +84,19 @@
         efprintf(stderr, "%s: %s\n", assertinf.prg, assertinf.expr);
     }
 
-    #define COLORFUL_ASSERT
+    #define HYPER_ASSERT
 
     #define DEBUG_ASSERT(prg, expr) \
         edebugassert((eassert_t){prg, expr, __FILE__, __func__, __LINE__})
 
-    #ifndef COLORFUL_ASSERT
+    #ifndef HYPER_ASSERT
         #define ASSERT(prg, expr) \
             eassert((eassert_t){prg, expr, NULL, NULL, 0})
     #else
         #define ASSERT(prg, expr) DEBUG_ASSERT(prg, expr)
+        #define ASSERT_RET(prg, expr, retv) \
+            DEBUG_ASSERT(prg, expr); \
+            return (retv)
     #endif
 
     #define DEBUG_PRINTF(format, ...) \

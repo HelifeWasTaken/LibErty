@@ -8,7 +8,7 @@
 #include <erty/json.h>
 
 static bool json_read_array(struct json *conf, char const **buffer,
-                            struct json_array **arr)
+    struct json_array **arr)
 {
     struct json tmp = {0};
 
@@ -17,10 +17,11 @@ static bool json_read_array(struct json *conf, char const **buffer,
         if (**buffer == ']') {
             *buffer += 1;
             conf->t = JSON_ARR;
-            conf->v.array = arr;
+            conf->v.array = *arr;
             return (true);
-        } else if ((*buffer = estrchr(*buffer, ',')) == NULL)
-            return (false);
+        } else if ((*buffer = estrchr(*buffer, ',')) == NULL) {
+            ASSERT_RET("LibSeraph", "expected ',' after value [array]", false);
+        }
         *buffer += 1;
         if (json_parse_value(&tmp, buffer) == false)
             return (false);
@@ -28,7 +29,7 @@ static bool json_read_array(struct json *conf, char const **buffer,
             return (false);
         RESET_STRUCTURE_JSON(tmp);
     }
-    return (false);
+    ASSERT_RET("LibSeraph", "expected ']' to end the array", false);
 }
 
 bool json_parse_array(struct json *conf, char const **buffer)
@@ -40,7 +41,8 @@ bool json_parse_array(struct json *conf, char const **buffer)
         return (false);
     if ((arr = json_vector_create()) == NULL)
         return (false);
-    *buffer += 1;
+    (*buffer)++;
+    json_parse_withe_space(buffer);
     if (**buffer == ']') {
         (*buffer)++;
         conf->t = JSON_ARR;

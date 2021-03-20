@@ -14,15 +14,20 @@ static bool json_object_read_data(struct json_hashmap *objects,
     struct json tmp = {0};
 
     json_parse_withe_space(buff);
-    if (**buff != '\"')
+    if (**buff != '\"') {
+        ASSERT("LibSeraph", "had trouble finding the start of the string");
         return (false);
+    }
     (*buff)++;
     if (json_parse_string_internal(&key, buff) == false)
         return (false);
     json_parse_withe_space(buff);
-    if (**buff != ':')
+    if (**buff != ':') {
+        ASSERT("LibSeraph", "had trouble finding the ':' of the object");
         return (false);
-    *buff += 1;
+    }
+    (*buff)++;
+    json_parse_withe_space(buff);
     if (json_parse_value(&tmp, buff) == false)
         return (false);
     return (objects->insert(&objects, JSON_TUPLE(key, tmp)));
@@ -36,14 +41,18 @@ bool json_parse_object_loop(struct json *conf, char const **buff,
         if (**buff == '}') {
             conf->t = JSON_OBJ;
             conf->v.object = objects;
+            (*buff)++;
             return (true);
-        } else if ((*buff = estrchr(*buff, ',')) == NULL)
+        } else if ((*buff = estrchr(*buff, ',')) == NULL) {
+            ASSERT("LibSeraph", "expected ',' after value [object]");
             return (false);
+        }
         *buff += 1;
         json_parse_withe_space(buff);
         if (json_object_read_data(objects, buff) == false)
             return (false);
     }
+    ASSERT("LibSeraph", "expected '}' to end the object");
     return (false);
 }
 

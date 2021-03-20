@@ -9,8 +9,8 @@
 
 bool json_parse_boolean(struct json *conf, char const **buff)
 {
-    if (estrcmp(*buff, "true") != 0) {
-        if (estrcmp(*buff, "false") != 0)
+    if (estrncmp(*buff, "true", 4) != 0) {
+        if (estrncmp(*buff, "false", 5) != 0)
             return (false);
         *buff += 5;
         conf->v.boolean = false;

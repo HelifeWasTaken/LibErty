@@ -9,7 +9,7 @@
 
 bool json_parse_null(struct json *conf, char const **buff)
 {
-    if (estrcmp(*buff, "null") != 0)
+    if (estrncmp(*buff, "null", 4) != 0)
         return (false);
     *buff += 4;
     conf->v.null = NULL;

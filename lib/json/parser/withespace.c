@@ -9,5 +9,6 @@
 
 void json_parse_withe_space(char const **buff)
 {
-    for (; IS_JSON_WITHESPACE(**buff); (*buff)++);
+    if (buff && *buff)
+        for (; IS_JSON_WITHESPACE(**buff); (*buff)++);
 }
