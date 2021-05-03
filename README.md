@@ -4,10 +4,22 @@
 
 Here is the "Libmy" that I used at Epitech
 
+### Keybase proof
+```
+I hereby claim:
+
+  * I am Helife on github.
+  * I have a public key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDS3sjBiRG1BT+IrIA9SyAzaAzh9EyyeXN0p+HNbEYXGmL1JLTZdXmZt7qZ2gNlp1LO7pVjgRhksyLZ1PoH2gU75WwbVRzzuTGXBmutAtMp859BkNhvMCOPaijCDvwJVruqP1Q07SaoROcNXv7i5ziEz+JRYrdfTJ+ygNnD71okaYMTWsCXbQw8WwpaZxKGKelVREPrgcU3BrRL7SkMoe2C7jDrNk9Ke+THC0nqKJUrxEPA3//SQZrASNa1onIi+OWjHZPBNiJv+R7+4ov5SFIuNYpPZ+TJYYAUNyW9GaFhwTTEDyfY9PoOcj19TguS+CQHqV42G1LW+YN4M1BPryV8XcdgC+K+7Pg7IF2KuVwHuYg0nQkappkX8d2Jn6LanJxzlVtPgDHyz++a8YkZKeUnKkOA5q/ZlHc/189O2zFom+Kx3ZoSAoQZEuR/TaRifKUSJ2jyYsSNU2g9UnklpapfxDZ7ol8Tvu6dO90UunvDLlcBwrj63EJM/ud41ijfqw0= mattis@localhost.localdomain
+```
+
 ## Documentation
 
 A documentation is aviable if you have Doxygen : `doxygen Doxyfile` in order to
 generate the documentation
+
+## :warning: Think yourself, don't cheat!
+
+*Recently, lot of people asked me to put this code offline. As I believe in an open world where information can flow freely, I denied his censorship request. Open Source code is a fabulous way to educate, and I learnt myself a lot reading the source code of frameworks and libraries. This project was a student project and therefore is far from being quality code. Though, take it as it is. Good or bad code is good to read, to learn what to do and what not to. So if you're a student working on a similar project, please use this carefully. Get inspiration, but don't copy/paste without thinking! And learn by yourself, on internet! Thanks!*
 
 ## Disclaimer
 
